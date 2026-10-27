@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Novrix Research Library</title>
+<meta name="description" content="How to read a COA, how peptides are stored and handled, and links to the published research behind the compounds Novrix Labs carries.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Michroma&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#06060a;--panel:#0f0f17;--sunk:#181823;--ink:#ecebf5;--muted:#9b9aaf;--soft:#c9c6e4;--line:#262633;
+  --violet:#9a6bff;--blue:#5b95ff;--in:#3ddc97;--gold:#ffc94d;
+  --grad:linear-gradient(100deg,#9b4dff 0%,#5d5dff 55%,#2f8cff 100%);
+  --chrome:linear-gradient(180deg,#ffffff 0%,#d9dbe3 45%,#8d90a0 100%);
+  --f-brand:"Michroma","Helvetica Neue",Arial,sans-serif;--f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--f-num:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(900px 520px at 50% -180px,rgba(110,80,255,.22),transparent 70%),var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:#c9b3ff}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--violet);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1000px;margin:0 auto;padding:0 16px 72px}
+.nav{display:flex;align-items:center;gap:16px;padding-block:16px;border-bottom:1px solid var(--line)}
+.brand{font-family:var(--f-brand);font-size:1rem;letter-spacing:.2em;color:var(--ink);text-decoration:none;display:inline-flex;align-items:baseline;gap:8px}
+.brand span{font-family:var(--f-body);font-size:.6rem;letter-spacing:.4em;color:var(--muted)}
+.nl{display:flex;gap:20px;margin-left:auto}
+.nl a{color:var(--muted);text-decoration:none;font-size:.88rem;font-weight:500}
+.nl a:hover{color:var(--ink)}
+.nbtn{background:var(--grad);color:#fff;text-decoration:none;font-weight:600;font-size:.85rem;padding:9px 16px;border-radius:10px;white-space:nowrap}
+@media (max-width:700px){.nl{display:none}.nbtn{margin-left:auto}}
+.hero{text-align:center;padding:44px 0 8px}
+.ey{font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--violet);font-weight:600}
+h1,h2{font-family:var(--f-brand);font-weight:400;text-transform:uppercase;background:var(--chrome);-webkit-background-clip:text;background-clip:text;color:transparent;margin:0}
+h1{font-size:clamp(1.6rem,6vw,2.4rem);letter-spacing:.12em;margin-top:10px}
+h2{font-size:clamp(1.15rem,4vw,1.5rem);letter-spacing:.1em}
+.lede{max-width:38rem;margin:14px auto 0;color:var(--soft);font-size:1rem;text-wrap:pretty}
+.toc{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:20px}
+.toc a{font-size:.82rem;font-weight:500;color:var(--ink);text-decoration:none;padding:7px 14px;border-radius:99px;border:1px solid var(--line);background:var(--panel)}
+.toc a:hover{border-color:var(--violet)}
+section{margin-top:60px;scroll-margin-top:16px}
+.sh{display:flex;flex-direction:column;gap:6px;margin-bottom:18px}
+.sh p{margin:4px 0 0;color:var(--soft);max-width:44rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:12px}
+.tile{border:1px solid var(--line);border-radius:16px;padding:16px 18px;background:linear-gradient(180deg,rgba(255,255,255,.025),transparent 60%),var(--panel)}
+.tile .k{font-family:var(--f-num);font-size:.72rem;color:var(--blue);letter-spacing:.06em;text-transform:uppercase}
+.tile b{display:block;font-size:1rem;margin-top:4px}
+.tile p{margin:6px 0 0;font-size:.88rem;color:var(--soft)}
+.callout{margin-top:14px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border-radius:16px;border:1px solid rgba(154,107,255,.45);background:radial-gradient(420px 160px at 0% 0%,rgba(154,107,255,.18),transparent 70%),var(--panel)}
+.callout p{margin:0;color:var(--soft);font-size:.9rem;max-width:36rem}
+.callout a.btn{background:var(--grad);color:#fff;text-decoration:none;font-weight:600;font-size:.86rem;padding:10px 16px;border-radius:10px;white-space:nowrap}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin:0 0 14px;font-size:.78rem;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:99px;border:1px solid;white-space:nowrap}
+.tag::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.t-appr{color:var(--gold);border-color:rgba(255,201,77,.45);background:rgba(255,201,77,.08)}
+.t-human{color:var(--in);border-color:rgba(61,220,151,.45);background:rgba(61,220,151,.08)}
+.t-early{color:var(--blue);border-color:rgba(91,149,255,.45);background:rgba(91,149,255,.08)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:12px}
+.rc{position:relative;display:flex;flex-direction:column;gap:8px;padding:18px;border-radius:16px;border:1px solid var(--line);background:var(--panel);overflow:hidden}
+.rc::before{content:"";position:absolute;inset:0 0 auto 0;height:2px;background:var(--grad)}
+.rc-h{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.rc-h b{font-size:1.08rem}
+.rc-h small{display:block;font-size:.78rem;color:var(--muted);font-weight:400;margin-top:2px}
+.rc p{margin:0;font-size:.88rem;color:var(--soft);flex:1}
+.src{list-style:none;margin:4px 0 0;padding:10px 0 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:6px}
+.src li{font-size:.8rem;line-height:1.4}
+.src a{text-decoration:none}
+.src a:hover{text-decoration:underline}
+.src span{color:var(--muted)}
+.fine{margin-top:56px;border-top:1px solid var(--line);padding-top:18px;font-size:.78rem;color:var(--muted)}
+.fine b{color:#d9d7ee;font-weight:500}
+.fine a{color:var(--muted)}
+.back{display:inline-flex;margin-top:28px;background:var(--grad);color:#fff;text-decoration:none;font-weight:600;padding:12px 22px;border-radius:12px;box-shadow:0 8px 26px rgba(110,80,255,.4)}
+@media (prefers-reduced-motion:no-preference){.rc,.tile{transition:border-color .18s ease,transform .18s ease}@media (hover:hover){.rc:hover,.tile:hover{border-color:rgba(154,107,255,.45);transform:translateY(-2px)}}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="nav" aria-label="Main">
+    <a class="brand" href="https://novrixlabs.shop/">NOVRIX <span>LABS</span></a>
+    <div class="nl"><a href="#coa">Reading a COA</a><a href="#storage">Storage</a><a href="#studies">Published research</a></div>
+    <a class="nbtn" href="https://novrixlabs.shop/#shop">Shop the menu</a>
+  </nav>
+
+  <header class="hero">
+    <div class="ey">The science</div>
+    <h1>Research library</h1>
+    <p class="lede">A plain-English reference for researchers: how to read a certificate of analysis, how peptides are stored and handled in the lab, and where the published studies on these compounds actually are.</p>
+    <div class="toc"><a href="#coa">Reading a COA</a><a href="#storage">Storage &amp; handling</a><a href="#studies">Published research</a></div>
+  </header>
+
+  <section id="coa">
+    <div class="sh"><div class="ey">01 · Quality</div><h2>How to read a COA</h2><p>A certificate of analysis (COA) is a lab report for one specific batch. These are the parts worth checking on any supplier’s COA.</p></div>
+    <div class="grid">
+      <div class="tile"><span class="k">Identity</span><b>Mass spectrometry (MS)</b><p>Confirms the molecule is what the label says by matching its measured molecular weight to the expected weight. A purity number means little without it.</p></div>
+      <div class="tile"><span class="k">Purity</span><b>HPLC purity %</b><p>Shows how much of the sample is the target peptide versus other material, usually as a percentage from the main peak on the chromatogram.</p></div>
+      <div class="tile"><span class="k">Traceability</span><b>Batch or lot number</b><p>The lot number on the COA should match the batch you received. A COA with no lot number can’t be tied to a specific vial.</p></div>
+      <div class="tile"><span class="k">Source</span><b>Lab name and test date</b><p>Look for who ran the test and when. Recent dates and a named lab, ideally independent, make the report easier to trust.</p></div>
+      <div class="tile"><span class="k">Content</span><b>Amount per vial</b><p>Some reports also measure how much peptide is actually in the vial, so you can compare it with the amount on the label.</p></div>
+      <div class="tile"><span class="k">Appearance</span><b>Form and color</b><p>Lyophilized (freeze-dried) peptides are normally a white or off-white powder or cake. The COA usually notes this.</p></div>
+    </div>
+    <div class="callout"><p><b>COAs are available upon request.</b> Email your order number or the product and dose you’re looking at, and I’ll send what’s available for that batch.</p><a class="btn" href="mailto:novrixlabs@gmail.com?subject=COA%20request">Request a COA</a></div>
+  </section>
+
+  <section id="storage">
+    <div class="sh"><div class="ey">02 · Lab practice</div><h2>Storage &amp; handling</h2><p>General lab guidance for synthetic peptides, from published handling guides. Every vial ships as a powder.</p></div>
+    <div class="grid">
+      <div class="tile"><span class="k">Powder</span><b>Keep sealed vials cold</b><p>Freeze-dried peptides keep best cold, dry and sealed. Lab guides recommend a freezer (−20 °C or colder) for longer storage.</p></div>
+      <div class="tile"><span class="k">Opening</span><b>Let it warm up first</b><p>Let a cold vial reach room temperature before opening it, so moisture from the air doesn’t condense inside.</p></div>
+      <div class="tile"><span class="k">Environment</span><b>Avoid light and moisture</b><p>Store vials in the dark and keep them dry. Peptide powder absorbs moisture, which shortens its shelf life.</p></div>
+      <div class="tile"><span class="k">In solution</span><b>Fridge, and use promptly</b><p>Once a peptide is in solution it’s far less stable than the powder. Guides suggest up to about a week at 4 °C, or freezing in small portions.</p></div>
+      <div class="tile"><span class="k">Freeze–thaw</span><b>Avoid repeated cycles</b><p>Each freeze–thaw cycle can degrade a peptide. Splitting a solution into single-use portions avoids thawing the same vial over and over.</p></div>
+      <div class="tile"><span class="k">Labels</span><b>Track every vial</b><p>Note the product, lot number and the date a vial was opened or mixed, so results can be traced back to a batch.</p></div>
+    </div>
+    <ul class="src" style="border-top:0;margin-top:12px">
+      <li>Sources: <a href="https://b2b.sigmaaldrich.com/FR/en/technical-documents/technical-article/research-and-disease-areas/cell-and-developmental-biology-research/handling-and-storage" target="_blank" rel="noopener">Sigma-Aldrich, Handling and Storage of Peptides</a> · <a href="https://www.jpt.com/blog/store-peptides/" target="_blank" rel="noopener">JPT Peptide Technologies, How to Store Peptides</a></li>
+    </ul>
+  </section>
+
+  <section id="studies">
+    <div class="sh"><div class="ey">03 · Literature</div><h2>Published research</h2><p>What has actually been studied, with links to the original papers and trial records. Evidence ranges from FDA-approved drugs to early animal work, so each card is labeled honestly.</p></div>
+    <div class="legend"><span class="tag t-appr">Approved drug</span><span class="tag t-human">Human trials</span><span class="tag t-early">Early / animal research</span></div>
+    <div class="cards">
+
+      <article class="rc">
+        <div class="rc-h"><div><b>NVL-R3</b><small>Retatrutide · GIP, GLP-1 and glucagon receptor agonist</small></div><span class="tag t-human">Human trials</span></div>
+        <p>A 48-week phase 2 trial in 338 adults with obesity, published in the New England Journal of Medicine, reported mean weight reductions of up to 24.2%. In May 2026, Lilly reported topline results from its first phase 3 trial, TRIUMPH-1. As of that report, retatrutide was still an investigational drug.</p>
+        <ul class="src">
+          <li><a href="https://doi.org/10.1056/NEJMoa2301972" target="_blank" rel="noopener">Jastreboff et al., Triple–Hormone-Receptor Agonist Retatrutide for Obesity, NEJM 2023</a></li>
+          <li><a href="https://clinicaltrials.gov/study/NCT05929066" target="_blank" rel="noopener">TRIUMPH-1 trial record, NCT05929066</a> <span>· topline May 2026</span></li>
+        </ul>
+      </article>
+
+      <article class="rc">
+        <div class="rc-h"><div><b>NVL-T2</b><small>Tirzepatide · GIP and GLP-1 receptor agonist</small></div><span class="tag t-appr">Approved drug</span></div>
+        <p>The SURMOUNT-1 trial followed 2,539 adults with obesity for 72 weeks and reported mean weight reductions of up to 20.9% at the highest dose. The same compound is FDA-approved as Mounjaro and Zepbound.</p>
+        <ul class="src">
+          <li><a href="https://doi.org/10.1056/NEJMoa2206038" target="_blank" rel="noopener">Jastreboff et al., Tirzepatide Once Weekly for the Treatment of Obesity, NEJM 2022</a></li>
+          <li><a href="https://clinicaltrials.gov/study/NCT04184622" target="_blank" rel="noopener">SURMOUNT-1 trial record, NCT04184622</a></li>
+        </ul>
+      </article>
+
+      <article class="rc">
+        <div class="rc-h"><div><b>Tesamorelin</b><small>Growth hormone–releasing hormone (GHRH) analog</small></div><span class="tag t-appr">Approved drug</span></div>
+        <p>A 26-week randomized trial of 412 adults with HIV-associated abdominal fat reported about a 15% reduction in visceral (deep belly) fat versus placebo. Tesamorelin is FDA-approved as Egrifta for that condition.</p>
+        <ul class="src">
+          <li><a href="https://doi.org/10.1056/NEJMoa072375" target="_blank" rel="noopener">Falutz et al., Metabolic Effects of a Growth Hormone–Releasing Factor in Patients with HIV, NEJM 2007</a></li>
+        </ul>
+      </article>
+
+      <article class="rc">
+        <div class="rc-h"><div><b>SS-31</b><small>Elamipretide · mitochondria-targeting peptide</small></div><span class="tag t-appr">Approved drug</span></div>
+        <p>In September 2025, the FDA granted elamipretide (Forzinity) accelerated approval as the first treatment for Barth syndrome, a rare mitochondrial disease. It acts on the inner mitochondrial membrane.</p>
+        <ul class="src">
+          <li><a href="https://www.healthday.com/healthpro-news/cardiovascular-diseases/fda-grants-accelerated-approval-for-first-treatment-for-barth-syndrome" target="_blank" rel="noopener">HealthDay, FDA grants accelerated approval for first treatment for Barth syndrome, 2025</a></li>
+        </ul>
+      </article>
+
+      <article class="rc">
+        <div class="rc-h"><div><b>MOTS-c</b><small>Mitochondria-derived peptide</small></div><span class="tag t-early">Early / animal</span></div>
+        <p>The 2015 paper that described MOTS-c found that, in mice, it improved insulin sensitivity and prevented diet-induced obesity. Human research is still early.</p>
+        <ul class="src">
+          <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4350682/" target="_blank" rel="noopener">Lee et al., The mitochondrial-derived peptide MOTS-c promotes metabolic homeostasis, Cell Metabolism 2015</a></li>
+        </ul>
+      </article>
+
+      <article class="rc">
+        <div class="rc-h"><div><b>Ipamorelin</b><small>Selective growth hormone secretagogue</small></div><span class="tag t-early">Early / animal</span></div>
+        <p>First described in 1998 as a growth hormone secretagogue that releases growth hormone selectively, without the rise in ACTH and cortisol seen with earlier compounds in animal studies.</p>
+        <ul class="src">
+          <li><a href="https://pubmed.ncbi.nlm.nih.gov/9849822/" target="_blank" rel="noopener">Raun et al., Ipamorelin, the first selective growth hormone secretagogue, Eur J Endocrinol 1998</a></li>
+        </ul>
+      </article>
+
+      <article class="rc">
+        <div class="rc-h"><div><b>BPC-157</b><small>Synthetic pentadecapeptide</small></div><span class="tag t-early">Early / animal</span></div>
+        <p>A 2025 systematic review found the evidence is almost entirely from animal studies of tendon, ligament, muscle and bone healing. The only human study it found was small, with 12 patients, and the authors note that human safety is still unknown.</p>
+        <ul class="src">
+          <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12313605/" target="_blank" rel="noopener">Vasireddi et al., Emerging Use of BPC-157 in Orthopaedic Sports Medicine: A Systematic Review, HSS Journal 2025</a></li>
+        </ul>
+      </article>
+
+      <article class="rc">
+        <div class="rc-h"><div><b>GHK-Cu</b><small>Copper-binding tripeptide</small></div><span class="tag t-early">Early / lab &amp; skin</span></div>
+        <p>A naturally occurring peptide studied in wound-healing and skin research. A 2018 review summarizes lab data showing it influences the activity of many genes involved in tissue repair.</p>
+        <ul class="src">
+          <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6073405/" target="_blank" rel="noopener">Pickart &amp; Margolina, Regenerative and Protective Actions of the GHK-Cu Peptide, Int J Mol Sci 2018</a></li>
+        </ul>
+      </article>
+
+    </div>
+    <a class="back" href="https://novrixlabs.shop/#shop">Back to the menu</a>
+  </section>
+
+  <div class="fine">
+    <p><b>For research use only.</b> These summaries describe published studies and trial records about each compound. They are not claims about Novrix Labs products, which are sold strictly for in-vitro laboratory research and are not drugs, supplements, foods or cosmetics. Clinical results come from pharmaceutical-grade products tested under trial conditions. Nothing here is medical advice or a guide to human use.</p>
+    <p>Questions? <a href="mailto:novrixlabs@gmail.com">novrixlabs@gmail.com</a> · <a href="https://discord.gg/XP9dz3jse" target="_blank" rel="noopener">Novrix Discord</a> · <a href="https://novrixlabs.shop/">novrixlabs.shop</a></p>
+  </div>
+</div>
+</body>
+</html>
