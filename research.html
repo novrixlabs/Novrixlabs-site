@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Novrix Research Library</title>
-<meta name="description" content="How to read a COA, how peptides are stored and handled, and links to the published research behind the compounds Novrix Labs carries.">
+<meta name="description" content="Peptides 101, a timeline of peptide science, fun facts, the published research behind each compound, how to read a COA, storage, a glossary and a quiz. From Novrix Labs.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Michroma&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Michroma&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 :root{
   --bg:#06060a;--panel:#0f0f17;--sunk:#181823;--ink:#ecebf5;--muted:#9b9aaf;--soft:#c9c6e4;--line:#262633;
-  --violet:#9a6bff;--blue:#5b95ff;--in:#3ddc97;--gold:#ffc94d;
+  --violet:#9a6bff;--blue:#5b95ff;--in:#3ddc97;--gold:#ffc94d;--pink:#ff7ad9;
   --grad:linear-gradient(100deg,#9b4dff 0%,#5d5dff 55%,#2f8cff 100%);
   --chrome:linear-gradient(180deg,#ffffff 0%,#d9dbe3 45%,#8d90a0 100%);
   --f-brand:"Michroma","Helvetica Neue",Arial,sans-serif;--f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--f-num:"IBM Plex Mono",ui-monospace,Menlo,monospace;
@@ -18,94 +18,197 @@
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:radial-gradient(900px 520px at 50% -180px,rgba(110,80,255,.22),transparent 70%),var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body{margin:0;background:radial-gradient(900px 520px at 50% -180px,rgba(110,80,255,.24),transparent 70%),var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
 a{color:#c9b3ff}
-a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--violet);outline-offset:3px;border-radius:6px}
-.wrap{max-width:1000px;margin:0 auto;padding:0 16px 72px}
+a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible{outline:2px solid var(--violet);outline-offset:3px;border-radius:6px}
+[hidden]{display:none!important}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px 72px}
 .nav{display:flex;align-items:center;gap:16px;padding-block:16px;border-bottom:1px solid var(--line)}
 .brand{font-family:var(--f-brand);font-size:1rem;letter-spacing:.2em;color:var(--ink);text-decoration:none;display:inline-flex;align-items:baseline;gap:8px}
 .brand span{font-family:var(--f-body);font-size:.6rem;letter-spacing:.4em;color:var(--muted)}
-.nl{display:flex;gap:20px;margin-left:auto}
-.nl a{color:var(--muted);text-decoration:none;font-size:.88rem;font-weight:500}
-.nl a:hover{color:var(--ink)}
-.nbtn{background:var(--grad);color:#fff;text-decoration:none;font-weight:600;font-size:.85rem;padding:9px 16px;border-radius:10px;white-space:nowrap}
-@media (max-width:700px){.nl{display:none}.nbtn{margin-left:auto}}
-.hero{text-align:center;padding:44px 0 8px}
+.nbtn{margin-left:auto;background:var(--grad);color:#fff;text-decoration:none;font-weight:600;font-size:.85rem;padding:9px 16px;border-radius:10px;white-space:nowrap}
+.hero{text-align:center;padding:44px 0 6px}
 .ey{font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--violet);font-weight:600}
 h1,h2{font-family:var(--f-brand);font-weight:400;text-transform:uppercase;background:var(--chrome);-webkit-background-clip:text;background-clip:text;color:transparent;margin:0}
-h1{font-size:clamp(1.6rem,6vw,2.4rem);letter-spacing:.12em;margin-top:10px}
+h1{font-size:clamp(1.6rem,6vw,2.5rem);letter-spacing:.12em;margin-top:10px}
 h2{font-size:clamp(1.15rem,4vw,1.5rem);letter-spacing:.1em}
-.lede{max-width:38rem;margin:14px auto 0;color:var(--soft);font-size:1rem;text-wrap:pretty}
-.toc{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:20px}
-.toc a{font-size:.82rem;font-weight:500;color:var(--ink);text-decoration:none;padding:7px 14px;border-radius:99px;border:1px solid var(--line);background:var(--panel)}
+.lede{max-width:40rem;margin:14px auto 0;color:var(--soft);font-size:1rem;text-wrap:pretty}
+.toc{position:sticky;top:0;z-index:5;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:12px 0;margin-top:18px;background:rgba(6,6,10,.9);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.toc::-webkit-scrollbar{display:none}
+.toc a{flex:none;font-size:.8rem;font-weight:500;color:var(--ink);text-decoration:none;padding:7px 13px;border-radius:99px;border:1px solid var(--line);background:var(--panel)}
 .toc a:hover{border-color:var(--violet)}
-section{margin-top:60px;scroll-margin-top:16px}
+@media (min-width:760px){.toc{justify-content:center}}
+section{margin-top:60px;scroll-margin-top:64px}
 .sh{display:flex;flex-direction:column;gap:6px;margin-bottom:18px}
-.sh p{margin:4px 0 0;color:var(--soft);max-width:44rem}
+.sh p{margin:4px 0 0;color:var(--soft);max-width:46rem}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:12px}
 .tile{border:1px solid var(--line);border-radius:16px;padding:16px 18px;background:linear-gradient(180deg,rgba(255,255,255,.025),transparent 60%),var(--panel)}
 .tile .k{font-family:var(--f-num);font-size:.72rem;color:var(--blue);letter-spacing:.06em;text-transform:uppercase}
 .tile b{display:block;font-size:1rem;margin-top:4px}
 .tile p{margin:6px 0 0;font-size:.88rem;color:var(--soft)}
-.callout{margin-top:14px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border-radius:16px;border:1px solid rgba(154,107,255,.45);background:radial-gradient(420px 160px at 0% 0%,rgba(154,107,255,.18),transparent 70%),var(--panel)}
-.callout p{margin:0;color:var(--soft);font-size:.9rem;max-width:36rem}
-.callout a.btn{background:var(--grad);color:#fff;text-decoration:none;font-weight:600;font-size:.86rem;padding:10px 16px;border-radius:10px;white-space:nowrap}
-.legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin:0 0 14px;font-size:.78rem;color:var(--muted)}
-.legend span{display:inline-flex;align-items:center;gap:6px}
-.tag{display:inline-flex;align-items:center;gap:6px;font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:99px;border:1px solid;white-space:nowrap}
+.big3 .tile{padding:20px}
+.big3 .em{font-size:1.8rem;line-height:1}
+.chain{display:flex;justify-content:center;align-items:center;margin:22px auto 0;flex-wrap:wrap;max-width:560px}
+.aa{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-num);font-size:.72rem;font-weight:600;color:#fff;border:1px solid rgba(255,255,255,.25)}
+.bond{width:12px;height:2px;background:rgba(255,255,255,.3)}
+@media (prefers-reduced-motion:no-preference){.aa{animation:bob 3s ease-in-out infinite}.aa:nth-child(4n+1){animation-delay:.3s}.aa:nth-child(4n+3){animation-delay:.6s}@keyframes bob{50%{transform:translateY(-4px)}}}
+.cap{text-align:center;font-size:.78rem;color:var(--muted);margin-top:8px}
+.tl{position:relative;display:flex;flex-direction:column;gap:14px;padding-left:22px}
+.tl::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--violet),var(--blue),var(--in))}
+.ti{position:relative;border:1px solid var(--line);border-radius:14px;padding:12px 16px;background:var(--panel)}
+.ti::before{content:"";position:absolute;left:-21px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--violet);box-shadow:0 0 10px rgba(154,107,255,.6)}
+.ti .yr{font-family:var(--f-brand);font-size:.95rem;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ti b{display:block;margin-top:2px}
+.ti p{margin:4px 0 0;font-size:.86rem;color:var(--soft)}
+.ti a{font-size:.76rem}
+@media (min-width:760px){.tl{display:grid;grid-template-columns:1fr 1fr;gap:14px 28px;padding-left:0;align-items:start}.tl::before{left:50%;transform:translateX(-1px)}.ti:nth-child(even){margin-top:40px}.ti::before{display:none}}
+.flips{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:12px}
+.flip{all:unset;cursor:pointer;display:block;perspective:900px;min-height:190px}
+.fi{position:relative;display:block;width:100%;height:100%;min-height:190px;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.3,1.3,.5,1)}
+.flip.on .fi{transform:rotateY(180deg)}
+.ff,.fb{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.ff{border:1px solid rgba(154,107,255,.4);background:radial-gradient(260px 160px at 0% 0%,rgba(154,107,255,.22),transparent 70%),var(--panel)}
+.ff .em{font-size:2rem;line-height:1}
+.ff b{font-size:1rem}
+.ff small{margin-top:auto;font-size:.72rem;color:var(--violet);font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.fb{transform:rotateY(180deg);border:1px solid rgba(61,220,151,.45);background:radial-gradient(260px 160px at 100% 0%,rgba(61,220,151,.16),transparent 70%),var(--panel);font-size:.88rem;color:var(--soft)}
+.fb a{font-size:.74rem;margin-top:auto}
+.flip:focus-visible{outline:2px solid var(--violet);outline-offset:3px;border-radius:16px}
+@media (prefers-reduced-motion:reduce){.fi{transition:none}}
+@media (max-width:560px){.flips{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:78%;overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:-16px;padding:2px 16px 8px;scroll-padding-inline:16px;scrollbar-width:none}.flips::-webkit-scrollbar{display:none}.flip{scroll-snap-align:start;min-height:220px}.fi{min-height:220px}}
+.sw{display:none}@media (max-width:560px){.sw{display:inline}}
+.more{display:flex;justify-content:center;margin-top:14px}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+.chip{font:inherit;font-size:.8rem;font-weight:600;padding:7px 13px;border-radius:99px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--grad);border-color:transparent;color:#fff}
+.srch{flex:1 1 200px;min-width:0;font:inherit;font-size:16px;color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:99px;padding:8px 14px}
+.srch:focus{outline:none;border-color:var(--violet)}
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:.64rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:99px;border:1px solid;white-space:nowrap}
 .tag::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
 .t-appr{color:var(--gold);border-color:rgba(255,201,77,.45);background:rgba(255,201,77,.08)}
+.t-abroad{color:#ffa86b;border-color:rgba(255,168,107,.45);background:rgba(255,168,107,.08)}
 .t-human{color:var(--in);border-color:rgba(61,220,151,.45);background:rgba(61,220,151,.08)}
 .t-early{color:var(--blue);border-color:rgba(91,149,255,.45);background:rgba(91,149,255,.08)}
+.t-nat{color:var(--pink);border-color:rgba(255,122,217,.45);background:rgba(255,122,217,.08)}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:12px}
 .rc{position:relative;display:flex;flex-direction:column;gap:8px;padding:18px;border-radius:16px;border:1px solid var(--line);background:var(--panel);overflow:hidden}
 .rc::before{content:"";position:absolute;inset:0 0 auto 0;height:2px;background:var(--grad)}
 .rc-h{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
-.rc-h b{font-size:1.08rem}
+.rc-h b{font-size:1.06rem}
 .rc-h small{display:block;font-size:.78rem;color:var(--muted);font-weight:400;margin-top:2px}
 .rc p{margin:0;font-size:.88rem;color:var(--soft);flex:1}
-.src{list-style:none;margin:4px 0 0;padding:10px 0 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:6px}
-.src li{font-size:.8rem;line-height:1.4}
+.rc .fun{font-size:.8rem;color:#e7dcff;background:rgba(154,107,255,.1);border:1px solid rgba(154,107,255,.3);border-radius:10px;padding:7px 10px}
+.src{list-style:none;margin:2px 0 0;padding:10px 0 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:6px}
+.src li{font-size:.78rem;line-height:1.4}
 .src a{text-decoration:none}
 .src a:hover{text-decoration:underline}
-.src span{color:var(--muted)}
+.none{color:var(--muted);text-align:center;padding:30px 0}
+.callout{margin-top:14px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border-radius:16px;border:1px solid rgba(154,107,255,.45);background:radial-gradient(420px 160px at 0% 0%,rgba(154,107,255,.18),transparent 70%),var(--panel)}
+.callout p{margin:0;color:var(--soft);font-size:.9rem;max-width:36rem}
+.btn{display:inline-flex;background:var(--grad);color:#fff;text-decoration:none;font:inherit;font-weight:600;font-size:.86rem;padding:10px 16px;border-radius:10px;white-space:nowrap;border:0;cursor:pointer}
+.gls{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:8px;align-items:start}
+.gl{border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+.gl summary{list-style:none;cursor:pointer;padding:12px 14px;font-weight:600;display:flex;align-items:center;gap:10px}
+.gl summary::-webkit-details-marker{display:none}
+.gl summary::after{content:"+";margin-left:auto;color:var(--violet);font-weight:700}
+.gl[open] summary::after{content:"\2212"}
+.gl p{margin:0;padding:0 14px 12px;font-size:.86rem;color:var(--soft)}
+.quiz{border:1px solid rgba(154,107,255,.45);border-radius:18px;padding:20px;background:radial-gradient(500px 220px at 100% 0%,rgba(47,140,255,.16),transparent 70%),var(--panel)}
+.qh{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:.8rem;color:var(--muted)}
+.qbar{height:5px;border-radius:99px;background:var(--sunk);overflow:hidden;margin:8px 0 14px}
+.qbar i{display:block;height:100%;background:var(--grad);transition:width .4s ease}
+.qq{font-size:1.08rem;font-weight:600;margin:0 0 12px}
+.qo{display:grid;gap:8px}
+.qo button{font:inherit;text-align:left;cursor:pointer;color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:12px;padding:11px 14px}
+.qo button:hover:not(:disabled){border-color:var(--violet)}
+.qo button.ok{border-color:var(--in);background:rgba(61,220,151,.12)}
+.qo button.no{border-color:#ff6b6b;background:rgba(255,107,107,.1)}
+.qo button:disabled{cursor:default;color:var(--ink)}
+.qx{margin:12px 0 0;font-size:.88rem;color:var(--soft)}
+.qx:empty{display:none}
+.qn{margin-top:14px;display:flex;justify-content:flex-end}
+.qn:empty{display:none}
+.qdone{text-align:center}
+.qdone .sc{font-family:var(--f-brand);font-size:2.4rem;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .fine{margin-top:56px;border-top:1px solid var(--line);padding-top:18px;font-size:.78rem;color:var(--muted)}
 .fine b{color:#d9d7ee;font-weight:500}
 .fine a{color:var(--muted)}
-.back{display:inline-flex;margin-top:28px;background:var(--grad);color:#fff;text-decoration:none;font-weight:600;padding:12px 22px;border-radius:12px;box-shadow:0 8px 26px rgba(110,80,255,.4)}
-@media (prefers-reduced-motion:no-preference){.rc,.tile{transition:border-color .18s ease,transform .18s ease}@media (hover:hover){.rc:hover,.tile:hover{border-color:rgba(154,107,255,.45);transform:translateY(-2px)}}}
+.back{margin-top:22px}
+@media (prefers-reduced-motion:no-preference){.rc,.tile,.ti{transition:border-color .18s ease,transform .18s ease}@media (hover:hover){.rc:hover,.tile:hover,.ti:hover{border-color:rgba(154,107,255,.45);transform:translateY(-2px)}}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <nav class="nav" aria-label="Main">
     <a class="brand" href="https://novrixlabs.shop/">NOVRIX <span>LABS</span></a>
-    <div class="nl"><a href="#coa">Reading a COA</a><a href="#storage">Storage</a><a href="#studies">Published research</a></div>
     <a class="nbtn" href="https://novrixlabs.shop/#shop">Shop the menu</a>
   </nav>
 
   <header class="hero">
     <div class="ey">The science</div>
     <h1>Research library</h1>
-    <p class="lede">A plain-English reference for researchers: how to read a certificate of analysis, how peptides are stored and handled in the lab, and where the published studies on these compounds actually are.</p>
-    <div class="toc"><a href="#coa">Reading a COA</a><a href="#storage">Storage &amp; handling</a><a href="#studies">Published research</a></div>
+    <p class="lede">Everything worth knowing about peptides, in plain English: what they are, where they came from, the surprisingly weird origin stories, and what the published research actually says. Every claim links to its source.</p>
+    <div class="chain" aria-hidden="true" id="chain"></div>
+    <div class="cap">A peptide is a chain of amino acids. This one is KPV, three letters long.</div>
   </header>
 
+  <nav class="toc" aria-label="Sections">
+    <a href="#basics">Peptides 101</a><a href="#timeline">Timeline</a><a href="#facts">Did you know?</a><a href="#studies">The research</a><a href="#coa">Reading a COA</a><a href="#storage">Storage</a><a href="#glossary">Glossary</a><a href="#quiz">Quiz</a>
+  </nav>
+
+  <section id="basics">
+    <div class="sh"><div class="ey">01 · Basics</div><h2>Peptides 101</h2><p>Three ideas explain most of what you’ll read about peptides.</p></div>
+    <div class="grid big3">
+      <div class="tile"><div class="em">🔗</div><b>Short chains of amino acids</b><p>Amino acids are the building blocks of proteins. Link a few together and you have a peptide. Glutathione is just 3 of them, BPC-157 is 15. Past roughly 50 you’re usually talking about a protein, like growth hormone at 191.</p></div>
+      <div class="tile"><div class="em">🔑</div><b>Keys and locks</b><p>Most peptides work by fitting a receptor on a cell, like a key in a lock. An “agonist” switches the receptor on. A dual or triple agonist, like tirzepatide or retatrutide, fits two or three different locks at once.</p></div>
+      <div class="tile"><div class="em">❄️</div><b>Why it comes as a powder</b><p>Peptides break down fairly quickly in water, so they’re freeze-dried (lyophilized) into a powder for shipping and storage. That’s why vials arrive as a small white cake.</p></div>
+    </div>
+  </section>
+
+  <section id="timeline">
+    <div class="sh"><div class="ey">02 · History</div><h2>A century of peptides</h2><p>From a Toronto lab in 1921 to the trials making headlines today.</p></div>
+    <div class="tl">
+      <div class="ti"><span class="yr">1921–22</span><b>Insulin changes everything</b><p>Banting and Best begin experiments in Toronto in 1921. In January 1922, 14-year-old Leonard Thompson becomes the first person treated with purified insulin, a peptide hormone.</p><a href="https://insulin100.utoronto.ca" target="_blank" rel="noopener">University of Toronto, Insulin 100</a></div>
+      <div class="ti"><span class="yr">1953</span><b>The first peptide hormone made in a lab</b><p>Vincent du Vigneaud synthesizes oxytocin, a 9-amino-acid hormone, and wins the 1955 Nobel Prize in Chemistry for it.</p><a href="https://www.nobelprize.org/prizes/chemistry/1955/vigneaud/facts/" target="_blank" rel="noopener">NobelPrize.org</a></div>
+      <div class="ti"><span class="yr">1963</span><b>Building peptides on beads</b><p>Bruce Merrifield invents solid-phase peptide synthesis, building chains one amino acid at a time on tiny resin beads. It’s still the basis of how most peptides are made, and it won the 1984 Nobel Prize.</p><a href="https://www.nobelprize.org/prizes/chemistry/1984/summary/" target="_blank" rel="noopener">NobelPrize.org</a></div>
+      <div class="ti"><span class="yr">1972–76</span><b>A peptide test you’ve heard of</b><p>NIH researchers publish a precise test for the hormone hCG in 1972. It becomes the basis of modern pregnancy tests, and the first US home test arrives in 1976.</p><a href="https://history.nih.gov/display/history/Pregnancy+Test+Timeline" target="_blank" rel="noopener">NIH Office of History</a></div>
+      <div class="ti"><span class="yr">1973</span><b>GHK found in human blood</b><p>Loren Pickart discovers the copper-binding peptide GHK in human plasma, starting decades of skin and wound-healing research.</p><a href="https://www.mdpi.com/1422-0067/19/7/1987" target="_blank" rel="noopener">Pickart &amp; Margolina, IJMS 2018</a></div>
+      <div class="ti"><span class="yr">1985</span><b>Growth hormone from bacteria</b><p>The FDA approves the first recombinant (lab-made) growth hormone, from Genentech, replacing hormone extracted from human pituitary glands.</p><a href="https://gene.com/media/news-features/25th-anniversary-of-first-product-approval" target="_blank" rel="noopener">Genentech</a></div>
+      <div class="ti"><span class="yr">1992 → 2005</span><b>The Gila monster drug</b><p>VA endocrinologist John Eng finds exendin-4 in Gila monster venom. It becomes exenatide (Byetta), FDA-approved in 2005 as the first GLP-1 drug.</p><a href="https://www.research.va.gov/research_in_action/Diabetes-drug-from-Gila-monster-venom.cfm" target="_blank" rel="noopener">US Dept. of Veterans Affairs</a></div>
+      <div class="ti"><span class="yr">2017–23</span><b>The GLP-1 era</b><p>Semaglutide (Ozempic) is approved in 2017. Tirzepatide, the first dual GIP/GLP-1 agonist, follows as Mounjaro in 2022 and Zepbound in 2023.</p><a href="https://investor.lilly.com/news-releases/news-release-details/fda-approves-lillys-mounjarotm-tirzepatide-injection-first-and" target="_blank" rel="noopener">Eli Lilly</a></div>
+      <div class="ti"><span class="yr">2025</span><b>A mitochondria peptide is approved</b><p>The FDA grants elamipretide (SS-31) accelerated approval as the first treatment for Barth syndrome, a rare mitochondrial disease.</p><a href="https://www.healthday.com/healthpro-news/cardiovascular-diseases/fda-grants-accelerated-approval-for-first-treatment-for-barth-syndrome" target="_blank" rel="noopener">HealthDay</a></div>
+      <div class="ti"><span class="yr">2026</span><b>Triple agonists reach phase 3</b><p>Lilly reports topline results from TRIUMPH-1, the first phase 3 trial of retatrutide: average weight loss of up to 25% at 80 weeks, versus 3.9% on placebo.</p><a href="https://pharmaceutical-journal.com/article/news/phase-iii-retatrutide-study-demonstrates-30-weight-loss" target="_blank" rel="noopener">The Pharmaceutical Journal</a></div>
+    </div>
+  </section>
+
+  <section id="facts">
+    <div class="sh"><div class="ey">03 · Fun facts</div><h2>Did you know?</h2><p>Tap a card to flip it<span class="sw">, swipe for more</span>.</p></div>
+    <div class="flips" id="flips"></div>
+  </section>
+
+  <section id="studies">
+    <div class="sh"><div class="ey">04 · Literature</div><h2>The research, compound by compound</h2><p>What has actually been studied, with links to the original papers, trial records and regulators. Evidence ranges from approved drugs to early animal work, and every card is labeled honestly.</p></div>
+    <div class="tools" id="tools"><input class="srch" id="rq" type="search" placeholder="Search a compound, e.g. BPC" aria-label="Search compounds"></div>
+    <div class="cards" id="cards"></div>
+    <p class="none" id="none" hidden>No compounds match. Try another search.</p>
+    <div class="more" id="more" hidden><button class="chip" id="more-b" type="button">Show all compounds</button></div>
+  </section>
+
   <section id="coa">
-    <div class="sh"><div class="ey">01 · Quality</div><h2>How to read a COA</h2><p>A certificate of analysis (COA) is a lab report for one specific batch. These are the parts worth checking on any supplier’s COA.</p></div>
+    <div class="sh"><div class="ey">05 · Quality</div><h2>How to read a COA</h2><p>A certificate of analysis (COA) is a lab report for one specific batch. These are the parts worth checking on any supplier’s COA.</p></div>
     <div class="grid">
       <div class="tile"><span class="k">Identity</span><b>Mass spectrometry (MS)</b><p>Confirms the molecule is what the label says by matching its measured molecular weight to the expected weight. A purity number means little without it.</p></div>
       <div class="tile"><span class="k">Purity</span><b>HPLC purity %</b><p>Shows how much of the sample is the target peptide versus other material, usually as a percentage from the main peak on the chromatogram.</p></div>
       <div class="tile"><span class="k">Traceability</span><b>Batch or lot number</b><p>The lot number on the COA should match the batch you received. A COA with no lot number can’t be tied to a specific vial.</p></div>
       <div class="tile"><span class="k">Source</span><b>Lab name and test date</b><p>Look for who ran the test and when. Recent dates and a named lab, ideally independent, make the report easier to trust.</p></div>
       <div class="tile"><span class="k">Content</span><b>Amount per vial</b><p>Some reports also measure how much peptide is actually in the vial, so you can compare it with the amount on the label.</p></div>
-      <div class="tile"><span class="k">Appearance</span><b>Form and color</b><p>Lyophilized (freeze-dried) peptides are normally a white or off-white powder or cake. The COA usually notes this.</p></div>
+      <div class="tile"><span class="k">Appearance</span><b>Form and color</b><p>Lyophilized peptides are normally a white or off-white powder or cake. The COA usually notes this.</p></div>
     </div>
     <div class="callout"><p><b>COAs are available upon request.</b> Email your order number or the product and dose you’re looking at, and I’ll send what’s available for that batch.</p><a class="btn" href="mailto:novrixlabs@gmail.com?subject=COA%20request">Request a COA</a></div>
   </section>
 
   <section id="storage">
-    <div class="sh"><div class="ey">02 · Lab practice</div><h2>Storage &amp; handling</h2><p>General lab guidance for synthetic peptides, from published handling guides. Every vial ships as a powder.</p></div>
+    <div class="sh"><div class="ey">06 · Lab practice</div><h2>Storage &amp; handling</h2><p>General lab guidance for synthetic peptides, from published handling guides.</p></div>
     <div class="grid">
       <div class="tile"><span class="k">Powder</span><b>Keep sealed vials cold</b><p>Freeze-dried peptides keep best cold, dry and sealed. Lab guides recommend a freezer (−20 °C or colder) for longer storage.</p></div>
       <div class="tile"><span class="k">Opening</span><b>Let it warm up first</b><p>Let a cold vial reach room temperature before opening it, so moisture from the air doesn’t condense inside.</p></div>
@@ -114,90 +217,108 @@ section{margin-top:60px;scroll-margin-top:16px}
       <div class="tile"><span class="k">Freeze–thaw</span><b>Avoid repeated cycles</b><p>Each freeze–thaw cycle can degrade a peptide. Splitting a solution into single-use portions avoids thawing the same vial over and over.</p></div>
       <div class="tile"><span class="k">Labels</span><b>Track every vial</b><p>Note the product, lot number and the date a vial was opened or mixed, so results can be traced back to a batch.</p></div>
     </div>
-    <ul class="src" style="border-top:0;margin-top:12px">
-      <li>Sources: <a href="https://b2b.sigmaaldrich.com/FR/en/technical-documents/technical-article/research-and-disease-areas/cell-and-developmental-biology-research/handling-and-storage" target="_blank" rel="noopener">Sigma-Aldrich, Handling and Storage of Peptides</a> · <a href="https://www.jpt.com/blog/store-peptides/" target="_blank" rel="noopener">JPT Peptide Technologies, How to Store Peptides</a></li>
-    </ul>
+    <ul class="src" style="border-top:0;margin-top:12px"><li>Sources: <a href="https://b2b.sigmaaldrich.com/FR/en/technical-documents/technical-article/research-and-disease-areas/cell-and-developmental-biology-research/handling-and-storage" target="_blank" rel="noopener">Sigma-Aldrich, Handling and Storage of Peptides</a> · <a href="https://www.jpt.com/blog/store-peptides/" target="_blank" rel="noopener">JPT Peptide Technologies, How to Store Peptides</a></li></ul>
   </section>
 
-  <section id="studies">
-    <div class="sh"><div class="ey">03 · Literature</div><h2>Published research</h2><p>What has actually been studied, with links to the original papers and trial records. Evidence ranges from FDA-approved drugs to early animal work, so each card is labeled honestly.</p></div>
-    <div class="legend"><span class="tag t-appr">Approved drug</span><span class="tag t-human">Human trials</span><span class="tag t-early">Early / animal research</span></div>
-    <div class="cards">
+  <section id="glossary">
+    <div class="sh"><div class="ey">07 · Words</div><h2>Glossary</h2><p>The jargon, decoded. Tap a term.</p></div>
+    <div class="gls" id="gls"></div>
+  </section>
 
-      <article class="rc">
-        <div class="rc-h"><div><b>NVL-R3</b><small>Retatrutide · GIP, GLP-1 and glucagon receptor agonist</small></div><span class="tag t-human">Human trials</span></div>
-        <p>A 48-week phase 2 trial in 338 adults with obesity, published in the New England Journal of Medicine, reported mean weight reductions of up to 24.2%. In May 2026, Lilly reported topline results from its first phase 3 trial, TRIUMPH-1. As of that report, retatrutide was still an investigational drug.</p>
-        <ul class="src">
-          <li><a href="https://doi.org/10.1056/NEJMoa2301972" target="_blank" rel="noopener">Jastreboff et al., Triple–Hormone-Receptor Agonist Retatrutide for Obesity, NEJM 2023</a></li>
-          <li><a href="https://clinicaltrials.gov/study/NCT05929066" target="_blank" rel="noopener">TRIUMPH-1 trial record, NCT05929066</a> <span>· topline May 2026</span></li>
-        </ul>
-      </article>
-
-      <article class="rc">
-        <div class="rc-h"><div><b>NVL-T2</b><small>Tirzepatide · GIP and GLP-1 receptor agonist</small></div><span class="tag t-appr">Approved drug</span></div>
-        <p>The SURMOUNT-1 trial followed 2,539 adults with obesity for 72 weeks and reported mean weight reductions of up to 20.9% at the highest dose. The same compound is FDA-approved as Mounjaro and Zepbound.</p>
-        <ul class="src">
-          <li><a href="https://doi.org/10.1056/NEJMoa2206038" target="_blank" rel="noopener">Jastreboff et al., Tirzepatide Once Weekly for the Treatment of Obesity, NEJM 2022</a></li>
-          <li><a href="https://clinicaltrials.gov/study/NCT04184622" target="_blank" rel="noopener">SURMOUNT-1 trial record, NCT04184622</a></li>
-        </ul>
-      </article>
-
-      <article class="rc">
-        <div class="rc-h"><div><b>Tesamorelin</b><small>Growth hormone–releasing hormone (GHRH) analog</small></div><span class="tag t-appr">Approved drug</span></div>
-        <p>A 26-week randomized trial of 412 adults with HIV-associated abdominal fat reported about a 15% reduction in visceral (deep belly) fat versus placebo. Tesamorelin is FDA-approved as Egrifta for that condition.</p>
-        <ul class="src">
-          <li><a href="https://doi.org/10.1056/NEJMoa072375" target="_blank" rel="noopener">Falutz et al., Metabolic Effects of a Growth Hormone–Releasing Factor in Patients with HIV, NEJM 2007</a></li>
-        </ul>
-      </article>
-
-      <article class="rc">
-        <div class="rc-h"><div><b>SS-31</b><small>Elamipretide · mitochondria-targeting peptide</small></div><span class="tag t-appr">Approved drug</span></div>
-        <p>In September 2025, the FDA granted elamipretide (Forzinity) accelerated approval as the first treatment for Barth syndrome, a rare mitochondrial disease. It acts on the inner mitochondrial membrane.</p>
-        <ul class="src">
-          <li><a href="https://www.healthday.com/healthpro-news/cardiovascular-diseases/fda-grants-accelerated-approval-for-first-treatment-for-barth-syndrome" target="_blank" rel="noopener">HealthDay, FDA grants accelerated approval for first treatment for Barth syndrome, 2025</a></li>
-        </ul>
-      </article>
-
-      <article class="rc">
-        <div class="rc-h"><div><b>MOTS-c</b><small>Mitochondria-derived peptide</small></div><span class="tag t-early">Early / animal</span></div>
-        <p>The 2015 paper that described MOTS-c found that, in mice, it improved insulin sensitivity and prevented diet-induced obesity. Human research is still early.</p>
-        <ul class="src">
-          <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4350682/" target="_blank" rel="noopener">Lee et al., The mitochondrial-derived peptide MOTS-c promotes metabolic homeostasis, Cell Metabolism 2015</a></li>
-        </ul>
-      </article>
-
-      <article class="rc">
-        <div class="rc-h"><div><b>Ipamorelin</b><small>Selective growth hormone secretagogue</small></div><span class="tag t-early">Early / animal</span></div>
-        <p>First described in 1998 as a growth hormone secretagogue that releases growth hormone selectively, without the rise in ACTH and cortisol seen with earlier compounds in animal studies.</p>
-        <ul class="src">
-          <li><a href="https://pubmed.ncbi.nlm.nih.gov/9849822/" target="_blank" rel="noopener">Raun et al., Ipamorelin, the first selective growth hormone secretagogue, Eur J Endocrinol 1998</a></li>
-        </ul>
-      </article>
-
-      <article class="rc">
-        <div class="rc-h"><div><b>BPC-157</b><small>Synthetic pentadecapeptide</small></div><span class="tag t-early">Early / animal</span></div>
-        <p>A 2025 systematic review found the evidence is almost entirely from animal studies of tendon, ligament, muscle and bone healing. The only human study it found was small, with 12 patients, and the authors note that human safety is still unknown.</p>
-        <ul class="src">
-          <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12313605/" target="_blank" rel="noopener">Vasireddi et al., Emerging Use of BPC-157 in Orthopaedic Sports Medicine: A Systematic Review, HSS Journal 2025</a></li>
-        </ul>
-      </article>
-
-      <article class="rc">
-        <div class="rc-h"><div><b>GHK-Cu</b><small>Copper-binding tripeptide</small></div><span class="tag t-early">Early / lab &amp; skin</span></div>
-        <p>A naturally occurring peptide studied in wound-healing and skin research. A 2018 review summarizes lab data showing it influences the activity of many genes involved in tissue repair.</p>
-        <ul class="src">
-          <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6073405/" target="_blank" rel="noopener">Pickart &amp; Margolina, Regenerative and Protective Actions of the GHK-Cu Peptide, Int J Mol Sci 2018</a></li>
-        </ul>
-      </article>
-
-    </div>
-    <a class="back" href="https://novrixlabs.shop/#shop">Back to the menu</a>
+  <section id="quiz">
+    <div class="sh"><div class="ey">08 · Test yourself</div><h2>Peptide quiz</h2><p>Six questions, all answered somewhere on this page.</p></div>
+    <div class="quiz" id="qz" aria-live="polite"></div>
+    <a class="btn back" href="https://novrixlabs.shop/#shop">Back to the menu</a>
   </section>
 
   <div class="fine">
-    <p><b>For research use only.</b> These summaries describe published studies and trial records about each compound. They are not claims about Novrix Labs products, which are sold strictly for in-vitro laboratory research and are not drugs, supplements, foods or cosmetics. Clinical results come from pharmaceutical-grade products tested under trial conditions. Nothing here is medical advice or a guide to human use.</p>
+    <p><b>For research use only.</b> These summaries describe published studies, trial records and regulatory decisions about each compound. They are not claims about Novrix Labs products, which are sold strictly for in-vitro laboratory research and are not drugs, supplements, foods or cosmetics. Clinical results come from pharmaceutical-grade products tested under trial conditions. Nothing here is medical advice or a guide to human use.</p>
     <p>Questions? <a href="mailto:novrixlabs@gmail.com">novrixlabs@gmail.com</a> · <a href="https://discord.gg/XP9dz3jse" target="_blank" rel="noopener">Novrix Discord</a> · <a href="https://novrixlabs.shop/">novrixlabs.shop</a></p>
   </div>
 </div>
+
+<script>
+const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+const lk = (href, text) => { const a = el("a", null, text); a.href = href; a.target = "_blank"; a.rel = "noopener"; return a; };
+
+(() => { const box = document.getElementById("chain"), aa = [["K", "#9b4dff"], ["P", "#5d5dff"], ["V", "#2f8cff"]];
+  aa.forEach(([l, c], i) => { if (i) box.append(el("span", "bond")); const s = el("span", "aa", l); s.style.background = "radial-gradient(circle at 35% 30%," + c + ",rgba(0,0,0,.6))"; box.append(s); }); })();
+
+const FACTS = [
+  ["🦎", "A lizard inspired a whole drug class", "The first GLP-1 drug, exenatide, came from exendin-4, a hormone found in Gila monster venom. It lasts far longer in the body than the human version.", "https://www.research.va.gov/research_in_action/Diabetes-drug-from-Gila-monster-venom.cfm", "US Dept. of Veterans Affairs"],
+  ["🍫", "Named after a chocolate", "The KiSS1 gene, which makes kisspeptin, was discovered in 1996 in Hershey, Pennsylvania, and named after Hershey’s Kisses.", "https://www.frontiersin.org/journals/endocrinology/articles/10.3389/fendo.2018.00437/full", "Frontiers in Endocrinology, 2018"],
+  ["🧬", "A peptide hiding in your mitochondria", "MOTS-c is coded by mitochondrial DNA, the small separate genome inside your cells’ power plants, rather than by the DNA in the nucleus.", "https://doi.org/10.1016/j.cmet.2015.02.009", "Lee et al., Cell Metabolism 2015"],
+  ["📉", "GHK fades with age", "Blood levels of GHK drop from about 200 ng/mL at age 20 to about 80 ng/mL by age 60.", "https://www.mdpi.com/1422-0067/19/7/1987", "Pickart & Margolina, IJMS 2018"],
+  ["🐇", "Discovered in sleeping rabbits", "DSIP, delta sleep-inducing peptide, was characterized in 1977 from the blood of rabbits in deep sleep.", "https://pubmed.ncbi.nlm.nih.gov/265572/", "Schoenenberger & Monnier, PNAS 1977"],
+  ["☀️", "A tan that started as cancer research", "The melanotan peptides were developed at the University of Arizona to tan skin before sun exposure, as a skin-cancer defense. One became an approved drug for a rare light-sensitivity disorder.", "https://cancercenter.arizona.edu/news/2014/10/ua-discovered-drug-skin-disease-approved-patients-europe", "University of Arizona Cancer Center"],
+  ["🏆", "Two Nobel Prizes for peptides", "Making the first peptide hormone in a lab won the 1955 Nobel Prize. Inventing the bead method used to build peptides won another in 1984.", "https://www.nobelprize.org/prizes/chemistry/1984/summary/", "NobelPrize.org"],
+  ["✂️", "TB-500 is a tiny slice", "TB-500 isn’t the whole thymosin beta-4 protein. It’s a 7-amino-acid piece of it, the part tied to cell migration.", "https://doi.org/10.1002/dta.1402", "Esposito et al., Drug Testing and Analysis 2012"],
+  ["🛡️", "Your body’s own tripeptide", "Glutathione is just three amino acids long, and it’s the main antioxidant working inside your cells.", "https://doi.org/10.1093/jn/134.3.489", "Wu et al., Journal of Nutrition 2004"]
+];
+(() => { const box = document.getElementById("flips");
+  for (const [em, t, back, url, src] of FACTS) { const b = el("div", "flip"); b.tabIndex = 0; b.setAttribute("role", "button"); b.setAttribute("aria-label", t + ". Tap to reveal."); const fi = el("span", "fi"), ff = el("span", "ff"), fb = el("span", "fb");
+    ff.append(el("span", "em", em), el("b", null, t), el("small", null, "Tap to flip")); fb.append(el("span", null, back)); const a = lk(url, "Source: " + src); a.addEventListener("click", (e) => e.stopPropagation()); fb.append(a);
+    fi.append(ff, fb); b.append(fi); const tg = () => b.classList.toggle("on"); b.addEventListener("click", tg); b.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); tg(); } }); box.append(b); } })();
+
+const TAGS = {appr: "Approved drug", abroad: "Approved outside the US", human: "Human trials", early: "Early / animal / lab", nat: "Made by the body"};
+const R = [
+  ["NVL-R3", "Retatrutide · GIP, GLP-1 and glucagon triple agonist", "human", "A 48-week phase 2 trial in 338 adults with obesity (NEJM, 2023) reported average weight reductions of up to 24.2%. In May 2026, Lilly reported topline results from its first phase 3 trial, TRIUMPH-1: up to 25% at 80 weeks, versus 3.9% on placebo.", "The first “triple” agonist to reach phase 3: it targets three hormone receptors at once.", [["https://doi.org/10.1056/NEJMoa2301972", "Jastreboff et al., NEJM 2023"], ["https://clinicaltrials.gov/study/NCT05929066", "TRIUMPH-1 trial record"]]],
+  ["NVL-T2", "Tirzepatide · GIP and GLP-1 dual agonist", "appr", "SURMOUNT-1 followed 2,539 adults with obesity for 72 weeks and reported average weight reductions of up to 20.9% at the highest dose. The compound is FDA-approved as Mounjaro (2022) and Zepbound (2023).", "The first approved drug to activate both the GIP and GLP-1 receptors.", [["https://doi.org/10.1056/NEJMoa2206038", "Jastreboff et al., NEJM 2022"], ["https://clinicaltrials.gov/study/NCT04184622", "SURMOUNT-1 trial record"]]],
+  ["Eloralintide", "Selective amylin receptor agonist", "human", "In a 48-week phase 2 trial of 263 adults reported in November 2025, weight loss reached up to 20.1%, versus 0.4% on placebo. Lilly planned to start phase 3 by the end of 2025.", "Amylin is released alongside insulin and works on fullness through a different pathway than GLP-1.", [["https://investor.lilly.com/news-releases/news-release-details/lillys-selective-amylin-agonist-eloralintide-demonstrated", "Eli Lilly, Nov 2025"]]],
+  ["5-Amino-1MQ", "Small-molecule NNMT inhibitor (not a peptide)", "early", "In obese mice on a high-fat diet, this NNMT inhibitor lowered body weight, fat mass, fat-cell size and cholesterol without changing how much the mice ate.", null, [["https://researchexperts.utmb.edu/en/publications/selective-and-membrane-permeable-small-molecule-inhibitors-of-nic/", "Neelakantan et al., Biochemical Pharmacology 2018"]]],
+  ["Tesamorelin", "Growth hormone–releasing hormone (GHRH) analog", "appr", "A 26-week randomized trial in 412 adults with HIV-associated abdominal fat reported about a 15% reduction in visceral (deep belly) fat. It’s FDA-approved as Egrifta for that condition.", null, [["https://doi.org/10.1056/NEJMoa072375", "Falutz et al., NEJM 2007"]]],
+  ["CJC-1295 + Ipamorelin", "GHRH analog + selective GH secretagogue", "human", "The main human CJC-1295 study used the long-acting version with DAC, not the no-DAC form in this blend: one dose raised growth hormone 2–10 fold for 6+ days. Ipamorelin was described in 1998 as releasing growth hormone without the cortisol rise seen with older compounds, in animal studies.", "The two halves trigger growth hormone release through two different receptors.", [["https://doi.org/10.1210/jc.2005-1536", "Teichman et al., JCEM 2006 (CJC-1295 with DAC)"], ["https://pubmed.ncbi.nlm.nih.gov/9849822/", "Raun et al., Eur J Endocrinol 1998 (Ipamorelin)"]]],
+  ["Somatropin (191AA)", "Recombinant human growth hormone", "appr", "The first lab-made growth hormone was approved in 1985. Recombinant somatropin, identical to the 191-amino-acid human hormone, is FDA-approved for growth hormone deficiency and several other conditions.", "Before 1985, growth hormone came from human pituitary glands.", [["https://gene.com/media/news-features/25th-anniversary-of-first-product-approval", "Genentech, first approval"], ["https://www.accessdata.fda.gov/drugsatfda_docs/label/2023/019640s108lbl.pdf", "FDA label, Humatrope"]]],
+  ["IGF-1 LR3", "Long-acting IGF-1 analog", "early", "A modified IGF-1 with a 13-amino-acid extension and one swapped amino acid, which makes it over 1,000 times less likely to be bound by IGF-binding proteins. It’s a standard cell-culture reagent. The approved IGF-1 drug is a different molecule, mecasermin.", null, [["https://repligen.com/products/cell-culture-supplements/long-r3-igf-i", "Repligen, LONG R3 IGF-I"], ["https://www.accessdata.fda.gov/drugsatfda_docs/label/2025/021839s033lbl.pdf", "FDA label, mecasermin"]]],
+  ["SS-31", "Elamipretide · mitochondria-targeting peptide", "appr", "In September 2025, the FDA granted elamipretide (Forzinity) accelerated approval as the first treatment for Barth syndrome, a rare mitochondrial disease.", "It works on the inner membrane of mitochondria.", [["https://www.healthday.com/healthpro-news/cardiovascular-diseases/fda-grants-accelerated-approval-for-first-treatment-for-barth-syndrome", "HealthDay, Sept 2025"]]],
+  ["MOTS-c", "Mitochondria-derived peptide", "early", "The 2015 discovery paper found MOTS-c prevented diet-induced obesity and insulin resistance in mice. Human research is still early, and it has been on the World Anti-Doping Agency’s prohibited list since 2024.", "Coded by mitochondrial DNA, not the cell’s main genome.", [["https://doi.org/10.1016/j.cmet.2015.02.009", "Lee et al., Cell Metabolism 2015"]]],
+  ["NAD+", "Coenzyme found in every cell (not a peptide)", "nat", "NAD+ levels decline with age and in some age-related diseases. Trials of NAD+ precursors are underway, but results so far are limited.", null, [["https://perspectivesinmedicine.cshlp.org/content/14/1/a041193", "Roles of NAD+ in Health and Aging, Cold Spring Harbor Perspectives"]]],
+  ["Glutathione", "Tripeptide antioxidant", "nat", "Made from glutamate, cysteine and glycine, glutathione is the main antioxidant inside cells.", null, [["https://doi.org/10.1093/jn/134.3.489", "Wu et al., Journal of Nutrition 2004"]]],
+  ["Thymosin Alpha-1", "Thymalfasin · thymus peptide", "abroad", "Approved as Zadaxin in dozens of countries, first in China for hepatitis B, and studied as an immune modulator. It is not FDA-approved.", null, [["https://autm.net/about-tech-transfer/better-world-project/bwp-stories/zadaxin", "AUTM Better World, Zadaxin"]]],
+  ["BPC-157", "Synthetic 15-amino-acid peptide", "early", "Its sequence comes from a protein found in human gastric juice. A 2025 systematic review found the evidence is almost entirely from animal studies of tendon, ligament, muscle and bone. The only human study was small (12 patients), and human safety is still unknown.", null, [["https://pmc.ncbi.nlm.nih.gov/articles/PMC12313605/", "Vasireddi et al., HSS Journal 2025"]]],
+  ["TB-500", "Fragment of thymosin beta-4", "early", "The 7-amino-acid piece of thymosin beta-4 linked to cell migration. Research is in lab and animal models, with no human trials, and it’s prohibited in sport by WADA.", null, [["https://doi.org/10.1002/dta.1402", "Esposito et al., Drug Testing and Analysis 2012"]]],
+  ["KPV", "Lys-Pro-Val · alpha-MSH fragment", "early", "The last three amino acids of the hormone alpha-MSH. In mouse colitis models it was absorbed through a gut transporter (PepT1) and reduced inflammation.", null, [["https://pmc.ncbi.nlm.nih.gov/articles/PMC2431115", "Dalmasso et al., Gastroenterology 2008"]]],
+  ["GHK-Cu", "Copper-binding tripeptide", "nat", "Found naturally in human plasma, where levels fall with age. A 2018 review summarizes lab and skin research showing it influences many genes involved in tissue repair.", "Discovered by Loren Pickart in 1973.", [["https://www.mdpi.com/1422-0067/19/7/1987", "Pickart & Margolina, IJMS 2018"]]],
+  ["ARA-290", "Cibinetide · derived from erythropoietin", "human", "In a 28-day phase 2b trial of 64 people with sarcoidosis-related small-fiber neuropathy, small nerve fibers in the cornea increased. The pain improvement wasn’t statistically significant.", null, [["https://doi.org/10.1167/iovs.16-21291", "Culver et al., IOVS 2017"]]],
+  ["Semax & Selank", "Russian-developed peptides", "abroad", "Both were developed in Moscow and are used as prescription drugs in Russia, not in the US. Human studies, such as Selank in anxiety, are small and mostly published in Russian.", null, [["https://pubmed.ncbi.nlm.nih.gov/18454096/", "Zozulia et al., 2008 (Selank)"]]],
+  ["Kisspeptin-10", "Fragment of kisspeptin", "human", "In small human studies, kisspeptin-10 was a potent trigger of LH, a key reproductive hormone, and increased how often LH pulses in men.", "The gene was named after Hershey’s Kisses.", [["https://www.research.ed.ac.uk/en/publications/kisspeptin-10-is-a-potent-stimulator-of-lh-and-increases-pulse-fr/", "George et al., JCEM 2011"]]],
+  ["PT-141", "Bremelanotide · melanocortin agonist", "appr", "FDA-approved as Vyleesi in June 2019 for low sexual desire in premenopausal women. It’s closely related to melanotan II.", null, [["https://www.healio.com/news/endocrinology/20190621/fda-approves-vyleesi-for-women-with-low-sexual-desire", "Healio, June 2019"]]],
+  ["Melanotan 2", "Synthetic alpha-MSH analog", "early", "Developed in the melanotan research program at the University of Arizona. It is not approved anywhere, and the FDA moved against unapproved sales in 2007.", "Its cousin, Melanotan I, became an approved drug for a rare light-sensitivity disorder.", [["https://www.healthday.com/healthpro-news/conditions/fda-halts-sale-of-injectable-tanning-product-608008.html", "HealthDay, FDA action 2007"], ["https://cancercenter.arizona.edu/news/2014/10/ua-discovered-drug-skin-disease-approved-patients-europe", "University of Arizona Cancer Center"]]],
+  ["HCG", "Human chorionic gonadotropin", "appr", "FDA-approved for specific fertility and hormone conditions. Its label states it has not been shown effective for weight loss.", "A 1972 NIH test for hCG became the basis of modern pregnancy tests.", [["https://history.nih.gov/display/history/Pregnancy+Test+Timeline", "NIH Office of History"], ["https://www.rxlist.com/novarel-drug.htm", "Novarel prescribing information"]]],
+  ["Cartalax & Testagen", "Khavinson “bioregulator” peptides", "early", "Short peptides from Vladimir Khavinson’s research group. The group’s own 2021 review describes mostly cell and animal work, with no randomized human trials of these two.", null, [["https://www.mdpi.com/1420-3049/26/22/7053", "Khavinson et al., Molecules 2021"]]]
+];
+(() => { const box = document.getElementById("cards"), tools = document.getElementById("tools"), q = document.getElementById("rq"), none = document.getElementById("none"); let f = "all";
+  const chips = [["all", "All"], ["appr", "Approved"], ["abroad", "Approved abroad"], ["human", "Human trials"], ["early", "Early"], ["nat", "Made by the body"]];
+  for (const [k, t] of chips) { const b = el("button", "chip", t); b.type = "button"; b.dataset.f = k; b.setAttribute("aria-pressed", String(k === f)); b.addEventListener("click", () => { f = k; tools.querySelectorAll(".chip").forEach((x) => x.setAttribute("aria-pressed", String(x.dataset.f === f))); draw(); }); tools.insertBefore(b, q); }
+  let all = false; const more = document.getElementById("more"); document.getElementById("more-b").addEventListener("click", () => { all = true; draw(); });
+  const draw = () => { box.replaceChildren(); const s = q.value.trim().toLowerCase(); let n = 0, cap = !all && f === "all" && !s ? 8 : 1e9, hid = 0;
+    for (const [name, sub, tag, sum, fun, srcs] of R) {
+      if (f !== "all" && tag !== f) continue; if (s && !(name + " " + sub + " " + sum).toLowerCase().includes(s)) continue; n++; if (n > cap) { hid++; continue; }
+      const c = el("article", "rc"), h = el("div", "rc-h"), t = el("div"); t.append(el("b", null, name), el("small", null, sub)); h.append(t, el("span", "tag t-" + tag, TAGS[tag])); c.append(h, el("p", null, sum));
+      if (fun) c.append(el("div", "fun", "✨ " + fun));
+      const ul = el("ul", "src"); for (const [u, l] of srcs) { const li = el("li"); li.append(lk(u, l)); ul.append(li); } c.append(ul); box.append(c); }
+    none.hidden = n > 0; more.hidden = !hid; document.getElementById("more-b").textContent = "Show all " + n + " compounds"; };
+  q.addEventListener("input", draw); draw(); })();
+
+const GL = [["Amino acid", "One of the 20 building blocks that link together to make peptides and proteins."], ["Peptide", "A short chain of amino acids, roughly 2 to 50 long. Longer chains are usually called proteins."], ["Receptor", "A protein on or in a cell that a molecule binds to, like a lock for a key, to trigger a response."], ["Agonist", "A molecule that binds a receptor and switches it on. Dual and triple agonists hit two or three receptors."], ["Analog", "A lab-made version of a natural molecule, tweaked to last longer or work more strongly."], ["Secretagogue", "Something that prompts a gland to release a hormone, like ipamorelin prompting growth hormone release."], ["Half-life", "How long it takes for half of a molecule to be cleared. Many natural peptides last only minutes."], ["Lyophilized", "Freeze-dried. Water is removed under vacuum, leaving a stable powder or cake."], ["HPLC", "High-performance liquid chromatography: separates a sample’s parts to measure purity."], ["Mass spectrometry", "Weighs molecules very precisely to confirm a compound’s identity."], ["In vitro / in vivo", "In vitro means in a dish or test tube. In vivo means in a living organism."], ["Phase 1, 2, 3", "The stages of clinical trials: safety in a small group, then effectiveness in more people, then large confirmatory trials."], ["Topline results", "A company’s first summary of a trial’s main results, released before the full peer-reviewed paper."], ["Peer review", "When independent experts check a study before a journal publishes it."]];
+(() => { const box = document.getElementById("gls"); for (const [t, d] of GL) { const de = el("details", "gl"); de.append(el("summary", null, t), el("p", null, d)); box.append(de); } })();
+
+const QZ = [
+  ["Which animal inspired the first GLP-1 drug?", ["Komodo dragon", "Gila monster", "Cone snail", "Poison dart frog"], 1, "Exenatide came from exendin-4 in Gila monster venom, approved in 2005."],
+  ["Kisspeptin’s gene was named after…", ["A first kiss", "Hershey’s Kisses", "The band KISS", "A scientist named Kiss"], 1, "It was discovered in Hershey, Pennsylvania, in 1996."],
+  ["How many amino acids are in glutathione?", ["3", "9", "15", "191"], 0, "Just three: glutamate, cysteine and glycine."],
+  ["Why do peptides ship as a powder?", ["It’s cheaper to label", "They’re more stable freeze-dried", "Powder weighs more", "The post office requires it"], 1, "Peptides break down in water, so they’re lyophilized for storage and shipping."],
+  ["What does HPLC on a COA tell you?", ["Shipping date", "Purity", "Price", "Color"], 1, "HPLC measures purity. Mass spec confirms identity."],
+  ["Where is MOTS-c encoded?", ["Mitochondrial DNA", "Skin cells", "Gut bacteria", "The thymus"], 0, "It’s coded in mitochondrial DNA, not the cell’s main genome."]
+];
+(() => { const box = document.getElementById("qz"); let i = 0, score = 0;
+  const show = (focus) => { box.replaceChildren();
+    if (i >= QZ.length) { const d = el("div", "qdone"); d.append(el("div", "sc", score + "/" + QZ.length), el("p", null, score === QZ.length ? "Perfect score. You could write this page." : score >= 4 ? "Nice work. You know your peptides." : "Good start. Scroll up and try again.")); const b = el("button", "btn", "Play again"); b.type = "button"; b.addEventListener("click", () => { i = 0; score = 0; show(true); }); d.append(b); box.append(d); if (focus) b.focus(); return; }
+    const [qq, opts, ans, why] = QZ[i]; const hd = el("div", "qh"); hd.append(el("span", null, "Question " + (i + 1) + " of " + QZ.length), el("span", null, "Score " + score)); const bar = el("div", "qbar"), fill = el("i"); fill.style.width = (i / QZ.length * 100) + "%"; bar.append(fill);
+    const o = el("div", "qo"), x = el("p", "qx"), nx = el("div", "qn");
+    opts.forEach((t, k) => { const b = el("button", null, t); b.type = "button"; b.addEventListener("click", () => { o.querySelectorAll("button").forEach((y, j) => { y.disabled = true; if (j === ans) y.classList.add("ok"); }); if (k === ans) score++; else b.classList.add("no"); x.textContent = (k === ans ? "✓ Correct. " : "Not quite. ") + why; const n = el("button", "btn", i + 1 < QZ.length ? "Next question" : "See my score"); n.type = "button"; n.addEventListener("click", () => { i++; show(true); }); nx.append(n); n.focus(); }); o.append(b); });
+    box.append(hd, bar, el("p", "qq", qq), o, x, nx); if (focus) o.querySelector("button").focus(); };
+  show(false); })();
+</script>
 </body>
 </html>
