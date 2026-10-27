@@ -522,6 +522,16 @@ html{scroll-behavior:smooth}
   .co-sub{margin-top:2px!important;padding:14px!important}
   .co-warn{margin-top:16px}
 }
+/* phone: each category swipes sideways so the menu isn't one endless scroll */
+@media (max-width:560px){
+  #list:not(.flat) .grid{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:86%;align-items:start;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:16px;margin-inline:-16px;padding:2px 16px 10px;scrollbar-width:none;overscroll-behavior-x:contain}
+  #list:not(.flat) .grid::-webkit-scrollbar{display:none}
+  #list:not(.flat) .card{scroll-snap-align:start}
+  #list:not(.flat) .gh span::after{content:" \00b7  swipe \2192";color:var(--violet)}
+  #list:not(.flat) section.grp{margin-top:22px}
+  #list:not(.flat) .gh{flex-wrap:wrap;row-gap:2px}
+  #list:not(.flat) .gh span{white-space:nowrap}
+}
 /* polish pass */
 
 .hero{padding-block:28px 8px}
@@ -710,7 +720,7 @@ button.pk.nfy.on{background:color-mix(in srgb,var(--soon) 22%,transparent)}
     <div class="tag" id="tag">Performance &amp; Wellness</div>
     <div class="updated">Availability updated Oct 27, 2026</div>
     <p class="lede">Research peptides, shipped fast. COAs available upon request. 35+ compounds across metabolism, recovery, sleep, focus and longevity research.</p>
-    <div class="stats"><div><b>COAs</b><span>available upon request</span></div><div><b>Same-day</b><span>shipping on most orders</span></div><div><b>~2-day</b><span>typical delivery</span></div><div><b>35+</b><span>compounds</span></div></div>
+    <div class="stats"><div><b>Discreet</b><span>plain packaging</span></div><div><b>Same-day</b><span>shipping on most orders</span></div><div><b>~2-day</b><span>typical delivery</span></div><div><b>35+</b><span>compounds</span></div></div>
     <a class="cta" id="cta" hidden>Order now</a>
     <div class="ctas"><a class="cta" href="#shop">Browse the menu</a><a class="ghost rvjump" href="#reviews"><span class="rvj-s" aria-hidden="true">★</span>Reviews</a><a class="ghost" href="https://discord.gg/XP9dz3jse" target="_blank" rel="noopener">Join the Discord</a></div>
   </header>
@@ -724,7 +734,7 @@ button.pk.nfy.on{background:color-mix(in srgb,var(--soon) 22%,transparent)}
     <div class="sh"><span class="ey">Customer favorites</span><h2>Most popular</h2></div>
     <div class="pg"><a class="pp" href="#nvl-r3"><span class="rk">01</span><span class="pc">Weight &amp; metabolism</span><b>NVL-R3</b><span class="pd">Triple-agonist peptide studied for appetite signaling and metabolism.</span><span class="go">View <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a><a class="pp" href="#nvl-t2"><span class="rk">02</span><span class="pc">Weight &amp; metabolism</span><b>NVL-T2</b><span class="pd">Dual-agonist peptide studied for appetite and blood-sugar regulation.</span><span class="go">View <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a><a class="pp" href="#tesamorelin"><span class="rk">03</span><span class="pc">Growth hormone</span><b>Tesamorelin</b><span class="pd">GHRH analog studied for natural GH release and body composition.</span><span class="go">View <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a><a class="pp" href="#cjc-1295-no-dac-and-ipamorelin"><span class="rk">04</span><span class="pc">Recovery &amp; sleep</span><b>CJC-1295 + Ipamorelin</b><span class="pd">The classic GH-releasing combo, studied for sleep and recovery.</span><span class="go">View <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a><a class="pp" href="#wolverine-blend"><span class="rk">05</span><span class="pc">Healing</span><b>Wolverine</b><span class="pd">BPC-157 + TB-500, the classic repair stack for joint and tendon research.</span><span class="go">View <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a><a class="pp" href="#tri-heal-blend"><span class="rk">06</span><span class="pc">Healing</span><b>Tri-Heal</b><span class="pd">Three repair peptides in one vial, studied for tissue and inflammation.</span><span class="go">View <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a><a class="pp" href="#klow"><span class="rk">07</span><span class="pc">Healing &amp; glow</span><b>KLOW</b><span class="pd">Four peptides in one vial: repair, skin and inflammation research.</span><span class="go">View <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a><a class="pp" href="#mots-c"><span class="rk">08</span><span class="pc">Energy</span><b>MOTS-c</b><span class="pd">“Exercise in a bottle.” Studied for metabolism and endurance.</span><span class="go">View <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a><a class="pp" href="#nad-buffered"><span class="rk">09</span><span class="pc">Energy &amp; aging</span><b>NAD+</b><span class="pd">Coenzyme studied for cellular energy and healthy aging.</span><span class="go">View <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a><a class="pp" href="#bpc-157"><span class="rk">10</span><span class="pc">Healing</span><b>BPC-157</b><span class="pd">The most studied repair peptide: tendon, muscle and gut research.</span><span class="go">View <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a><a class="pp" href="#igf-1-lr3"><span class="rk">11</span><span class="pc">Muscle</span><b>IGF-1 LR3</b><span class="pd">Long-acting IGF-1 analog studied for muscle growth and repair.</span><span class="go">View <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a></div>
   </section>
-  <div class="sh" id="shop" style="margin-top:56px"><span class="ey">Live availability</span><h2>The menu</h2><span class="coareq">COAs available upon request</span><div class="vtop" id="vtop"><span class="vtop-l">VIP or referral code?</span></div></div>
+  <div class="sh" id="shop" style="margin-top:56px"><span class="ey">Live availability</span><h2>The menu</h2><div class="vtop" id="vtop"><span class="vtop-l">VIP or referral code?</span></div></div>
   <div class="bar">
     <label class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/></svg><input id="q" type="search" placeholder="Search products, try &quot;reta 20&quot;" aria-label="Search products" autocomplete="off"><kbd aria-hidden="true">/</kbd></label>
     <div class="ahint" id="ahint" aria-live="polite" hidden></div>
@@ -751,7 +761,7 @@ button.pk.nfy.on{background:color-mix(in srgb,var(--soon) 22%,transparent)}
   </section>
   <section class="sec" id="shipping">
     <div class="sh"><span class="ey">The fine print, made simple</span><h2>Shipping &amp; policies</h2></div>
-    <div class="pg2"><div class="po"><b>Processing</b><p>Most orders paid by 4pm Monday to Friday ship the same day. Otherwise, they go out the next ship day. Checkout shows exactly when yours ships.</p></div><div class="po"><b>Shipping</b><p>Ships anywhere in the US and usually arrives in about 2 days. Flat $15 for 2-Day Air, or free local pickup. Promos with free shipping show in the banner up top.</p></div><div class="po"><b>Discreet packaging</b><p>Plain outer packaging with nothing on the outside about what’s inside.</p></div><div class="po"><b>Local pickup</b><p>In South Florida? Choose pickup and a time at checkout, 10 AM to 5 PM. I’ll confirm the spot before then.</p></div><div class="po"><b>Powder form</b><p>Every vial ships as a powder. Add reconstitution solution (bac water) to your order to mix it.</p></div><div class="po po-warn"><b>Record your unboxing</b><p><strong>Make sure you record all package openings.</strong> If there’s a discrepancy in your order and no video, I may not be able to honor it. Lost, damaged or something not right? Email or message me with your order number and your video.</p></div></div>
+    <div class="pg2"><div class="po"><b>Processing</b><p>Most orders paid by 4pm Monday to Friday ship the same day. Otherwise, they go out the next ship day. Checkout shows exactly when yours ships.</p></div><div class="po"><b>Shipping</b><p>Ships anywhere in the US and usually arrives in about 2 days. Flat $15 for 2-Day Air, or free local pickup. Promos with free shipping show in the banner up top.</p></div><div class="po"><b>Discreet packaging</b><p>Plain outer packaging with nothing on the outside about what’s inside.</p></div><div class="po"><b>Local pickup</b><p>In South Florida? Choose pickup and a time at checkout, 10 AM to 5 PM. I’ll confirm the spot before then.</p></div><div class="po"><b>Powder form</b><p>Every vial ships as a powder. Add reconstitution solution (bac water) to your order to mix it.</p></div><div class="po po-warn"><b>Record your unboxing</b><p><strong>Record a video every time you open a package.</strong> If there’s a problem with your order and no video, I may not be able to make it right. Lost, damaged or something not right? Email or message me with your order number and your video.</p></div></div>
   </section>
   <section class="sec" id="bulk">
     <div class="bulk">
@@ -1070,7 +1080,7 @@ function jump() {
   let c = document.getElementById(id);
   if (!c && (q.value || f !== "all")) { q.value = ""; f = "all"; document.querySelectorAll(".chip").forEach((x) => x.setAttribute("aria-pressed", String(x.dataset.f === "all"))); draw(); c = document.getElementById(id); }
   if (!c || !c.classList.contains("card")) return;
-  c.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start"});
+  const sm = !matchMedia("(prefers-reduced-motion: reduce)").matches; if (!(window.__railJump && window.__railJump(c, sm))) c.scrollIntoView({behavior: sm ? "smooth" : "auto", block: "start"});
   c.classList.remove("ping"); void c.offsetWidth; c.classList.add("ping");
 }
 const svgPlus = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>', svgCheck = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg>';
@@ -1127,7 +1137,7 @@ async function vipUnlock(code) {
 function vipOff() { Object.assign(PRICE, NPRICE); VIPON = false; document.documentElement.classList.remove("is-vip"); try { localStorage.removeItem("novrix-vip"); } catch (e) {} }
 const money = (n) => "$" + (Math.round(n * 100) / 100).toFixed(2).replace(/\.00$/, "");
 const saleOn = (() => { if (!SALE || !SALE.ends) return false; const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(SALE.ends); return !!m && today <= Date.UTC(+m[1], m[2] - 1, +m[3]); })();
-if (saleOn) { const b = document.getElementById("sale"); document.getElementById("sale-n").textContent = SALE.name; document.getElementById("sale-t").textContent = SALE.tiers.slice().reverse().map(([n, p]) => p + "% off " + n + "+ item" + (n > 1 ? "s" : "")).join(" · ") + (SALE.freeShip ? " · Free shipping $" + SALE.freeShip + "+" : "") + " · Ends " + new Date(SALE.ends + "T12:00:00").toLocaleDateString("en-US", {month: "short", day: "numeric"}); b.hidden = false; }
+if (saleOn) { const b = document.getElementById("sale"); document.getElementById("sale-n").textContent = SALE.name; document.getElementById("sale-t").textContent = SALE.tiers.slice().reverse().map(([n, p]) => p + "% off " + (n > 1 ? n + "+ items" : "any order")).join(" · ") + (SALE.freeShip ? " · Free shipping $" + SALE.freeShip + "+" : "") + " · Ends " + new Date(SALE.ends + "T12:00:00").toLocaleDateString("en-US", {month: "short", day: "numeric"}); b.hidden = false; }
 const avail = (st) => st === "in" || st === "low";
 const picks = new Map();
 try { for (const k of JSON.parse(localStorage.getItem("novrix-picks") || "[]")) if (k in STATUS && avail(STATUS[k])) picks.set(k, STATUS[k]); } catch (e) {}
@@ -1200,7 +1210,7 @@ document.getElementById("tray-copy").addEventListener("click", (e) => {
 function draw() {
   const s = q.value.trim().toLowerCase(), toks = s.split(/\s+/).map(norm).filter(Boolean), hits = [];
   list.replaceChildren();
-  let shown = 0;
+  let shown = 0; list.classList.toggle("flat", !!toks.length || f !== "all" || !!goal);
   for (const g of getView()) {
     const items = g.items.map((it) => ({...it, doses: it.doses.filter((d) => f === "all" || (f === "in" && (d.s === "in" || d.s === "low")) || (f === "soon" && d.s === "soon") || (f === "coa" && coaList(d).length) || (f === "best" && d.badge) || (f === "new" && fresh(d)))}))
       .filter((it) => it.doses.length && (!toks.length || matches(it, toks, hits)) && (!goal || (GUIDE[norm(it.name)] || {}).c === goal));
@@ -1394,7 +1404,7 @@ draw(); tray();
   const names = ["NVL-R3", "NVL-T2", "Tri-Heal blend", "Wolverine blend", "KLOW", "Tesamorelin"];
   const items = names.map((n) => DATA.flatMap((g) => g.items).find((it) => it.name === n)).filter(Boolean);
   let k = 0; hlb.style.cursor = "pointer"; hlb.tabIndex = 0;
-  const go = () => { const c = document.getElementById(slug(items[k].name)); if (c) c.scrollIntoView({behavior: "smooth", block: "start"}); else location.hash = slug(items[k].name); };
+  const go = () => { const c = document.getElementById(slug(items[k].name)); if (c) { if (!(window.__railJump && window.__railJump(c, true))) c.scrollIntoView({behavior: "smooth", block: "start"}); } else location.hash = slug(items[k].name); };
   hlb.addEventListener("click", go); hlb.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
   const show = () => { const nl = labelEl(items[k]); hlb.replaceChildren(...nl.childNodes); hlb.setAttribute("aria-label", nl.getAttribute("aria-label") + ". Tap to view."); hlb.classList.remove("swap"); void hlb.offsetWidth; hlb.classList.add("swap"); };
   if (!matchMedia("(prefers-reduced-motion: reduce)").matches && items.length > 1) setInterval(() => { if (document.hidden) return; k = (k + 1) % items.length; show(); }, 4200);
@@ -1521,9 +1531,11 @@ setTimeout(jump, 250); addEventListener("hashchange", jump);
 (() => { const listEl = document.getElementById("list"); if (!listEl) return; let tm = 0, auto = false;
   listEl.addEventListener("toggle", (e) => { const d = e.target; if (d.matches && d.matches("details.wd") && !auto && !d.open) d.dataset.shut = "1"; }, true);
   const openCentered = () => { const top = innerHeight * 0.3, bot = innerHeight * 0.7;
-    for (const card of listEl.querySelectorAll(".card")) { const r = card.getBoundingClientRect(); if (r.bottom < top) continue; if (r.top > bot) break;
+    for (const card of listEl.querySelectorAll(".card")) { const r = card.getBoundingClientRect(); if (r.bottom < top) continue; if (r.top > bot) break; if (r.left < -20 || r.right > innerWidth + 20) continue;
       const d = card.querySelector("details.wd"); if (d && !d.open && !d.dataset.shut && r.top < bot && r.bottom > top) { auto = true; d.open = true; setTimeout(() => { auto = false; }, 0); } } };
   addEventListener("scroll", () => { clearTimeout(tm); tm = setTimeout(openCentered, 500); }, {passive: true}); })();
+window.__railJump = (c, smooth) => { const L = document.getElementById("list"); if (!c || !L || L.classList.contains("flat") || !matchMedia("(max-width:560px)").matches) return false; const gr = c.closest(".grid"), sec = c.closest("section.grp"); if (!gr) return false;
+  gr.scrollTo({left: c.getBoundingClientRect().left - gr.getBoundingClientRect().left + gr.scrollLeft - 16, behavior: "auto"}); (sec || c).scrollIntoView({block: "start", behavior: smooth ? "smooth" : "auto"}); return true; };
 </script>
 
 </body></html>
