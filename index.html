@@ -754,7 +754,7 @@ button.pk.nfy.on{background:color-mix(in srgb,var(--soon) 22%,transparent)}
     <div class="sh"><span class="ey">Three steps</span><h2>How ordering works</h2></div>
     <ol class="steps">
       <li><span>1</span><b>Build your cart</b><p>Tap + on anything in the menu and set quantities. Your total, sale included, updates as you go.</p></li>
-      <li><span>2</span><b>Check out</b><p>Hit Checkout, choose 2-Day Air or local pickup, add your info and pay. Shipping orders need your full name, address, email and phone.</p></li>
+      <li><span>2</span><b>Check out</b><p>Hit Checkout, choose 2-Day Air or local pickup, add your info and pay. Every order needs your full name, email and phone, plus your address for shipping.</p></li>
       <li><span>3</span><b>It ships fast</b><p>Most orders paid by 4pm Mon–Fri go out the same day and usually arrive in about 2 days.</p></li>
     </ol>
     <div class="ctas" style="justify-content:flex-start"><a class="cta" href="#shop">Order now</a><button class="ghost st-open" type="button">Where’s my order?</button></div>
@@ -800,7 +800,7 @@ button.pk.nfy.on{background:color-mix(in srgb,var(--soon) 22%,transparent)}
         <div class="cof">
           <label>Full name <small>(first &amp; last)</small><input id="cf-name" autocomplete="name" required></label>
           <label>Phone<input id="cf-phone" type="tel" autocomplete="tel" required></label>
-          <label class="cf-w">Email <small id="cf-email-opt">(optional for pickup)</small><input id="cf-email" type="email" autocomplete="email" inputmode="email"></label>
+          <label class="cf-w">Email <small id="cf-email-opt">(for your order updates)</small><input id="cf-email" type="email" autocomplete="email" inputmode="email" required></label>
           <label class="cf-w" id="cf-addr-w">Shipping address<textarea id="cf-addr" rows="3" autocomplete="street-address" placeholder="Street, city, state, ZIP"></textarea></label>
           <label class="cf-w">Notes <small>(optional)</small><input id="cf-notes"></label>
         </div></div></li>
@@ -1327,7 +1327,7 @@ draw(); tray();
     if (G.vip > 0) { line("Regular price", money(G.reg)); line("VIP pricing", "-" + money(G.vip), "save"); } else line("Subtotal", money(G.sub)); if (G.pct) line(SALE.name + " (" + G.pct + "% off)", "-" + money(G.disc), "save"); if (G.ref) line("Referral " + REFCODE, "-" + money(G.ref), "save");
     line(ful.v === "pickup" ? "Local pickup" : "2-Day Air shipping", G.ship ? money(G.ship) : "Free"); if (ful.v !== "pickup") { const fb = freeShipBar(G.after); if (fb) tot.append(fb); } line("Order total", money(G.grand), "tot"); if (G.vip + G.disc + G.ref > 0) line(VIPON ? "Your VIP + " + (G.pct ? "promo savings" : "savings") : "You save", money(Math.round((G.vip + G.disc + G.ref) * 100) / 100), "save big");
     co.querySelectorAll("[data-ful]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.ful === ful.v)));
-    document.getElementById("cf-addr-w").hidden = ful.v === "pickup"; document.getElementById("cf-email-opt").hidden = ful.v !== "pickup"; document.getElementById("cf-email").required = ful.v !== "pickup";
+    document.getElementById("cf-addr-w").hidden = ful.v === "pickup"; 
     const pu = ful.v === "pickup"; document.getElementById("co-pu").hidden = !pu; if (pu) drawPu(); document.getElementById("co-eta").textContent = pu ? "Pick a time below. Your order is ready once payment is confirmed." : etaTxt();
     drawPay();
   };
@@ -1344,7 +1344,7 @@ draw(); tray();
     const sb = document.getElementById("co-submit"); if (sb.disabled) return;
     const err = document.getElementById("co-err"); err.textContent = "";
     const shipping = ful.v !== "pickup", digits = fv("phone").replace(/\D/g, ""), em = fv("email");
-    const chk = [["name", fv("name").split(/\s+/).filter(Boolean).length >= 2, "your first and last name"], ["phone", digits.length >= 10, "a phone number with area code"], ["email", shipping ? /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em) : (!em || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)), shipping ? "a valid email" : "a valid email (or leave it blank)"], ["pday", shipping || !!puTxt(), "a pickup day and time"], ["addr", !shipping || (fv("addr").length >= 10 && /\b\d{5}(-\d{4})?\b/.test(fv("addr"))), "your full shipping address with ZIP code"]];
+    const chk = [["name", fv("name").split(/\s+/).filter(Boolean).length >= 2, "your first and last name"], ["phone", digits.length >= 10, "a phone number with area code"], ["email", /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em), "a valid email"], ["pday", shipping || !!puTxt(), "a pickup day and time"], ["addr", !shipping || (fv("addr").length >= 10 && /\b\d{5}(-\d{4})?\b/.test(fv("addr"))), "your full shipping address with ZIP code"]];
     for (const [k, ok] of chk) { const i = document.getElementById("cf-" + k); if (ok) i.removeAttribute("aria-invalid"); else i.setAttribute("aria-invalid", "true"); }
     const bad = chk.filter((c) => !c[1]);
     if (bad.length) { err.textContent = "Please add " + bad.map((c) => c[2]).join(", ") + "."; document.getElementById("cf-" + bad[0][0]).focus(); return; }
