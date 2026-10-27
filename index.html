@@ -537,6 +537,24 @@ html{scroll-behavior:smooth}
 .cart{overflow-x:hidden}
 .bacn{flex-wrap:wrap}
 .codeb input{min-width:0}
+/* VIP gold mode: checkout and cart turn gold so VIPs can see their pricing is still on */
+:root{--gold:linear-gradient(100deg,#fff1b8 0%,#ffc94d 45%,#d9982a 100%)}
+.co-vip{display:none}
+.is-vip .co-vip{display:inline-flex;align-items:center;gap:4px;margin-top:6px;font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#1a1200;background:var(--gold);padding:3px 10px;border-radius:99px;box-shadow:0 0 16px rgba(255,201,77,.35)}
+.is-vip .co-in{border-color:rgba(255,201,77,.6);box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px rgba(255,201,77,.15),0 0 40px rgba(255,201,77,.12)}
+.is-vip .co-top h2{background:var(--gold);-webkit-background-clip:text;background-clip:text;color:transparent}
+.is-vip .co-steps>li>span{background:var(--gold);color:#1a1200}
+.is-vip .co-sub,.is-vip .co-steps .cta,.is-vip .tbtn.pri{background:var(--gold);color:#1a1200;box-shadow:0 8px 26px rgba(255,201,77,.3)}
+.is-vip .co-ship button[aria-pressed="true"],.is-vip .co-tabs button[aria-selected="true"]{border-color:#ffc94d;box-shadow:0 0 0 1px #ffc94d;background:rgba(255,201,77,.12)}
+.is-vip .cof input:focus,.is-vip .cof textarea:focus,.is-vip .co-pu select:focus{border-color:#ffc94d}
+.is-vip .vipt,.is-vip .vipp{background:var(--gold);-webkit-background-clip:text;background-clip:text;color:transparent}
+.is-vip #co-tot .tot span:last-child{color:#ffd877}
+.is-vip .tray{border-top-color:rgba(255,201,77,.6);box-shadow:0 -10px 30px rgba(0,0,0,.5),0 -1px 18px rgba(255,201,77,.15)}
+.is-vip .co-done{border-color:rgba(255,201,77,.55);background:rgba(255,201,77,.07)}
+.is-vip .co-done b{color:#ffd877}
+.is-vip .pm-code{border-color:rgba(255,201,77,.6);background:rgba(255,201,77,.08)}
+.is-vip .fsb{color:#ffd877}
+.is-vip .fsb b{background:var(--gold)}
 /* welcome-back reorder */
 .ro{display:flex;align-items:center;gap:12px;margin:14px 0 0;padding:12px 14px;border-radius:16px;border:1px solid rgba(154,107,255,.5);background:radial-gradient(400px 140px at 0% 0%,rgba(154,107,255,.22),transparent 70%),var(--panel);box-shadow:0 10px 30px rgba(110,80,255,.18)}
 .ro-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
@@ -807,7 +825,7 @@ button.pk.nfy.on{background:color-mix(in srgb,var(--soon) 22%,transparent)}
 <nav class="bnav" aria-label="Quick links"><a href="#shop"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Menu</a><a href="#finder"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/></svg>Goals</a><button type="button" id="bn-cart"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.4 11h10.2L20 8H6.2"/><circle cx="9" cy="19.5" r="1.4"/><circle cx="17" cy="19.5" r="1.4"/></svg>Cart<span class="bdg" id="bn-n" hidden>0</span></button><a href="https://discord.gg/XP9dz3jse" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg>Discord</a></nav>
 <div class="co" id="co" hidden role="dialog" aria-modal="true" aria-labelledby="co-h">
   <div class="co-in">
-    <div class="co-top"><div><h2 id="co-h">Checkout</h2><small class="co-no" id="co-no"></small></div><button class="lb-x" id="co-x" type="button" aria-label="Close checkout">✕</button></div>
+    <div class="co-top"><div><h2 id="co-h">Checkout</h2><small class="co-no" id="co-no"></small><span class="co-vip">★ VIP pricing on</span></div><button class="lb-x" id="co-x" type="button" aria-label="Close checkout">✕</button></div>
     <ol class="co-steps">
       <li><span>1</span><div><b>Your order</b><div id="co-sum"></div>
         <div class="co-ship" role="group" aria-label="Delivery"><button type="button" data-ful="ship" aria-pressed="true"><b>2-Day Air</b><span>$15 flat rate</span></button><button type="button" data-ful="pickup" aria-pressed="false"><b>Local pickup</b><span>Free · South Florida</span></button></div>
@@ -828,7 +846,7 @@ button.pk.nfy.on{background:color-mix(in srgb,var(--soon) 22%,transparent)}
         <button class="cta co-sub" id="co-submit" type="button">Submit order</button><p class="co-err" id="co-err" role="alert"></p>
         <div class="co-done" id="co-done" hidden><b>Almost done</b><ol><li>Hit <b>Send</b> on the email that just opened.</li><li>Send your payment above. Put your payment code <b id="co-pc">NVL</b> in the note.</li></ol><p>You’ll get your order number by email within the hour, and your order ships once payment is confirmed.</p><p class="co-alt">Email didn’t open? Copy your order and email it to <b>novrixlabs@gmail.com</b>, or paste it in the <a href="https://discord.gg/XP9dz3jse" target="_blank" rel="noopener">Discord</a>.</p><button class="tbtn" id="co-copy" type="button">Copy order</button><div class="ps" id="co-ps"><button class="cta co-sub ps-go" id="ps-open" type="button">I’ve sent my payment</button><div class="ps-f" id="ps-f" hidden><label>Name on the account you paid from<input id="ps-from" autocomplete="name"></label><p class="ps-h">For Zelle, use the name your bank shows, which may be a spouse or family member.</p><button class="cta co-sub" id="ps-send" type="button">Confirm payment sent</button><p class="co-err" id="ps-err" role="alert"></p></div><div class="ps-ok" id="ps-ok" hidden><b>✓ Thanks, payment noted</b><p>You’ll get a confirmation email as soon as it’s matched, usually within the hour.</p></div></div></div></div></li>
     </ol>
-    <p class="co-warn"><b>Record your unboxing.</b> If there’s a discrepancy in your order and no video, I may not be able to honor it.</p>
+    <p class="co-warn"><b>Record your unboxing.</b> If there’s a problem with your order and no video, I may not be able to make it right.</p>
   </div>
 </div>
 <div class="tray" id="tray" hidden><div class="tray-in"><div class="cart" id="cart" hidden></div><div class="tray-row"><button class="tray-sum" id="tray-toggle" type="button" aria-expanded="false" aria-controls="cart"><b id="tray-n"></b><span id="tray-s"></span></button><button class="tbtn ghost" id="tray-clear" type="button">Clear</button><button class="tbtn" id="tray-share" type="button">Share cart</button><button class="tbtn" id="tray-copy" type="button">Copy list</button><button class="tbtn pri" id="tray-order" type="button">Checkout</button></div></div></div>
@@ -1215,7 +1233,7 @@ function tray() {
     ab.addEventListener("click", () => { picks.set(BAC, STATUS[BAC]); QTY[BAC] = 1; savePicks(); draw(); tray(); });
     nb.append(tx, ab); cartEl.insertBefore(nb, cartEl.firstChild);
   }
-  sm.append(el("p", "cnote", "Hit Checkout to see your total, pay and submit your order. Please record your package opening: without a video we may not be able to honor a discrepancy."));
+  sm.append(el("p", "cnote", "Hit Checkout to see your total, pay and submit your order. Please record a video when you open your package."));
   cartEl.append(sm);
 }
 document.getElementById("tray-clear").addEventListener("click", () => { picks.clear(); savePicks(); draw(); tray(); });
