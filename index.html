@@ -654,6 +654,14 @@ a.st-rate span{font-size:.72rem;color:var(--muted)}
 .ps{margin-top:12px;padding-top:12px;border-top:1px dashed rgba(61,220,151,.35)}
 .ps-f{display:flex;flex-direction:column;gap:8px}.ps-f label{display:flex;flex-direction:column;gap:5px;font-size:.8rem;color:var(--muted);font-weight:600}
 .ps-f input{font:inherit;font-size:16px;color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:9px 11px}.ps-f input:focus{outline:none;border-color:var(--violet)}
+.co-eta{margin:10px 0 0;font-size:.82rem;color:var(--ink);display:flex;gap:8px;align-items:flex-start}
+.co-eta::before{content:"";width:8px;height:8px;border-radius:50%;background:#3ddc97;box-shadow:0 0 0 3px rgba(61,220,151,.18);flex:none;margin-top:5px}
+.co-pu{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.co-pu label{display:flex;flex-direction:column;gap:4px;font-size:.78rem;color:var(--muted);font-weight:600}
+.co-pu select{font:inherit;font-size:16px;color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:9px 11px;width:100%}
+.co-pu select:focus{outline:none;border-color:var(--violet)}
+.co-pu p{grid-column:1/-1;margin:0;font-size:.76rem;color:var(--muted)}
+.co-pu[hidden]{display:none}
 .ps-h{margin:-2px 0 0!important;font-size:.76rem!important;color:var(--muted)!important}
 .ps-ok b{color:var(--in)}.ps-ok p{margin:4px 0 0!important}
 .ps-go{background:linear-gradient(100deg,#18b67a,#2f8cff)!important}
@@ -743,7 +751,7 @@ button.pk.nfy.on{background:color-mix(in srgb,var(--soon) 22%,transparent)}
   </section>
   <section class="sec" id="shipping">
     <div class="sh"><span class="ey">The fine print, made simple</span><h2>Shipping &amp; policies</h2></div>
-    <div class="pg2"><div class="po"><b>Processing</b><p>Most orders placed Monday to Friday before 4pm ship the same day. Otherwise, they go out the next business day.</p></div><div class="po"><b>Shipping</b><p>Ships anywhere in the US and usually arrives in about 2 days. Flat $15 for 2-Day Air, or free local pickup. Promos with free shipping show in the banner up top.</p></div><div class="po"><b>Discreet packaging</b><p>Plain outer packaging with nothing on the outside about what’s inside.</p></div><div class="po"><b>Local pickup</b><p>In South Florida? Choose pickup at checkout and I’ll set up a time and place with you.</p></div><div class="po"><b>Powder form</b><p>Every vial ships as a powder. Add reconstitution solution (bac water) to your order to mix it.</p></div><div class="po po-warn"><b>Record your unboxing</b><p><strong>Make sure you record all package openings.</strong> If there’s a discrepancy in your order and no video, I may not be able to honor it. Lost, damaged or something not right? Email or message me with your order number and your video.</p></div></div>
+    <div class="pg2"><div class="po"><b>Processing</b><p>Most orders paid by 4pm Monday to Friday ship the same day. Otherwise, they go out the next ship day. Checkout shows exactly when yours ships.</p></div><div class="po"><b>Shipping</b><p>Ships anywhere in the US and usually arrives in about 2 days. Flat $15 for 2-Day Air, or free local pickup. Promos with free shipping show in the banner up top.</p></div><div class="po"><b>Discreet packaging</b><p>Plain outer packaging with nothing on the outside about what’s inside.</p></div><div class="po"><b>Local pickup</b><p>In South Florida? Choose pickup at checkout and I’ll set up a time and place with you.</p></div><div class="po"><b>Powder form</b><p>Every vial ships as a powder. Add reconstitution solution (bac water) to your order to mix it.</p></div><div class="po po-warn"><b>Record your unboxing</b><p><strong>Make sure you record all package openings.</strong> If there’s a discrepancy in your order and no video, I may not be able to honor it. Lost, damaged or something not right? Email or message me with your order number and your video.</p></div></div>
   </section>
   <section class="sec" id="bulk">
     <div class="bulk">
@@ -775,6 +783,8 @@ button.pk.nfy.on{background:color-mix(in srgb,var(--soon) 22%,transparent)}
     <ol class="co-steps">
       <li><span>1</span><div><b>Your order</b><div id="co-sum"></div>
         <div class="co-ship" role="group" aria-label="Delivery"><button type="button" data-ful="ship" aria-pressed="true"><b>2-Day Air</b><span>$15 flat rate</span></button><button type="button" data-ful="pickup" aria-pressed="false"><b>Local pickup</b><span>Free · South Florida</span></button></div>
+        <p class="co-eta" id="co-eta"></p>
+        <div class="co-pu" id="co-pu" hidden><label>Pickup day<select id="cf-pday"></select></label><label>Pickup time<select id="cf-ptime"></select></label><p>Pickup hours are 10 AM to 5 PM. You’ll get an email when your order is ready.</p></div>
         <div id="co-tot"></div></div></li>
       <li><span>2</span><div><b>Your info</b>
         <div class="cof">
@@ -785,7 +795,7 @@ button.pk.nfy.on{background:color-mix(in srgb,var(--soon) 22%,transparent)}
           <label class="cf-w">Notes <small>(optional)</small><input id="cf-notes"></label>
         </div></div></li>
       <li id="co-pay-li"><span>3</span><div><b>Pay</b><div class="co-tabs" id="co-tabs" role="tablist" aria-label="Payment method"></div><div id="co-pay"></div>
-        <p class="co-note">Zelle has no fee. Venmo and Cash App add 1%, USDC adds 5%. Put your <b>payment code</b> (shown above) in the Zelle, Venmo or Cash App note so I can match your payment.</p></div></li>
+        <p class="co-note">Zelle has no fee. Venmo and Cash App add 1%, USDC adds 5%. Put your <b>payment code</b> (shown above) in the Zelle, Venmo or Cash App note so I can match your payment. Unpaid orders are released after 72 hours.</p></div></li>
       <li><span id="co-n4">4</span><div><b>Submit your order</b><p>Tap Submit to place your order, then send your payment with your payment code in the note.</p>
         <button class="cta co-sub" id="co-submit" type="button">Submit order</button><p class="co-err" id="co-err" role="alert"></p>
         <div class="co-done" id="co-done" hidden><b>Almost done</b><ol><li>Hit <b>Send</b> on the email that just opened.</li><li>Send your payment above. Put your payment code <b id="co-pc">NVL</b> in the note.</li></ol><p>You’ll get your order number by email within the hour, and your order ships once payment is confirmed.</p><p class="co-alt">Email didn’t open? Copy your order and email it to <b>novrixlabs@gmail.com</b>, or paste it in the <a href="https://discord.gg/XP9dz3jse" target="_blank" rel="noopener">Discord</a>.</p><button class="tbtn" id="co-copy" type="button">Copy order</button><div class="ps" id="co-ps"><button class="cta co-sub ps-go" id="ps-open" type="button">I’ve sent my payment</button><div class="ps-f" id="ps-f" hidden><label>Name on the account you paid from<input id="ps-from" autocomplete="name"></label><p class="ps-h">For Zelle, use the name your bank shows, which may be a spouse or family member.</p><button class="cta co-sub" id="ps-send" type="button">Confirm payment sent</button><p class="co-err" id="ps-err" role="alert"></p></div><div class="ps-ok" id="ps-ok" hidden><b>✓ Thanks, payment noted</b><p>You’ll get a confirmation email as soon as it’s matched, usually within the hour.</p></div></div></div></div></li>
@@ -1267,6 +1277,16 @@ draw(); tray();
   if (PAY.cashapp && PAY.cashapp.handle) methods.push(["cashapp", "Cash App"]);
   if (PAY.crypto && PAY.crypto.length) methods.push(["crypto", "Crypto (USDC)"]);
   let pm = methods.length ? methods[0][0] : ""; const mkCode = () => { const A = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; let c = ""; const r = crypto.getRandomValues(new Uint8Array(4)); for (const x of r) c += A[x % A.length]; return c; }; let PCODE = mkCode(), sent = false, TXV = ""; const NOTE = () => PCODE;
+  const SHIFT0 = Date.UTC(2026, 9, 28), CUT = 16, WIN = [[10, 12], [12, 14], [14, 17]];
+  const etNow = () => { const p = Object.fromEntries(new Intl.DateTimeFormat("en-US", {timeZone: "America/New_York", year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric", hourCycle: "h23"}).formatToParts(new Date()).map((x) => [x.type, x.value])); return {d: Date.UTC(+p.year, +p.month - 1, +p.day), h: +p.hour + (+p.minute) / 60}; };
+  const DAY = 864e5, onShift = (d) => ((Math.round((d - SHIFT0) / DAY) % 3) + 3) % 3 === 0, wd = (d) => new Date(d).getUTCDay(), shipDay = (d) => wd(d) > 0 && wd(d) < 6 && !onShift(d);
+  const dName = (d, t) => d === t ? "today" : d === t + DAY ? "tomorrow" : new Date(d).toLocaleDateString("en-US", {timeZone: "UTC", weekday: "long"});
+  const dLong = (d) => new Date(d).toLocaleDateString("en-US", {timeZone: "UTC", weekday: "short", month: "short", day: "numeric"});
+  const hh = (h) => (h % 12 || 12) + (h < 12 ? " AM" : " PM"), winTxt = (w) => (w[0] < 12) === (w[1] < 12) ? (w[0] % 12 || 12) + "\u2013" + hh(w[1]) : hh(w[0]) + "\u2013" + hh(w[1]);
+  const etaTxt = () => { const n = etNow(); if (shipDay(n.d) && n.h < CUT) return "Pay by 4 PM and it ships today."; let d = n.d + DAY; while (!shipDay(d)) d += DAY; return "Pay now and it ships " + dName(d, n.d) + "."; };
+  const puDays = () => { const n = etNow(), out = []; for (let i = 0; out.length < 6 && i < 14; i++) { const d = n.d + i * DAY; if (onShift(d)) continue; const w = WIN.filter((x) => i > 0 || x[0] >= n.h + 1); if (w.length) out.push([d, w]); } return out; };
+  const drawPu = () => { const pd = document.getElementById("cf-pday"), pt = document.getElementById("cf-ptime"), keepD = pd.value, keepT = pt.value, days = puDays(), t = etNow().d; pd.replaceChildren(); for (const [d] of days) { const o = el("option", null, (d === t ? "Today, " : d === t + DAY ? "Tomorrow, " : "") + dLong(d)); o.value = String(d); pd.append(o); } if (keepD && days.some((x) => String(x[0]) === keepD)) pd.value = keepD; const cur = days.find((x) => String(x[0]) === pd.value); pt.replaceChildren(); for (const w of (cur ? cur[1] : [])) { const o = el("option", null, winTxt(w)); o.value = w.join("-"); pt.append(o); } if (keepT && [...pt.options].some((o) => o.value === keepT)) pt.value = keepT; };
+  const puTxt = () => { const pd = document.getElementById("cf-pday"), pt = document.getElementById("cf-ptime"); if (!pd.value || !pt.value) return ""; return dLong(+pd.value) + ", " + pt.options[pt.selectedIndex].text; };
   const total = () => { const T = totals(), ship = ful.v === "pickup" ? 0 : T.ship; return {...T, ship, grand: Math.round((T.after + ship) * 100) / 100}; };
   const copy = (t, b, label) => { const done = () => { b.textContent = "Copied"; setTimeout(() => b.textContent = label, 1500); }; try { navigator.clipboard.writeText(t).then(done, () => {}); } catch (e) {} };
   const row = (lab, val, btnText, copyVal) => { const r = el("div", "pm-row"), d = el("div"); d.append(el("small", null, lab), el("code", null, val)); r.append(d); if (copyVal != null) { const b = el("button", "tbtn", btnText || "Copy"); b.type = "button"; b.addEventListener("click", () => copy(copyVal, b, btnText || "Copy")); r.append(b); } return r; };
@@ -1298,27 +1318,29 @@ draw(); tray();
     line(ful.v === "pickup" ? "Local pickup" : "2-Day Air shipping", G.ship ? money(G.ship) : "Free"); if (ful.v !== "pickup") { const fb = freeShipBar(G.after); if (fb) tot.append(fb); } line("Order total", money(G.grand), "tot"); if (G.vip + G.disc + G.ref > 0) line(VIPON ? "Your VIP + " + (G.pct ? "promo savings" : "savings") : "You save", money(Math.round((G.vip + G.disc + G.ref) * 100) / 100), "save big");
     co.querySelectorAll("[data-ful]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.ful === ful.v)));
     document.getElementById("cf-addr-w").hidden = ful.v === "pickup"; document.getElementById("cf-email-opt").hidden = ful.v !== "pickup"; document.getElementById("cf-email").required = ful.v !== "pickup";
+    const pu = ful.v === "pickup"; document.getElementById("co-pu").hidden = !pu; if (pu) drawPu(); document.getElementById("co-eta").textContent = pu ? "Pick a time below. Your order is ready once payment is confirmed." : etaTxt();
     drawPay();
   };
   const orderMsg = () => { const G = total(), f = pm === "crypto" ? (PAY.cryptoFee || 0) : ((PAY[pm] || {}).fee || 0), due = Math.round(G.grand * (100 + f)) / 100; return listText() + "\n" + (ful.v === "pickup" ? "Delivery: Local pickup (free)" : "Delivery: 2-Day Air " + (G.ship ? money(G.ship) : "(free)")) + "\nOrder total: " + money(G.grand) + (pm ? "\nPaying with: " + (methods.find((m) => m[0] === pm) || [, ""])[1] + (f ? " (+" + f + "% fee)" : "") + "\nAmount sent: " + money(due) : ""); };
   window.__coRefresh = () => { if (!co.hidden) draw2(); };
   co.querySelectorAll("[data-ful]").forEach((b) => b.addEventListener("click", () => { ful.v = b.dataset.ful; draw2(); }));
+  document.getElementById("cf-pday").addEventListener("change", drawPu);
   const F = ["name", "phone", "email", "addr", "notes"], fv = (k) => document.getElementById("cf-" + k).value.trim();
   try { const saved = JSON.parse(localStorage.getItem("novrix-cust") || "{}"); for (const k of F) if (saved[k] && k !== "notes") document.getElementById("cf-" + k).value = saved[k]; } catch (e) {}
   const fullOrder = () => { const G = total(), f = pm === "crypto" ? (PAY.cryptoFee || 0) : ((PAY[pm] || {}).fee || 0), due = Math.round(G.grand * (100 + f)) / 100;
     const lines = [...picks.keys()].map((k) => "- " + qty(k) + "x " + k + " @ " + money(PRICE[k] || 0) + " = " + money(qty(k) * (PRICE[k] || 0)));
-    return ["NOVRIX ORDER" + (VIPON ? " (VIP code used)" : ""), "", "Name: " + fv("name"), "Phone: " + fv("phone"), "Email: " + (fv("email") || "-"), "Delivery: " + (ful.v === "pickup" ? "Local pickup" : "2-Day Air"), ful.v === "pickup" ? null : "Address: " + fv("addr").replace(/\n+/g, ", "), "Payment: " + (pm ? (methods.find((m) => m[0] === pm) || [, ""])[1] : "-"), "Payment code: " + PCODE, pm === "crypto" && TXV ? "Crypto transaction: " + TXV : null, fv("notes") ? "Notes: " + fv("notes") : null, "", "Items:", ...lines, "", "Subtotal: " + money(G.sub), G.vip ? "VIP savings: -" + money(G.vip) + " (regular " + money(G.reg) + ")" : null, G.pct ? SALE.name + " (" + G.pct + "% off): -" + money(G.disc) : null, G.ref ? "Referral " + REFCODE + ": -" + money(G.ref) : null, "Shipping: " + (G.ship ? money(G.ship) : "Free"), "Order total: " + money(G.grand), f ? "Payment fee (" + f + "%): " + money(due - G.grand) : null, "Amount to send: " + money(due)].filter((x) => x !== null).join("\n"); };
+    return ["NOVRIX ORDER" + (VIPON ? " (VIP code used)" : ""), "", "Name: " + fv("name"), "Phone: " + fv("phone"), "Email: " + (fv("email") || "-"), "Delivery: " + (ful.v === "pickup" ? "Local pickup" : "2-Day Air"), ful.v === "pickup" ? "Pickup: " + puTxt() : null, ful.v === "pickup" ? null : "Address: " + fv("addr").replace(/\n+/g, ", "), "Payment: " + (pm ? (methods.find((m) => m[0] === pm) || [, ""])[1] : "-"), "Payment code: " + PCODE, pm === "crypto" && TXV ? "Crypto transaction: " + TXV : null, fv("notes") ? "Notes: " + fv("notes") : null, "", "Items:", ...lines, "", "Subtotal: " + money(G.sub), G.vip ? "VIP savings: -" + money(G.vip) + " (regular " + money(G.reg) + ")" : null, G.pct ? SALE.name + " (" + G.pct + "% off): -" + money(G.disc) : null, G.ref ? "Referral " + REFCODE + ": -" + money(G.ref) : null, "Shipping: " + (G.ship ? money(G.ship) : "Free"), "Order total: " + money(G.grand), f ? "Payment fee (" + f + "%): " + money(due - G.grand) : null, "Amount to send: " + money(due)].filter((x) => x !== null).join("\n"); };
   document.getElementById("co-submit").addEventListener("click", async () => {
     const sb = document.getElementById("co-submit"); if (sb.disabled) return;
     const err = document.getElementById("co-err"); err.textContent = "";
     const shipping = ful.v !== "pickup", digits = fv("phone").replace(/\D/g, ""), em = fv("email");
-    const chk = [["name", fv("name").split(/\s+/).filter(Boolean).length >= 2, "your first and last name"], ["phone", digits.length >= 10, "a phone number with area code"], ["email", shipping ? /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em) : (!em || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)), shipping ? "a valid email" : "a valid email (or leave it blank)"], ["addr", !shipping || (fv("addr").length >= 10 && /\b\d{5}(-\d{4})?\b/.test(fv("addr"))), "your full shipping address with ZIP code"]];
+    const chk = [["name", fv("name").split(/\s+/).filter(Boolean).length >= 2, "your first and last name"], ["phone", digits.length >= 10, "a phone number with area code"], ["email", shipping ? /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em) : (!em || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)), shipping ? "a valid email" : "a valid email (or leave it blank)"], ["pday", shipping || !!puTxt(), "a pickup day and time"], ["addr", !shipping || (fv("addr").length >= 10 && /\b\d{5}(-\d{4})?\b/.test(fv("addr"))), "your full shipping address with ZIP code"]];
     for (const [k, ok] of chk) { const i = document.getElementById("cf-" + k); if (ok) i.removeAttribute("aria-invalid"); else i.setAttribute("aria-invalid", "true"); }
     const bad = chk.filter((c) => !c[1]);
     if (bad.length) { err.textContent = "Please add " + bad.map((c) => c[2]).join(", ") + "."; document.getElementById("cf-" + bad[0][0]).focus(); return; }
     try { localStorage.setItem("novrix-cust", JSON.stringify(Object.fromEntries(F.map((k) => [k, fv(k)])))); localStorage.setItem("novrix-last", PCODE); } catch (e) {}
     const body = fullOrder(), G = total();
-    try { navigator.clipboard.writeText(body); } catch (e) {}
+    try { navigator.clipboard.writeText(body).catch(() => {}); } catch (e) {}
     const subj = "New Novrix order – " + fv("name") + " – " + money(G.grand) + " – " + PCODE;
     sb.disabled = true; const st0 = sb.textContent; sb.textContent = "Placing your order\u2026";
     const ok = await sendDirect(subj, body, em); sb.disabled = false; sb.textContent = st0;
