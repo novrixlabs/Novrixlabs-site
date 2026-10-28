@@ -610,7 +610,8 @@ section.grp .gh h2::before{content:"";width:18px;height:3px;border-radius:2px;ba
   .fn{padding:24px 20px}
   .fq summary{padding:14px 16px}
 }
-.grid{align-items:start}
+@media (max-width:560px){.grid{align-items:start}}
+@media (min-width:561px){.grid{align-items:stretch}}
 .bs{white-space:nowrap}
 @media (min-width:561px){.pg .pp:nth-child(n+9){display:none}}
 @media (prefers-reduced-motion:no-preference){.wd[open]>:not(summary){animation:wdin .35s ease-out both}@keyframes wdin{from{opacity:0;transform:translateY(-4px)}}}
@@ -1604,7 +1605,7 @@ setTimeout(jump, 250); addEventListener("hashchange", jump);
 
 (() => { const listEl = document.getElementById("list"); if (!listEl) return; let tm = 0, auto = false;
   listEl.addEventListener("toggle", (e) => { const d = e.target; if (d.matches && d.matches("details.wd") && !auto && !d.open) d.dataset.shut = "1"; }, true);
-  const openCentered = () => { const top = innerHeight * 0.3, bot = innerHeight * 0.7;
+  const openCentered = () => { if (!matchMedia("(max-width:560px)").matches) return; const top = innerHeight * 0.3, bot = innerHeight * 0.7;
     for (const card of listEl.querySelectorAll(".card")) { const r = card.getBoundingClientRect(); if (r.bottom < top) continue; if (r.top > bot) break; if (r.left < -20 || r.right > innerWidth + 20) continue;
       const d = card.querySelector("details.wd"); if (d && !d.open && !d.dataset.shut && r.top < bot && r.bottom > top) { auto = true; d.open = true; setTimeout(() => { auto = false; }, 0); } } };
   addEventListener("scroll", () => { clearTimeout(tm); tm = setTimeout(openCentered, 500); }, {passive: true}); })();
