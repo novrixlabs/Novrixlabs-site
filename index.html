@@ -750,6 +750,7 @@ body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 .crc b{font-size:1.6rem;font-weight:700;color:#ffd877;line-height:1.1}
 .crc span{font-weight:600;font-size:.98rem}
 .crc p{margin:4px 0 0;font-size:.86rem;color:#c9c6e4;line-height:1.5}
+.crcheck{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-top:14px}.crcheck .cta{margin-top:0;border:0;font:inherit;font-weight:600;cursor:pointer}.crcheck .crnote{margin:0}
 .crnote{margin:12px 2px 0;font-size:.82rem;color:var(--muted)}.crnote a{color:#c9b3ff}
 .refpop{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:110;width:min(92vw,420px);display:flex;flex-direction:column;gap:2px;text-align:center;padding:12px 16px;border-radius:14px;background:#0d1d16;border:1px solid rgba(61,220,151,.55);box-shadow:0 14px 40px rgba(0,0,0,.55);color:#c9f2dd;font-size:.86rem;transition:opacity .5s ease}.refpop b{color:#3ddc97;font-size:.98rem}.refpop.go{opacity:0}
 .dose .st{min-width:5.4em}
@@ -840,7 +841,7 @@ body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
       <div class="crc"><b>$5</b><span>Leave a review</span><p>Once it’s approved and live on the site.</p></div>
       <div class="crc"><b>$5–$10</b><span>Keep ordering</span><p>$5 on your 3rd order, $10 on your 5th, then $10 every 5th order after.</p></div>
     </div>
-    <p class="crnote">Don’t know your code? It’s in your order emails, or just ask on <a href="https://discord.gg/XP9dz3jse" target="_blank" rel="noopener">Discord</a> or by email.</p>
+    <div class="crcheck"><button class="cta cr-open" type="button">Check my Nov Creds</button><p class="crnote">See your balance and get your referral code by email. Your code is also in your order emails.</p></div>
   </section>
   <section class="sec" id="reviews">
     <div class="sh"><span class="ey">From customers</span><h2>Reviews</h2></div>
@@ -900,7 +901,7 @@ const ORDER_URL = "#shop";
 const SALE = {name: "Spooktober sale", ends: "2026-10-31", tiers: [[10, 20], [5, 15], [1, 10]], freeShip: 200};
 const SHIP = 15, VIP_FREESHIP = 150;
 function freeThr() { const sale = saleOn && SALE.freeShip ? SALE.freeShip : 0; return VIPON ? (sale ? Math.min(sale, VIP_FREESHIP) : VIP_FREESHIP) : sale; }
-const REVIEWS = [{"stars": 5, "name": "C. A.", "text": "I accidentally found Novrix through a forum I wasn't even a part of😂. First of all, the customer service is top notch! I previously used another independent business and won't go back after trying Novrix. Every question I had was answered thoroughly and promptly. I have gained so much more knowledge and I don't feel like just another customer lining pockets. And let's talk about the prices: they can't be beat!! Shipping was super fast and I was informed of everything along the way. I'm loving the results of everything I have purchased!", "item": "", "verified": true, "date": "2026-10-28"}, {"stars": 5, "name": "Michael H.", "text": "Novrix is phenomenal! I was using a different big RUO company before but had no access to anyone when needed. Novrix is available via Discord or email and answers freakishly fast. Fast shipping & A1 products! I recommend to EVERYONE!", "item": "NVL-R3, Tesamorelin, Ipamorelin, KLOW", "verified": true, "date": "2026-10-27"}, {"stars": 5, "name": "Barry E.", "text": "I have to give a shout out to Novrix Labs. Not only do they provide top notch, tested, and proven peptides, they provide the education behind everything too. From answering simple questions all the way to having full blown conversations, Novrix Labs know what they are doing. Can’t complain about same day two day shipping either. It’s at your door step very quick!", "item": "", "verified": true, "date": "2026-10-27"}, {"stars": 5, "name": "Thomas B.", "text": "I’ve had a great experience with Novrix Labs! They offer excellent products, outstanding customer service, and prompt delivery. The entire experience has been positive, and I appreciate their professionalism, responsiveness, and attention to customer satisfaction. It’s clear they take pride in their business and the service they provide. I would definitely recommend Novrix Labs to anyone looking for a reliable and professional experience!", "item": "Multiple orders & products", "verified": true, "date": "2026-10-27"}, {"stars": 5, "name": "Christine W.", "text": "Great service! Easy ordering, quick response to questions and on time delivery!", "item": "Bulk Order", "verified": true, "date": "2026-10-26"}];
+const REVIEWS = [{"stars": 5, "name": "C. A.", "text": "I accidentally found Novrix through a forum I wasn't even a part of😂. First of all, the customer service is top notch! I previously used another independent business and won't go back after trying Novrix. Every question I had was answered thoroughly and promptly. I have gained so much more knowledge and I don't feel like just another customer lining pockets. And let's talk about the prices: they can't be beat!! Shipping was super fast and I was informed of everything along the way.", "item": "", "verified": true, "date": "2026-10-28"}, {"stars": 5, "name": "Michael H.", "text": "Novrix is phenomenal! I was using a different big RUO company before but had no access to anyone when needed. Novrix is available via Discord or email and answers freakishly fast. Fast shipping & A1 products! I recommend to EVERYONE!", "item": "NVL-R3, Tesamorelin, Ipamorelin, KLOW", "verified": true, "date": "2026-10-27"}, {"stars": 5, "name": "Barry E.", "text": "I have to give a shout out to Novrix Labs. Not only do they provide top notch, tested, and proven peptides, they provide the education behind everything too. From answering simple questions all the way to having full blown conversations, Novrix Labs know what they are doing. Can’t complain about same day two day shipping either. It’s at your door step very quick!", "item": "", "verified": true, "date": "2026-10-27"}, {"stars": 5, "name": "Thomas B.", "text": "I’ve had a great experience with Novrix Labs! They offer excellent products, outstanding customer service, and prompt delivery. The entire experience has been positive, and I appreciate their professionalism, responsiveness, and attention to customer satisfaction. It’s clear they take pride in their business and the service they provide. I would definitely recommend Novrix Labs to anyone looking for a reliable and professional experience!", "item": "Multiple orders & products", "verified": true, "date": "2026-10-27"}, {"stars": 5, "name": "Christine W.", "text": "Great service! Easy ordering, quick response to questions and on time delivery!", "item": "Bulk Order", "verified": true, "date": "2026-10-26"}];
 (() => { const box = document.getElementById("rvstrip"); if (!box || !REVIEWS.length) return;
   const good = REVIEWS.filter((r) => r.stars >= 4 && r.text);
   const cut = (t) => { t = String(t).replace(/\s+/g, " ").trim(); const ss = (t.match(/[^.!?]+[.!?]+/g) || [t]).map((x) => x.trim()).filter((x) => x.length <= 150); if (ss.length) return ss.reduce((a, x) => x.length > a.length ? x : a, ""); return t.slice(0, 127).replace(/\s+\S*$/, "") + "…"; };
@@ -1094,6 +1095,26 @@ function openStatus() {
   dlg.append(box); document.body.append(dlg); document.body.classList.add("co-open"); setTimeout(() => on.value ? em.focus() : on.focus(), 50);
 }
 document.addEventListener("click", (e) => { const b = e.target.closest && e.target.closest(".st-open"); if (b) { e.preventDefault(); openStatus(); } });
+function openCreds() {
+  let dlg = document.getElementById("nf"); if (dlg) dlg.remove();
+  dlg = el("div", "nf-ov"); dlg.id = "nf"; dlg.setAttribute("role", "dialog"); dlg.setAttribute("aria-modal", "true"); dlg.setAttribute("aria-label", "Check my Nov Creds");
+  const box = el("div", "nf-in"), x = el("button", "lb-x", "\u2715"); x.type = "button"; x.setAttribute("aria-label", "Close");
+  let saved = {}; try { saved = JSON.parse(localStorage.getItem("novrix-cust") || "{}"); } catch (e) {}
+  const em = el("input"); em.type = "email"; em.autocomplete = "email"; em.placeholder = "Email you ordered with"; em.value = saved.email || ""; em.setAttribute("aria-label", "Email you ordered with");
+  const go = el("button", "cta nf-go", "Email me my Nov Creds"); go.type = "button"; const err = el("p", "co-err"), done = el("div", "co-done"); done.hidden = true;
+  const close = () => { dlg.remove(); document.body.classList.remove("co-open"); };
+  x.addEventListener("click", close); dlg.addEventListener("click", (e) => { if (e.target === dlg) close(); });
+  go.addEventListener("click", async () => { if (go.disabled) return; const v = em.value.trim(); err.textContent = "";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) { err.textContent = "Please enter the email you ordered with."; em.focus(); return; }
+    const subj = "Creds check", body = "Please send me my Nov Creds balance and referral code.\n\nEmail: " + v;
+    go.disabled = true; go.textContent = "Sending\u2026"; const ok = await sendDirect(subj, body, v); go.disabled = false; if (!ok) mailtoOpen(subj, body);
+    done.replaceChildren(el("b", null, ok ? "Request sent" : "One last step: tap Send"), el("p", null, ok ? "Your balance and referral code will be emailed to the address on your account, usually within the hour." : "Your email app just opened with your request filled in. Tap Send there, and your balance comes back to you, usually within the hour."));
+    done.hidden = false; if (ok) { go.hidden = true; } else { go.textContent = "Email didn\u2019t open? Tap to try again"; go.classList.add("nf-again"); } });
+  const top = el("div", "co-top"); top.append(el("h2", null, "My Nov Creds"), x);
+  box.append(top, el("p", "nf-s", "Enter the email you order with. We\u2019ll email you your Nov Creds balance, your referral code and link, and what you\u2019ve earned lately."), em, go, err, done);
+  dlg.append(box); document.body.append(dlg); document.body.classList.add("co-open"); setTimeout(() => em.focus(), 50);
+}
+document.addEventListener("click", (e) => { const b = e.target.closest && e.target.closest(".cr-open"); if (b) { e.preventDefault(); openCreds(); } });
 function rvStars(n) { const w = el("span", "stars"); w.setAttribute("aria-label", n + " out of 5 stars"); w.append("★".repeat(n)); if (n < 5) w.append(el("i", null, "★".repeat(5 - n))); return w; }
 function rvDraw() {
   const box = document.getElementById("rv"); if (!box) return; box.replaceChildren();
