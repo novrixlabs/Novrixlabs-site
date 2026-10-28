@@ -1,10 +1,19 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 .stats b,.bk-p b,.steps li span,a.st-rate b{font-weight:600!important;letter-spacing:0!important}
+#sale-s{display:none}
+@media (max-width:560px){#sale-t{display:none}#sale-s{display:inline}.sale{padding:7px 12px;flex-wrap:nowrap;white-space:nowrap}}
+.rvstrip{margin-top:18px;width:min(100%,560px);display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 16px;border-radius:14px;border:1px solid rgba(255,201,77,.35);background:rgba(255,201,77,.06);color:var(--ink);text-decoration:none}
+.rvstrip:hover{border-color:rgba(255,201,77,.6)}
+.rvstrip:focus-visible{outline:2px solid #ffc94d;outline-offset:3px}
+.rvs-top{display:flex;align-items:center;gap:8px;font-size:.86rem}.rvs-top b{font-weight:700}.rvs-top small{color:var(--muted);font-size:.8rem}
+.rvs-q{font-size:.9rem;color:#d9d7ee;line-height:1.45;min-height:2.9em;transition:opacity .35s ease;text-wrap:balance}
+.rvs-q.fade{opacity:0}
+.dose .st{min-width:5.4em}
 </style></head><body>
 <title>Novrix Labs</title>
 <meta name="description" content="Novrix Labs research peptides. COAs available upon request, same-day shipping, live availability.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Michroma&family=IBM+Plex+Sans:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Exo+2:ital,wght@0,700;0,800;1,800;1,900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Michroma&family=Inter:wght@400;500;600;700&family=Exo+2:ital,wght@0,700;0,800;1,800;1,900&display=swap">
 <style>
 /* Layout: brand hero, sticky search/filter bar, product cards grouped by type; one column on phones, two to three on wide screens. Single dark brand look. */
 :root{
@@ -12,7 +21,7 @@
   --violet:#9a6bff;--blue:#5b95ff;--grad:linear-gradient(100deg,#9b4dff 0%,#5d5dff 55%,#2f8cff 100%);
   --chrome:linear-gradient(180deg,#ffffff 0%,#d9dbe3 45%,#8d90a0 100%);
   --in:#3ddc97;--low:#ffb547;--soon:#5b95ff;--out:#6b6a7d;
-  --f-brand:"Michroma","Helvetica Neue",Arial,sans-serif;--f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--f-num:"Inter",system-ui,-apple-system,sans-serif;
+  --f-brand:"Michroma","Helvetica Neue",Arial,sans-serif;--f-body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;--f-num:"Inter",system-ui,-apple-system,sans-serif;
   color-scheme:dark;
 }
 html,body{background:var(--bg);color:var(--ink)}
@@ -745,7 +754,7 @@ button.pk.nfy.on{background:color-mix(in srgb,var(--soon) 22%,transparent)}
     <p class="gate-x" id="gate-x" hidden>You must be 21 or older and agree to the research-use terms to view this site.</p>
   </div>
 </div>
-<div class="sale" id="sale" hidden><b id="sale-n"></b><span id="sale-t"></span></div>
+<div class="sale" id="sale" hidden><b id="sale-n"></b><span id="sale-t"></span><span id="sale-s"></span></div>
 <div class="tick" id="tick" hidden aria-label="Stock updates"><div class="tick-in" id="tick-in"></div></div>
 <div class="wrap" id="top">
   <nav class="nav" aria-label="Main">
@@ -763,6 +772,7 @@ button.pk.nfy.on{background:color-mix(in srgb,var(--soon) 22%,transparent)}
     <div class="stats"><div><b>Discreet</b><span>plain packaging</span></div><div><b>Same-day</b><span>shipping on most orders</span></div><div><b>~2-day</b><span>typical delivery</span></div><div><b>35+</b><span>compounds</span></div></div>
     <a class="cta" id="cta" hidden>Order now</a>
     <div class="ctas"><a class="cta" href="#shop">Browse the menu</a><a class="ghost rvjump" href="#reviews"><span class="rvj-s" aria-hidden="true">★</span>Reviews</a><a class="ghost" href="https://novrixlabs.shop/research.html"><span aria-hidden="true">🔬</span>Research</a></div>
+    <a class="rvstrip" id="rvstrip" href="#reviews" hidden><span class="rvs-top"><span class="stars" aria-hidden="true">★★★★★</span><small>What customers say</small></span><span class="rvs-q" id="rvs-q"></span></a>
   </header>
   <section class="sec" id="finder" hidden>
     <div class="sh"><span class="ey">Not sure where to start?</span><h2>What are you researching?</h2></div>
@@ -869,6 +879,13 @@ const SALE = {name: "Spooktober sale", ends: "2026-10-31", tiers: [[10, 20], [5,
 const SHIP = 15, VIP_FREESHIP = 150;
 function freeThr() { const sale = saleOn && SALE.freeShip ? SALE.freeShip : 0; return VIPON ? (sale ? Math.min(sale, VIP_FREESHIP) : VIP_FREESHIP) : sale; }
 const REVIEWS = [{"stars": 5, "name": "Barry E.", "text": "I have to give a shout out to Novrix Labs. Not only do they provide top notch, tested, and proven peptides, they provide the education behind everything too. From answering simple questions all the way to having full blown conversations, Novrix Labs know what they are doing. Can’t complain about same day two day shipping either. It’s at your door step very quick!", "item": "", "verified": true, "date": "2026-10-27"}, {"stars": 5, "name": "Thomas B.", "text": "I’ve had a great experience with Novrix Labs! They offer excellent products, outstanding customer service, and prompt delivery. The entire experience has been positive, and I appreciate their professionalism, responsiveness, and attention to customer satisfaction. It’s clear they take pride in their business and the service they provide. I would definitely recommend Novrix Labs to anyone looking for a reliable and professional experience!", "item": "Multiple orders & products", "verified": true, "date": "2026-10-27"}, {"stars": 5, "name": "Christine W.", "text": "Great service! Easy ordering, quick response to questions and on time delivery!", "item": "Bulk Order", "verified": false, "date": "2026-10-26"}];
+(() => { const box = document.getElementById("rvstrip"); if (!box || !REVIEWS.length) return;
+  const good = REVIEWS.filter((r) => r.stars >= 4 && r.text);
+  const cut = (t) => { t = String(t).replace(/\s+/g, " ").trim(); const ss = (t.match(/[^.!?]+[.!?]+/g) || [t]).map((x) => x.trim()).filter((x) => x.length <= 150); if (ss.length) return ss.reduce((a, x) => x.length > a.length ? x : a, ""); return t.slice(0, 127).replace(/\s+\S*$/, "") + "…"; };
+  const q = document.getElementById("rvs-q"); let i = 0;
+  const show = () => { const r = good[i % good.length]; q.textContent = "\u201C" + cut(r.text) + "\u201D \u2014 " + r.name; };
+  if (good.length) { show(); if (good.length > 1 && !matchMedia("(prefers-reduced-motion: reduce)").matches) setInterval(() => { q.classList.add("fade"); setTimeout(() => { i++; show(); q.classList.remove("fade"); }, 350); }, 6000); } else q.hidden = true;
+  box.hidden = false; })();
 // Payment methods shown at checkout. Leave a handle empty to hide that method.
 const PAY = {
   zelle: {label: "Zelle", handle: "novrixlabs@gmail.com", name: "", fee: 0},
@@ -1192,7 +1209,7 @@ async function vipUnlock(code) {
 function vipOff() { Object.assign(PRICE, NPRICE); VIPON = false; document.documentElement.classList.remove("is-vip"); try { localStorage.removeItem("novrix-vip"); } catch (e) {} }
 const money = (n) => "$" + (Math.round(n * 100) / 100).toFixed(2).replace(/\.00$/, "");
 const saleOn = (() => { if (!SALE || !SALE.ends) return false; const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(SALE.ends); return !!m && today <= Date.UTC(+m[1], m[2] - 1, +m[3]); })();
-if (saleOn) { const b = document.getElementById("sale"); document.getElementById("sale-n").textContent = SALE.name; document.getElementById("sale-t").textContent = SALE.tiers.slice().reverse().map(([n, p]) => p + "% off " + (n > 1 ? n + "+ items" : "any order")).join(" · ") + (SALE.freeShip ? " · Free shipping $" + SALE.freeShip + "+" : "") + " · Ends " + new Date(SALE.ends + "T12:00:00").toLocaleDateString("en-US", {month: "short", day: "numeric"}); b.hidden = false; }
+if (saleOn) { const b = document.getElementById("sale"); { const top = SALE.tiers.reduce((a, t) => Math.max(a, t[1]), 0); document.getElementById("sale-s").textContent = "Up to " + top + "% off · ends " + new Date(SALE.ends + "T12:00:00").toLocaleDateString("en-US", {month: "short", day: "numeric"}); } document.getElementById("sale-n").textContent = SALE.name; document.getElementById("sale-t").textContent = SALE.tiers.slice().reverse().map(([n, p]) => p + "% off " + (n > 1 ? n + "+ items" : "any order")).join(" · ") + (SALE.freeShip ? " · Free shipping $" + SALE.freeShip + "+" : "") + " · Ends " + new Date(SALE.ends + "T12:00:00").toLocaleDateString("en-US", {month: "short", day: "numeric"}); b.hidden = false; }
 const avail = (st) => st === "in" || st === "low";
 const picks = new Map();
 try { for (const k of JSON.parse(localStorage.getItem("novrix-picks") || "[]")) if (k in STATUS && avail(STATUS[k])) picks.set(k, STATUS[k]); } catch (e) {}
@@ -1295,7 +1312,7 @@ function draw() {
         sync(); pk.addEventListener("click", () => { if (!avail(d.s) && !picks.has(key)) return; if (!picks.has(key)) { picks.set(key, d.s); QTY[key] = 1; } savePicks(); tray(); sync(); });
         const prs = el("span", "pr"); if (VIPON && PRICE[key] < NPRICE[key]) { prs.append(el("s", null, money(NPRICE[key])), " ", el("b", "vipp", money(PRICE[key]))); } else if (d.p) prs.textContent = money(d.p);
         let nfy = null; if (!avail(d.s) && !picks.has(key)) { pk.hidden = true; nfy = el("button", "pk nfy" + (WAITED.has(key) ? " on" : "")); nfy.type = "button"; nfy.innerHTML = svgBell; nfy.title = WAITED.has(key) ? "Restock alert requested" : "Get an email when it\u2019s back"; nfy.setAttribute("aria-label", "Get an email when " + key + " is back in stock"); nfy.addEventListener("click", () => openNotify(key, d.label)); }
-        row.append(el("i", "dot d-" + d.s), dv, prs, el("span", "st", d.label), nfy || pk, qs);
+        const stE = el("span", "st", d.s === "in" ? "" : d.label); if (d.s === "in") stE.append(el("span", "sr", "In stock")); row.append(el("i", "dot d-" + d.s), dv, prs, stE, nfy || pk, qs);
         for (const c of coaList(d)) {
           const a = el("button", "coa"); a.type = "button"; a.innerHTML = svgDoc; a.append(coaText(c)); a.addEventListener("click", () => openCoa(it.name + " " + d.dose, c));
           const L = LABS[c.lab] || LABS.kovera; row.append(a, el("span", "coa-note", L.name + " · " + L.rep + " " + c.report + " · " + L.code + " " + c.code));
