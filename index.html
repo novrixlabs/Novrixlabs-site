@@ -1097,7 +1097,7 @@ function openReview() {
     const msg = done.querySelector("p"); if (msg) msg.textContent = ok ? "Thank you! You\u2019ll get an email as soon as your review is live on the site." : "Almost there! Your email app just opened with your review filled in. Tap Send there to submit it."; const ag = done.querySelector(".rv-again"); if (ag) ag.hidden = ok;
     done.hidden = false; for (const c of [...box.children]) if (c !== done && c !== top) c.hidden = true; });
   const top = el("div", "co-top"); top.append(el("h2", null, "Write a review"), x);
-  box.append(top, el("p", "nf-s", "Tell others how your order went. Keep it about ordering, shipping, packaging and service."), pick, el("p", "rv-hint", "This name is shown with your review on the site:"), nm, el("p", "rv-hint", "Your email is only used to check for a verified-buyer badge. It’s never shown."), em, it, dl, tx, cnt, go, err, done);
+  box.append(top, el("p", "nf-s", "Tell others how your order went. Keep it about ordering, shipping, packaging and service. Verified buyers earn $5 in Nov Creds once it’s approved."), pick, el("p", "rv-hint", "This name is shown with your review on the site:"), nm, el("p", "rv-hint", "Your email is only used to check for a verified-buyer badge. It’s never shown."), em, it, dl, tx, cnt, go, err, done);
   dlg.append(box); document.body.append(dlg); document.body.classList.add("co-open"); setTimeout(() => pick.querySelector("button").focus(), 50);
 }
 rvDraw(); if (location.hash === "#write-review") setTimeout(openReview, 400)
@@ -1545,7 +1545,7 @@ draw(); tray();
   for (const g of DATA) for (const it of g.items) for (const d of it.doses) if (fresh(d)) P.push(["t-new", "JUST RESTOCKED", tn(it, d), slug(it.name)]);
   for (const g of DATA) for (const it of g.items) for (const d of it.doses) if (isNew(d) && avail(d.s) && !seenN.has(it.name)) { seenN.add(it.name); P.push(["t-fresh", "NEW", tn(it, d), slug(it.name)]); }
   for (const g of DATA) for (const it of g.items) for (const d of it.doses) if (d.s === "soon" && P.filter((t) => t[0] === "t-soon").length < 5) P.push(["t-soon", "COMING SOON", tn(it, d), slug(it.name)]);
-  const I = [["FAST SHIPPING", "Most orders ship same day, ~2-day delivery"], ["DISCREET", "Plain packaging, nothing on the outside"], ["COAs", "Available upon request"], ["GIVE $10, GET $10", "Refer a friend with your order number"], ["LOCAL PICKUP", "Free in South Florida"], ["BULK ORDERS", "10+ vials? Ask for pricing"], ["INDEPENDENT", "Run by a first responder, no middleman markups"], ["DISCORD", "First pick on new drops and restocks"]];
+  const I = [["FAST SHIPPING", "Most orders ship same day, ~2-day delivery"], ["DISCREET", "Plain packaging, nothing on the outside"], ["COAs", "Available upon request"], ["NOV CREDS", "$10 per friend you refer, $5 per review"], ["LOCAL PICKUP", "Free in South Florida"], ["BULK ORDERS", "10+ vials? Ask for pricing"], ["INDEPENDENT", "Run by a first responder, no middleman markups"], ["DISCORD", "First pick on new drops and restocks"]];
   if (saleOn) I.splice(1, 0, [SALE.name.toUpperCase(), "Up to " + SALE.tiers[0][1] + "% off" + (SALE.freeShip ? " · free shipping $" + SALE.freeShip + "+" : "")]);
   const tk = document.getElementById("tick"), ti = document.getElementById("tick-in");
   const info = ([k, t]) => { const sp = el("span", "t-ship"); sp.append(el("b", null, k), t); return sp; };
