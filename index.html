@@ -741,6 +741,16 @@ body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 .rvs-top{display:flex;align-items:center;gap:8px;font-size:.86rem}.rvs-top b{font-weight:700}.rvs-top small{color:var(--muted);font-size:.8rem}
 .rvs-q{font-size:.9rem;color:#d9d7ee;line-height:1.45;min-height:2.9em;transition:opacity .35s ease;text-wrap:balance}
 .rvs-q.fade{opacity:0}
+.crpill{margin-top:16px;display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:99px;border:1px solid rgba(255,201,77,.45);background:rgba(255,201,77,.08);color:#ffe2a0;text-decoration:none;font-size:.84rem;font-weight:500}
+.crpill b{font-size:.66rem;letter-spacing:.12em;color:#1a1200;background:#ffc94d;border-radius:99px;padding:2px 7px}
+.crpill:hover{border-color:rgba(255,201,77,.75)}.crpill:focus-visible{outline:2px solid #ffc94d;outline-offset:3px}
+.crlede{margin:-6px 2px 16px;color:#c9c6e4;font-size:.95rem;max-width:40rem}
+.crg{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px}
+.crc{border:1px solid rgba(255,201,77,.35);border-radius:16px;padding:18px;background:linear-gradient(135deg,rgba(255,201,77,.08),transparent 60%),var(--panel);display:flex;flex-direction:column;gap:4px}
+.crc b{font-size:1.6rem;font-weight:700;color:#ffd877;line-height:1.1}
+.crc span{font-weight:600;font-size:.98rem}
+.crc p{margin:4px 0 0;font-size:.86rem;color:#c9c6e4;line-height:1.5}
+.crnote{margin:12px 2px 0;font-size:.82rem;color:var(--muted)}.crnote a{color:#c9b3ff}
 .refpop{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:110;width:min(92vw,420px);display:flex;flex-direction:column;gap:2px;text-align:center;padding:12px 16px;border-radius:14px;background:#0d1d16;border:1px solid rgba(61,220,151,.55);box-shadow:0 14px 40px rgba(0,0,0,.55);color:#c9f2dd;font-size:.86rem;transition:opacity .5s ease}.refpop b{color:#3ddc97;font-size:.98rem}.refpop.go{opacity:0}
 .dose .st{min-width:5.4em}
 </style>
@@ -773,6 +783,7 @@ body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
     <div class="stats"><div><b>Discreet</b><span>plain packaging</span></div><div><b>Same-day</b><span>shipping on most orders</span></div><div><b>~2-day</b><span>typical delivery</span></div><div><b>35+</b><span>compounds</span></div></div>
     <a class="cta" id="cta" hidden>Order now</a>
     <div class="ctas"><a class="cta" href="#shop">Browse the menu</a><a class="ghost rvjump" href="#reviews"><span class="rvj-s" aria-hidden="true">★</span>Reviews</a><a class="ghost" href="https://novrixlabs.shop/research.html"><span aria-hidden="true">🔬</span>Research</a></div>
+    <a class="crpill" href="#creds"><b>NEW</b> Earn Nov Creds: free credit on your next order →</a>
     <a class="rvstrip" id="rvstrip" href="#reviews" hidden><span class="rvs-top"><span class="stars" aria-hidden="true">★★★★★</span><small>What customers say</small></span><span class="rvs-q" id="rvs-q"></span></a>
   </header>
   <section class="sec" id="finder" hidden>
@@ -820,6 +831,16 @@ body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
       <div class="bk-p"><div><b>10+</b><span>vials</span></div><div><b>25+</b><span>vials</span></div><div><b>50+</b><span>vials</span></div><p>Ask for your price</p></div>
       <div class="ctas" style="justify-content:flex-start;margin-top:0"><a class="cta" style="margin-top:0" href="mailto:novrixlabs@gmail.com?subject=Bulk%20order%20pricing">Email for pricing</a><a class="ghost" href="https://discord.gg/XP9dz3jse" target="_blank" rel="noopener">Discord</a></div>
     </div>
+  </section>
+  <section class="sec" id="creds">
+    <div class="sh"><span class="ey">Rewards</span><h2>Nov Creds</h2></div>
+    <p class="crlede">Free store credit that comes off your next order automatically. It never expires.</p>
+    <div class="crg">
+      <div class="crc"><b>$10</b><span>Refer a friend</span><p>Share your code (your first initial + last name). They get $10 off their first order of $50+, and you get $10 when they buy.</p></div>
+      <div class="crc"><b>$5</b><span>Leave a review</span><p>Once it’s approved and live on the site.</p></div>
+      <div class="crc"><b>$5–$10</b><span>Keep ordering</span><p>$5 on your 3rd order, $10 on your 5th, then $10 every 5th order after.</p></div>
+    </div>
+    <p class="crnote">Don’t know your code? It’s in your order emails, or just ask on <a href="https://discord.gg/XP9dz3jse" target="_blank" rel="noopener">Discord</a> or by email.</p>
   </section>
   <section class="sec" id="reviews">
     <div class="sh"><span class="ey">From customers</span><h2>Reviews</h2></div>
