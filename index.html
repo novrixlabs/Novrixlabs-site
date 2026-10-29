@@ -71,6 +71,12 @@ section.grp{margin-top:26px}
 .dose .dv{font-family:var(--f-num);font-size:.88rem}
 .dose .st{font-size:.76rem;color:var(--muted);text-align:right;white-space:nowrap}
 .dose.s-out .dv{color:var(--muted)}
+.tc{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:3px;font-family:var(--f-body);font-size:.64rem;font-weight:600;letter-spacing:.02em;color:#3ddc97;background:rgba(61,220,151,.1);border:1px solid rgba(61,220,151,.35);padding:1px 7px 1px 5px;border-radius:99px;white-space:nowrap;flex:none}
+.tc svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.tc:hover{background:rgba(61,220,151,.18)}.tc:focus-visible{outline:2px solid #3ddc97;outline-offset:2px}
+.lb-tabs{display:flex;gap:6px;max-width:900px;width:100%;margin:0 auto 10px}
+.lb-tabs button{font:inherit;font-size:.8rem;font-weight:600;padding:7px 12px;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--muted);cursor:pointer}
+.lb-tabs button[aria-pressed="true"]{color:#fff;border-color:#3ddc97;background:rgba(61,220,151,.14)}
 .coa{grid-column:1/-1;display:inline-flex;align-items:center;gap:5px;font-size:.72rem;font-weight:600;color:var(--blue);text-decoration:none;background:rgba(91,149,255,.13);padding:2px 8px;border-radius:99px;justify-self:start}
 .coa{font-family:inherit;border:0;cursor:pointer}
 .lb{position:fixed;inset:0;z-index:50;background:rgba(3,3,8,.88);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);display:flex;flex-direction:column;padding:calc(12px + env(safe-area-inset-top,0px)) 12px calc(12px + env(safe-area-inset-bottom,0px))}
@@ -997,18 +1003,24 @@ const svgDoc = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l5 5v
 const LABS = {kovera: {name: "Kovera Labs", url: "https://koveralabs.com/verify", rep: "Report", code: "access code"}, freedom: {name: "Freedom Diagnostics", url: "https://freedomdiagnosticstesting.com", rep: "Accession", code: "search code"}, ils: {name: "ILS Labs", url: "https://portal.ils-lab.com", rep: "COA", code: "access code"}, sonic: {name: "Sonic Laboratories", url: "https://sonic-laboratories.com/coa-lookup", rep: "COA", code: "code"}, janoshik: {name: "Janoshik", url: "https://www.janoshik.com/verify/", rep: "Task", code: "key"}};
 const coaList = (d) => [...(d.coa ? [{coa: d.coa, lab: d.lab, purity: d.purity, report: d.report, code: d.code, kind: d.kind, note: d.note}] : []), ...(d.xc || [])];
 const coaText = (c) => c.kind === "sterility" ? "Sterility test · Pass" : c.kind === "full" ? "COA · " + c.purity + " purity · endotoxin pass" : "COA · " + c.purity + " purity";
-function openCoa(title, d) {
-  const lb = el("div", "lb"); lb.setAttribute("role", "dialog"); lb.setAttribute("aria-modal", "true"); lb.setAttribute("aria-label", "COA for " + title);
+const svgShield = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v6c0 4.2-2.9 7.7-7 9-4.1-1.3-7-4.8-7-9V6z"/><path d="m9 12 2 2 4-4"/></svg>';
+function openCoa(title, list, idx) {
+  const lb = el("div", "lb"); lb.setAttribute("role", "dialog"); lb.setAttribute("aria-modal", "true"); lb.setAttribute("aria-label", "Lab reports for " + title);
   const h = el("div", "lb-h"), x = el("button", "lb-x", "✕"); x.setAttribute("aria-label", "Close");
-  const L = LABS[d.lab] || LABS.kovera;
-  const v = el("a", null, "Verify at " + L.name + " ↗"); v.href = L.url; v.target = "_blank"; v.rel = "noopener";
-  h.append(el("b", null, (d.kind === "sterility" ? "Sterility test · " : "COA · ") + title), v, x);
-  const body = el("div", "lb-body"), img = el("img"); img.src = d.coa; img.alt = "Certificate of analysis for " + title; body.append(img);
-  lb.append(h, body, el("div", "lb-note", (d.note ? d.note + " · " : "") + L.name + " · " + L.rep + " " + d.report + " · " + L.code + " " + d.code + " · pinch to zoom"));
+  const ttl = el("b", null, title), v = el("a"); v.target = "_blank"; v.rel = "noopener";
+  h.append(ttl, v, x);
+  const tabs = el("div", "lb-tabs"), body = el("div", "lb-body"), img = el("img"), note = el("div", "lb-note");
+  body.append(img);
+  const show = (k) => { const d = list[k], L = LABS[d.lab] || LABS.kovera; img.src = d.coa; img.alt = (d.kind === "sterility" ? "Sterility test" : "Certificate of analysis") + " for " + title;
+    v.textContent = "Verify ↗"; v.href = L.url; v.title = "Verify at " + L.name;
+    note.textContent = [d.note, L.name, L.rep + " " + d.report, L.code + " " + d.code].filter(Boolean).join(" · ");
+    tabs.querySelectorAll("button").forEach((b, n) => b.setAttribute("aria-pressed", String(n === k))); };
+  if (list.length > 1) list.forEach((d, k) => { const b = el("button", null, d.kind === "sterility" ? "Sterility · Pass" : "Purity " + (d.purity || "")); b.type = "button"; b.addEventListener("click", () => show(k)); tabs.append(b); });
+  lb.append(h); if (list.length > 1) lb.append(tabs); lb.append(body, note);
   const close = () => { lb.remove(); document.removeEventListener("keydown", esc); };
   const esc = (e) => { if (e.key === "Escape") close(); };
   x.addEventListener("click", close); lb.addEventListener("click", (e) => { if (e.target === lb) close(); }); document.addEventListener("keydown", esc);
-  document.body.append(lb); x.focus();
+  show(idx || 0); document.body.append(lb); x.focus();
 }
 
 const SHARDS = '<svg class="sh" viewBox="0 0 300 146" preserveAspectRatio="none" aria-hidden="true"><defs>'
@@ -1399,10 +1411,7 @@ function draw() {
         const prs = el("span", "pr"); if (VIPON && PRICE[key] < NPRICE[key]) { prs.append(el("s", null, money(NPRICE[key])), " ", el("b", "vipp", money(PRICE[key]))); } else if (d.p) prs.textContent = money(d.p);
         let nfy = null; if (!avail(d.s) && !picks.has(key)) { pk.hidden = true; nfy = el("button", "pk nfy" + (WAITED.has(key) ? " on" : "")); nfy.type = "button"; nfy.innerHTML = svgBell; nfy.title = WAITED.has(key) ? "Restock alert requested" : "Get an email when it\u2019s back"; nfy.setAttribute("aria-label", "Get an email when " + key + " is back in stock"); nfy.addEventListener("click", () => openNotify(key, d.label)); }
         const stE = el("span", "st", d.s === "in" ? "" : d.label); if (d.s === "in") stE.append(el("span", "sr", "In stock")); row.append(el("i", "dot d-" + d.s), dv, prs, stE, nfy || pk, qs);
-        for (const c of coaList(d)) {
-          const a = el("button", "coa"); a.type = "button"; a.innerHTML = svgDoc; a.append(coaText(c)); a.addEventListener("click", () => openCoa(it.name + " " + d.dose, c));
-          const L = LABS[c.lab] || LABS.kovera; row.append(a, el("span", "coa-note", (c.note ? c.note + " · " : "") + L.name + " · " + L.rep + " " + c.report + " · " + L.code + " " + c.code));
-        }
+        { const cl = coaList(d); if (cl.length) { const best = cl.find((c) => c.purity); const tc = el("button", "tc"); tc.type = "button"; tc.innerHTML = svgShield; tc.append(best ? best.purity + " pure" : "Lab tested"); tc.title = "View lab report"; tc.setAttribute("aria-label", "View lab report for " + key); tc.addEventListener("click", () => openCoa(it.name + " " + d.dose, cl, 0)); dv.append(tc); } }
         ds.append(row); shown++;
       }
       card.append(ds); grid.append(card);
