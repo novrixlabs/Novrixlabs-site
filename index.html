@@ -772,7 +772,8 @@ body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 .hero{position:relative;isolation:isolate}
 .ey{display:inline-flex;align-items:center;gap:8px}
 .ey::before{content:"";width:18px;height:2px;border-radius:2px;background:var(--grad)}
-body{background:radial-gradient(900px 520px at 50% -180px,rgba(110,80,255,.22),transparent 70%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='97' viewBox='0 0 56 97'%3E%3Cg fill='none' stroke='%238a78ff' stroke-opacity='.075' stroke-width='1'%3E%3Cpath d='M28 0l28 16v32L28 64 0 48V16z'/%3E%3Cpath d='M28 64v33'/%3E%3C/g%3E%3Ccircle cx='28' cy='0' r='1.8' fill='%239a6bff' fill-opacity='.18'/%3E%3Ccircle cx='56' cy='48' r='1.8' fill='%235b95ff' fill-opacity='.18'/%3E%3C/svg%3E") 0 0/56px 97px fixed,var(--bg)}
+html{background:radial-gradient(900px 520px at 50% -180px,rgba(110,80,255,.22),transparent 70%) no-repeat,var(--bg)}body{background:transparent}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='97' viewBox='0 0 56 97'%3E%3Cg fill='none' stroke='%238a78ff' stroke-opacity='.075' stroke-width='1'%3E%3Cpath d='M28 0l28 16v32L28 64 0 48V16z'/%3E%3Cpath d='M28 64v33'/%3E%3C/g%3E%3Ccircle cx='28' cy='0' r='1.8' fill='%239a6bff' fill-opacity='.18'/%3E%3Ccircle cx='56' cy='48' r='1.8' fill='%235b95ff' fill-opacity='.18'/%3E%3C/svg%3E") 0 0/56px 97px}
 .crg{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px}
 .crc{border:1px solid rgba(255,201,77,.35);border-radius:16px;padding:18px;background:linear-gradient(135deg,rgba(255,201,77,.08),transparent 60%),var(--panel);display:flex;flex-direction:column;gap:4px}
 .crc b{font-size:1.6rem;font-weight:700;color:#ffd877;line-height:1.1}
@@ -1421,7 +1422,7 @@ document.addEventListener("keydown", (e) => {
 });
 if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
   const root = document.documentElement; let lastY = scrollY, t = 0;
-  addEventListener("scroll", () => { const v = scrollY - lastY; lastY = scrollY; root.style.setProperty("--tilt", Math.max(-7, Math.min(7, v * .35)).toFixed(2) + "deg"); clearTimeout(t); t = setTimeout(() => root.style.setProperty("--tilt", "0deg"), 90); }, {passive: true});
+  let hasLq = null; addEventListener("scroll", () => { if (hasLq === null) hasLq = !!document.querySelector(".lq"); if (!hasLq) return; const v = scrollY - lastY; lastY = scrollY; root.style.setProperty("--tilt", Math.max(-7, Math.min(7, v * .35)).toFixed(2) + "deg"); clearTimeout(t); t = setTimeout(() => root.style.setProperty("--tilt", "0deg"), 90); }, {passive: true});
 }
 document.querySelectorAll(".chip[data-f]").forEach((b) => b.addEventListener("click", () => { f = b.dataset.f; document.querySelectorAll(".chip[data-f]").forEach((x) => x.setAttribute("aria-pressed", String(x === b))); draw(); }));
 const gchips = document.getElementById("gchips");
