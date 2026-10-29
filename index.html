@@ -738,6 +738,8 @@ a.st-rate span{font-size:.72rem;color:var(--muted)}
 .ps-go{background:linear-gradient(100deg,#18b67a,#2f8cff)!important}
 /* polish v87 */
 .dose .dv{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;min-width:0}
+.dose .db{grid-column:2/-1;display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;margin-top:-6px}
+.dose .db .bs,.dose .db .fresh{flex:none}
 .dose .dv .bs,.dose .dv .fresh{flex:none}
 .dose .dn{white-space:nowrap}
 .fn::before{top:-6px!important;font-size:7rem!important}
@@ -926,7 +928,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
   <footer>
     <p><b>For research use only.</b> All materials are sold strictly for in-vitro laboratory research. They are not drugs, dietary supplements, foods or cosmetics, have not been evaluated by the FDA, and are not intended to diagnose, treat, cure or prevent any disease.</p>
     <p>Availability changes daily. Prices shown are regular prices before any sale; your final total is shown at checkout.</p>
-    <p>COAs available upon request. Email novrixlabs@gmail.com or ask in the Novrix Discord.</p>
+    <p>Lab reports are posted on tested products (tap the green badge). For anything else, email novrixlabs@gmail.com or ask in the Novrix Discord.</p>
     <p class="ft-l"><button class="flink st-open" type="button">Where’s my order?</button><a href="#reviews">Reviews</a><a href="#faq">FAQ</a><a href="https://novrixlabs.shop/research.html">Research</a><a href="https://discord.gg/XP9dz3jse" target="_blank" rel="noopener">Discord</a></p>
   </footer>
 </div>
@@ -1400,7 +1402,7 @@ function draw() {
       const ds = el("div", "doses");
       for (const d of it.doses) {
         const row = el("div", "dose s-" + d.s);
-        const dv = el("span", "dv"); if (it.doses.some((x) => x.cap !== capd.cap)) { const mv = el("span", "mv"); mv.innerHTML = vialSVG(d.cap, 20, d.s); dv.append(mv, " "); } dv.append(el("span", "dn", String(d.dose).replace(/\s*vial$/i, ""))); if (d.badge) { dv.append(el("span", "bs", "★ " + d.badge)); card.classList.add("has-bs"); } if (fresh(d)) { dv.append(el("span", "fresh", "Just restocked")); card.classList.add("has-fresh"); } 
+        const dv = el("span", "dv"); if (it.doses.some((x) => x.cap !== capd.cap)) { const mv = el("span", "mv"); mv.innerHTML = vialSVG(d.cap, 20, d.s); dv.append(mv, " "); } dv.append(el("span", "dn", String(d.dose).replace(/\s*vial$/i, ""))); const db = el("span", "db"); if (d.badge) { db.append(el("span", "bs", "★ " + d.badge)); card.classList.add("has-bs"); } if (fresh(d)) { db.append(el("span", "fresh", "Just restocked")); card.classList.add("has-fresh"); } 
         const key = it.name + " " + d.dose, pk = el("button", "pk"); pk.type = "button"; pk.innerHTML = svgPlus; pk.setAttribute("aria-label", "Add " + key + " to your cart");
         const qs = el("div", "qs qs-card"), qn = el("span", "qn", "1"), qb = (t, lab, fn) => { const b = el("button", "qb", t); b.type = "button"; b.setAttribute("aria-label", lab); b.addEventListener("click", fn); return b; };
         qs.append(qb("\u2212", "One less " + key, () => { const q = qty(key); if (q <= 1) { picks.delete(key); delete QTY[key]; } else QTY[key] = q - 1; savePicks(); tray(); if (!picks.has(key) && !avail(d.s)) draw(); }), qn, qb("+", "One more " + key, () => { QTY[key] = Math.min(99, qty(key) + 1); savePicks(); tray(); }));
@@ -1411,7 +1413,7 @@ function draw() {
         const prs = el("span", "pr"); if (VIPON && PRICE[key] < NPRICE[key]) { prs.append(el("s", null, money(NPRICE[key])), " ", el("b", "vipp", money(PRICE[key]))); } else if (d.p) prs.textContent = money(d.p);
         let nfy = null; if (!avail(d.s) && !picks.has(key)) { pk.hidden = true; nfy = el("button", "pk nfy" + (WAITED.has(key) ? " on" : "")); nfy.type = "button"; nfy.innerHTML = svgBell; nfy.title = WAITED.has(key) ? "Restock alert requested" : "Get an email when it\u2019s back"; nfy.setAttribute("aria-label", "Get an email when " + key + " is back in stock"); nfy.addEventListener("click", () => openNotify(key, d.label)); }
         const stE = el("span", "st", d.s === "in" ? "" : d.label); if (d.s === "in") stE.append(el("span", "sr", "In stock")); row.append(el("i", "dot d-" + d.s), dv, prs, stE, nfy || pk, qs);
-        { const cl = coaList(d); if (cl.length) { const best = cl.find((c) => c.purity); const tc = el("button", "tc"); tc.type = "button"; tc.innerHTML = svgShield; tc.append(best ? best.purity + " pure" : "Lab tested"); tc.title = "View lab report"; tc.setAttribute("aria-label", "View lab report for " + key); tc.addEventListener("click", () => openCoa(it.name + " " + d.dose, cl, 0)); dv.append(tc); } }
+        { const cl = coaList(d); if (cl.length) { const best = cl.find((c) => c.purity); const tc = el("button", "tc"); tc.type = "button"; tc.innerHTML = svgShield; tc.append(best ? best.purity + " pure" : "Lab tested"); tc.title = "View lab report"; tc.setAttribute("aria-label", "View lab report for " + key); tc.addEventListener("click", () => openCoa(it.name + " " + d.dose, cl, 0)); db.append(tc); } if (db.childNodes.length) row.append(db); }
         ds.append(row); shown++;
       }
       card.append(ds); grid.append(card);
