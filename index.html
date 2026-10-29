@@ -447,6 +447,10 @@ html{scroll-behavior:smooth}
 .nl{display:flex;gap:22px;margin-left:auto}
 .nl a{color:var(--muted);text-decoration:none;font-size:.88rem;font-weight:500}
 .nl a:hover{color:var(--ink)}
+.nl .nl-b{all:unset;cursor:pointer;color:var(--muted);font-size:.88rem;font-weight:500}.nl .nl-b:hover{color:var(--ink)}.nl .nl-b:focus-visible{outline:2px solid var(--violet);outline-offset:3px;border-radius:4px}
+.nl a,.nl .nl-b,.nbtn{white-space:nowrap}
+@media (max-width:1000px){.nl{gap:16px}.nl a,.nl .nl-b{font-size:.82rem}}
+@media (max-width:900px){.nl a[href="#shipping"],.nl a[href="#bulk"]{display:none}}
 .nbtn{background:var(--grad);color:#fff;text-decoration:none;font-weight:600;font-size:.85rem;padding:9px 16px;border-radius:10px}
 .nav a:focus-visible,.pp:focus-visible,.ghost:focus-visible,.fq summary:focus-visible{outline:2px solid var(--violet);outline-offset:3px}
 @media (max-width:700px){.nl{display:none}.nbtn{margin-left:auto}}
@@ -795,7 +799,7 @@ body{background:radial-gradient(900px 520px at 50% -180px,rgba(110,80,255,.22),t
 <div class="wrap" id="top">
   <nav class="nav" aria-label="Main">
     <a class="brand" href="#top">NOVRIX<span>LABS</span></a>
-    <div class="nl"><a href="#shop">Menu</a><a href="#creds">Nov Creds</a><a href="#shipping">Shipping</a><a href="#bulk">Bulk</a><a href="#reviews">Reviews</a><a href="#faq">FAQ</a><a href="https://novrixlabs.shop/research.html">Research</a></div>
+    <div class="nl"><a href="#shop">Menu</a><a href="#creds">Nov Creds</a><a href="#shipping">Shipping</a><a href="#bulk">Bulk</a><a href="#reviews">Reviews</a><a href="#faq">FAQ</a><a href="https://novrixlabs.shop/research.html">Research</a><button class="nl-b st-open" type="button">Track order</button></div>
     <a class="nbtn" href="#shop">Order now</a>
   </nav>
   <div class="ro" id="ro" hidden><div class="ro-t"><b>Welcome back</b><span id="ro-list"></span><small id="ro-msg" role="status"></small></div><div class="ro-a"><button class="tbtn pri" id="ro-go" type="button">Reorder</button><button class="ro-x" id="ro-x" type="button" aria-label="Dismiss">×</button></div></div>
