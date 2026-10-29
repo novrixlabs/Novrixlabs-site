@@ -72,6 +72,7 @@ section.grp{margin-top:26px}
 .dose .dv{font-family:var(--f-num);font-size:.88rem}
 .dose .st{font-size:.76rem;color:var(--muted);text-align:right;white-space:nowrap}
 .dose.s-out .dv{color:var(--muted)}
+.tpn{margin:-4px 2px 0;display:flex;align-items:center;gap:6px;font-size:.74rem;color:var(--muted)}.tpn svg{width:13px;height:13px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .tp{display:inline-flex;align-items:center;gap:3px;font-family:var(--f-body);font-size:.64rem;font-weight:600;color:var(--muted);background:rgba(155,154,175,.08);border:1px dashed rgba(155,154,175,.35);padding:1px 7px 1px 5px;border-radius:99px;white-space:nowrap;flex:none}.tp svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .tc{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:3px;font-family:var(--f-body);font-size:.64rem;font-weight:600;letter-spacing:.02em;color:#3ddc97;background:rgba(61,220,151,.1);border:1px solid rgba(61,220,151,.35);padding:1px 7px 1px 5px;border-radius:99px;white-space:nowrap;flex:none}
 .tc svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
@@ -1419,10 +1420,11 @@ function draw() {
         const prs = el("span", "pr"); if (VIPON && PRICE[key] < NPRICE[key]) { prs.append(el("s", null, money(NPRICE[key])), " ", el("b", "vipp", money(PRICE[key]))); } else if (d.p) prs.textContent = money(d.p);
         let nfy = null; if (!avail(d.s) && !picks.has(key)) { pk.hidden = true; nfy = el("button", "pk nfy" + (WAITED.has(key) ? " on" : "")); nfy.type = "button"; nfy.innerHTML = svgBell; nfy.title = WAITED.has(key) ? "Restock alert requested" : "Get an email when it\u2019s back"; nfy.setAttribute("aria-label", "Get an email when " + key + " is back in stock"); nfy.addEventListener("click", () => openNotify(key, d.label)); }
         const stE = el("span", "st", d.s === "in" ? "" : d.label); if (d.s === "in") stE.append(el("span", "sr", "In stock")); row.append(el("i", "dot d-" + d.s), dv, prs, stE, nfy || pk, qs);
-        { const cl = coaList(d); if (cl.length) { const best = cl.find((c) => c.purity); const tc = el("button", "tc"); tc.type = "button"; tc.innerHTML = svgShield; tc.append(best ? best.purity + " pure" : "Lab tested"); tc.title = "View lab report"; tc.setAttribute("aria-label", "View lab report for " + key); tc.addEventListener("click", () => openCoa(it.name + " " + d.dose, cl, 0)); db.append(tc); } else if (d.pend) { const tp = el("span", "tp"); tp.innerHTML = svgShield; tp.append("Lab test pending"); tp.title = "Sent to the lab, report coming soon"; db.append(tp); } if (db.childNodes.length) row.append(db); }
+        { const cl = coaList(d); if (cl.length) { const best = cl.find((c) => c.purity); const tc = el("button", "tc"); tc.type = "button"; tc.innerHTML = svgShield; tc.append(best ? best.purity + " pure" : "Lab tested"); tc.title = "View lab report"; tc.setAttribute("aria-label", "View lab report for " + key); tc.addEventListener("click", () => openCoa(it.name + " " + d.dose, cl, 0)); db.append(tc); } if (db.childNodes.length) row.append(db); }
         ds.append(row); shown++;
       }
-      card.append(ds); grid.append(card);
+      { const pend = it.doses.filter((x) => x.pend && !x.coa).map((x) => String(x.dose).replace(/\s*vial$/i, "")); if (pend.length) { const tp = el("p", "tpn"); tp.innerHTML = svgShield; tp.append(pend.length === it.doses.length ? "Lab test in progress, report coming soon" : "Lab test in progress: " + pend.join(", ")); card.append(ds, tp); } else card.append(ds); }
+      grid.append(card);
     }
     sec.append(gh, grid); list.append(sec);
   }
