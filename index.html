@@ -722,7 +722,7 @@ a.st-rate span{font-size:.72rem;color:var(--muted)}
 .ft-l{display:flex;flex-wrap:wrap;gap:6px 18px}.ft-l a,.ft-l .flink{color:#c9b3ff;text-decoration:none;font-size:.8rem}.ft-l a:hover,.ft-l .flink:hover{text-decoration:underline}
 @media (min-width:900px){.fqs{display:grid;grid-template-columns:1fr 1fr;align-items:start;gap:10px}.fqs>.fq:last-child:nth-child(odd){grid-column:1/-1}}
 @media (max-width:560px){
-  .hero .ctas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%}
+  .hero .ctas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;width:100%}
   .hero .ctas .cta{grid-column:1/-1;justify-content:center}
   .hero .ctas .ghost{justify-content:center;padding:11px 6px;gap:6px;font-size:.84rem;white-space:nowrap}
   .fn blockquote{font-size:1.02rem!important}
@@ -742,7 +742,7 @@ body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 .rvs-top{display:flex;align-items:center;gap:8px;font-size:.86rem}.rvs-top b{font-weight:700}.rvs-top small{color:var(--muted);font-size:.8rem}
 .rvs-q{font-size:.9rem;color:#d9d7ee;line-height:1.45;min-height:2.9em;transition:opacity .35s ease;text-wrap:balance}
 .rvs-q.fade{opacity:0}
-.crpill{margin-top:16px;display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:99px;border:1px solid rgba(255,201,77,.45);background:rgba(255,201,77,.08);color:#ffe2a0;text-decoration:none;font-size:.84rem;font-weight:500}
+.crpill{margin-top:16px;display:inline-flex;white-space:nowrap;max-width:100%;align-items:center;gap:8px;padding:8px 14px;border-radius:99px;border:1px solid rgba(255,201,77,.45);background:rgba(255,201,77,.08);color:#ffe2a0;text-decoration:none;font-size:.84rem;font-weight:500}
 .crpill b{font-size:.66rem;letter-spacing:.12em;color:#1a1200;background:#ffc94d;border-radius:99px;padding:2px 7px}
 .crpill:hover{border-color:rgba(255,201,77,.75)}.crpill:focus-visible{outline:2px solid #ffc94d;outline-offset:3px}
 .crlede{margin:-6px 2px 16px;color:#c9c6e4;font-size:.95rem;max-width:40rem}
@@ -752,9 +752,9 @@ body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 .nvc-lg{width:54px;height:54px;margin:-10px 0}
 @media (prefers-reduced-motion:no-preference){.nvc .nvb{animation:nvspin 14s linear infinite}.nvc-lg{animation:nvbob 3.2s ease-in-out infinite}@keyframes nvspin{to{transform:rotate(360deg)}}@keyframes nvbob{50%{transform:translateY(-4px) rotate(-6deg)}}.crpill:hover .nvc{animation:nvpop .5s cubic-bezier(.2,1.6,.4,1)}@keyframes nvpop{40%{transform:scale(1.3) rotate(-12deg)}}}
 .hero{position:relative;isolation:isolate}
-.hero::before{content:"";position:absolute;inset:-10px -40px 0;z-index:-1;pointer-events:none;opacity:.22;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='97' viewBox='0 0 56 97'%3E%3Cg fill='none' stroke='%237d6bff' stroke-width='1'%3E%3Cpath d='M28 0l28 16v32L28 64 0 48V16z'/%3E%3Cpath d='M28 64v33'/%3E%3C/g%3E%3Ccircle cx='28' cy='0' r='2' fill='%239a6bff'/%3E%3Ccircle cx='56' cy='48' r='2' fill='%235b95ff'/%3E%3Ccircle cx='0' cy='16' r='1.6' fill='%235b95ff'/%3E%3C/svg%3E");background-size:56px 97px;-webkit-mask-image:radial-gradient(60% 55% at 50% 30%,#000 0%,transparent 75%);mask-image:radial-gradient(60% 55% at 50% 30%,#000 0%,transparent 75%)}
 .ey{display:inline-flex;align-items:center;gap:8px}
 .ey::before{content:"";width:18px;height:2px;border-radius:2px;background:var(--grad)}
+body{background:radial-gradient(900px 520px at 50% -180px,rgba(110,80,255,.22),transparent 70%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='97' viewBox='0 0 56 97'%3E%3Cg fill='none' stroke='%238a78ff' stroke-opacity='.075' stroke-width='1'%3E%3Cpath d='M28 0l28 16v32L28 64 0 48V16z'/%3E%3Cpath d='M28 64v33'/%3E%3C/g%3E%3Ccircle cx='28' cy='0' r='1.8' fill='%239a6bff' fill-opacity='.18'/%3E%3Ccircle cx='56' cy='48' r='1.8' fill='%235b95ff' fill-opacity='.18'/%3E%3C/svg%3E") 0 0/56px 97px fixed,var(--bg)}
 .crg{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px}
 .crc{border:1px solid rgba(255,201,77,.35);border-radius:16px;padding:18px;background:linear-gradient(135deg,rgba(255,201,77,.08),transparent 60%),var(--panel);display:flex;flex-direction:column;gap:4px}
 .crc b{font-size:1.6rem;font-weight:700;color:#ffd877;line-height:1.1}
@@ -795,7 +795,7 @@ body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
     <div class="stats"><div><b>Discreet</b><span>plain packaging</span></div><div><b>Same-day</b><span>shipping on most orders</span></div><div><b>~2-day</b><span>typical delivery</span></div><div><b>35+</b><span>compounds</span></div></div>
     <a class="cta" id="cta" hidden>Order now</a>
     <div class="ctas"><a class="cta" href="#shop">Browse the menu</a><a class="ghost rvjump" href="#reviews"><span class="rvj-s" aria-hidden="true">★</span>Reviews</a><a class="ghost" href="https://novrixlabs.shop/research.html"><span aria-hidden="true">🔬</span>Research</a><a class="ghost dsc" href="https://discord.gg/XP9dz3jse" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.3 5.3A17 17 0 0 0 15 4l-.5 1a15.7 15.7 0 0 0-5 0L9 4a17 17 0 0 0-4.3 1.3C2 9.4 1.3 13.4 1.6 17.3A17.2 17.2 0 0 0 6.9 20l1.1-1.8c-.6-.2-1.2-.5-1.8-.9l.4-.3a12.3 12.3 0 0 0 10.8 0l.4.3c-.6.4-1.2.7-1.8.9l1.1 1.8a17.1 17.1 0 0 0 5.3-2.7c.4-4.5-.7-8.5-3.1-12ZM8.7 14.9c-1 0-1.9-1-1.9-2.1s.8-2.1 1.9-2.1 1.9 1 1.9 2.1-.8 2.1-1.9 2.1Zm6.6 0c-1 0-1.9-1-1.9-2.1s.8-2.1 1.9-2.1 1.9 1 1.9 2.1-.8 2.1-1.9 2.1Z"/></svg>Discord</a></div>
-    <a class="crpill" href="#creds" data-nov="&lt;svg class=&quot;nvc&quot; viewBox=&quot;0 0 64 64&quot; aria-hidden=&quot;true&quot;&gt;&lt;use href=&quot;#nvcoin&quot;/&gt;&lt;/svg&gt;&lt;b&gt;2×&lt;/b&gt; Double Nov Creds all November →"><svg class="nvc" viewBox="0 0 64 64" aria-hidden="true"><use href="#nvcoin"/></svg><b>NEW</b> Earn Nov Creds: free credit on your next order →</a>
+    <a class="crpill" href="#creds" data-nov="&lt;svg class=&quot;nvc&quot; viewBox=&quot;0 0 64 64&quot; aria-hidden=&quot;true&quot;&gt;&lt;use href=&quot;#nvcoin&quot;/&gt;&lt;/svg&gt;&lt;b&gt;2×&lt;/b&gt; Double Nov Creds all November →"><svg class="nvc" viewBox="0 0 64 64" aria-hidden="true"><use href="#nvcoin"/></svg><b>NEW</b> Earn Nov Creds: free store credit →</a>
     <a class="rvstrip" id="rvstrip" href="#reviews" hidden><span class="rvs-top"><span class="stars" aria-hidden="true">★★★★★</span><small>What customers say</small></span><span class="rvs-q" id="rvs-q"></span></a>
   </header>
   <section class="sec" id="finder" hidden>
