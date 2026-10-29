@@ -26,6 +26,7 @@ main{max-width:460px;margin:0 auto;padding:calc(36px + env(safe-area-inset-top,0
 h1{font-family:"Michroma","Helvetica Neue",Arial,sans-serif;font-weight:400;font-size:1.7rem;letter-spacing:.2em;margin:10px 0 2px;background:var(--chrome);-webkit-background-clip:text;background-clip:text;color:transparent}
 .tag{display:flex;align-items:center;gap:10px;font-size:.68rem;letter-spacing:.32em;color:#c9c6e4;text-transform:uppercase}
 .tag::before,.tag::after{content:"";width:28px;height:1px;background:var(--grad)}
+@media (max-width:440px){.tag{letter-spacing:.2em;gap:8px;font-size:.66rem;white-space:nowrap}.tag::before,.tag::after{width:18px}}
 .sub{margin:12px 0 22px;color:var(--muted);font-size:.9rem}
 nav{width:100%;display:flex;flex-direction:column;gap:10px}
 a.l{display:flex;align-items:center;gap:14px;text-align:left;padding:14px 16px;border-radius:16px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.03),transparent 60%),var(--panel);color:var(--ink);text-decoration:none;transition:border-color .18s ease,transform .18s ease}
@@ -60,7 +61,7 @@ footer a{color:#c9b3ff}
 <main>
   <img class="logo" src="logo.png" alt="Novrix Labs logo" width="137" height="160">
   <h1>NOVRIX</h1>
-  <div class="tag">Research Peptides</div>
+  <div class="tag">Premium Research Peptides</div>
   <p class="sub">Shipped fast, packed discreetly.</p>
   <nav aria-label="Novrix links">
     <a class="l pri" href="https://novrixlabs.shop/#shop">
