@@ -191,7 +191,8 @@ body.has-tray .wrap{padding-bottom:140px}
 }
 @media (prefers-reduced-motion:reduce){.vf{transition:none}.card.ping{outline:2px solid var(--violet)}}
 
-.dose{grid-template-columns:auto minmax(0,1fr) auto auto auto}
+.dose{grid-template-columns:auto minmax(min-content,1fr) auto auto auto}
+@media (max-width:420px){.dose .dn{white-space:normal}.dose{column-gap:7px}.dose .st{font-size:.66rem}.dose .pr s{font-size:.68rem}.dose .pr{min-width:3.2em;margin-right:3px}}
 .dose .pr{font-family:var(--f-num);font-size:.9rem;font-weight:500;color:var(--ink)}
 .dose.s-out .pr{color:var(--muted)}
 @media (max-width:420px){.dose{gap:8px;padding:8px 10px}.dose .st{font-size:.7rem}}
@@ -740,10 +741,11 @@ a.st-rate span{font-size:.72rem;color:var(--muted)}
 .ps-go{background:linear-gradient(100deg,#18b67a,#2f8cff)!important}
 /* polish v87 */
 .dose .dv{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;min-width:0}
+.dose .st{order:1;text-align:right}.dose .pr{order:2;min-width:3.6em;text-align:right;white-space:nowrap}.dose>.pk,.dose>.qs{order:3}.dose .db{order:4;min-width:0}
 .dose .db{grid-column:2/-1;display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;margin-top:-6px}
 .dose .db .bs,.dose .db .fresh{flex:none}
 .dose .dv .bs,.dose .dv .fresh{flex:none}
-.dose .dn{white-space:nowrap}
+@media (min-width:421px){.dose .dn{white-space:nowrap}}
 .fn::before{top:-6px!important;font-size:7rem!important}
 .fn blockquote{padding-top:44px!important}
 .ft-l{display:flex;flex-wrap:wrap;gap:6px 18px}.ft-l a,.ft-l .flink{color:#c9b3ff;text-decoration:none;font-size:.8rem}.ft-l a:hover,.ft-l .flink:hover{text-decoration:underline}
