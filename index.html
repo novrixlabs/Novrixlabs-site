@@ -355,6 +355,7 @@ body.has-tray .totop{bottom:calc(150px + env(safe-area-inset-bottom,0px))}
 /* bac water nudge */
 .bacn{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 10px;border-radius:10px;border:1px dashed rgba(255,181,71,.55);background:rgba(255,181,71,.08);font-size:.82rem}
 .bacn .tbtn{padding:7px 14px}
+#co-sum .bacn{flex-wrap:nowrap;align-items:center;margin:6px 0 2px}#co-sum .bacn span{min-width:0}#co-sum .bacn .tbtn{flex:none}
 
 /* label glow, glare sweep, scroll tilt */
 .card .lbl{box-shadow:0 16px 40px color-mix(in srgb,var(--g1,#5d5dff) 38%,transparent),0 0 0 1px rgba(255,255,255,.1);transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .3s}
@@ -1500,6 +1501,7 @@ draw(); tray();
     document.getElementById("co-no").textContent = "Payment code " + NOTE();
     const sum = document.getElementById("co-sum"), tot = document.getElementById("co-tot"); sum.replaceChildren(); tot.replaceChildren(); sum.append(codeBox());
     for (const k of picks.keys()) { const r = el("div"), pv = el("span"); if (VIPON && PRICE[k] < NPRICE[k]) pv.append(el("s", null, money(qty(k) * NPRICE[k])), " ", el("b", "vipp", money(qty(k) * PRICE[k]))); else pv.textContent = PRICE[k] ? money(qty(k) * PRICE[k]) : "–"; r.append(el("span", null, qty(k) + "× " + k), pv); sum.append(r); }
+    { const BW = "Reconstitution Solution 10ml"; if (BW in STATUS && avail(STATUS[BW]) && !picks.has(BW) && [...picks.keys()].some((k) => k !== BW)) { const nb = el("div", "bacn"), tx = el("span", null, "Vials ship as powder. Add bac water (" + money(PRICE[BW]) + ") to mix them?"), ab = el("button", "tbtn pri", "Add"); ab.type = "button"; ab.addEventListener("click", () => { picks.set(BW, STATUS[BW]); QTY[BW] = 1; savePicks(); draw(); tray(); draw2(); }); nb.append(tx, ab); sum.append(nb); } }
     const G = total(), line = (a, b, c) => { const r = el("div", c || null); r.append(el("span", null, a), el("span", null, b)); tot.append(r); };
     if (G.vip > 0) { line("Regular price", money(G.reg)); line("VIP pricing", "-" + money(G.vip), "save"); } else line("Subtotal", money(G.sub)); if (G.pct) line(SALE.name + " (" + G.pct + "% off)", "-" + money(G.disc), "save"); if (G.ref) line("Referral " + REFCODE, "-" + money(G.ref), "save");
     line(ful.v === "pickup" ? "Local pickup" : "2-Day Air shipping", G.ship ? money(G.ship) : "Free"); if (ful.v !== "pickup") { const fb = freeShipBar(G.after); if (fb) tot.append(fb); } line("Order total", money(G.grand), "tot"); if (G.vip + G.disc + G.ref > 0) line(VIPON ? "Your VIP + " + (G.pct ? "promo savings" : "savings") : "You save", money(Math.round((G.vip + G.disc + G.ref) * 100) / 100), "save big");
