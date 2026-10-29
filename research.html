@@ -153,6 +153,34 @@ section{margin-top:60px;scroll-margin-top:64px}
 .share{font:inherit;font-size:.78rem;font-weight:600;color:var(--ink);background:var(--panel);border:1px solid rgba(154,107,255,.45);border-radius:99px;padding:6px 13px;cursor:pointer}
 .share:hover{border-color:var(--violet)}
 .toc a.on{background:var(--grad);border-color:transparent;color:#fff}
+.sf{display:flex;flex-wrap:wrap;align-items:center;gap:5px}
+.sf>span{font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-right:2px}
+.sf i{font-style:normal;font-size:.74rem;color:#dfe8ff;background:rgba(91,149,255,.1);border:1px solid rgba(91,149,255,.3);border-radius:99px;padding:2px 9px}
+.mn{display:flex;flex-direction:column;gap:6px}
+.mb{display:flex;align-items:center;gap:8px;flex-wrap:wrap;text-decoration:none;font-size:.84rem;font-weight:600;color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:8px 11px}
+.mb:hover{border-color:var(--violet)}
+.mb .ar{margin-left:auto;color:var(--violet)}
+.mb .st{font-size:.7rem;font-weight:600;display:inline-flex;align-items:center;gap:5px;color:var(--muted)}
+.mb .st::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.st.in{color:var(--in)}.st.low{color:var(--gold)}.st.soon{color:var(--blue)}.st.out{color:#8a8aa0}
+.lt{font-size:.66rem;font-weight:700;letter-spacing:.06em;color:var(--in);border:1px solid rgba(61,220,151,.45);background:rgba(61,220,151,.08);border-radius:99px;padding:2px 8px}
+.az{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:-4px 0 14px;padding-bottom:2px}
+.az::-webkit-scrollbar{display:none}
+.az button{flex:none;font:inherit;font-size:.74rem;font-weight:600;color:var(--soft);background:transparent;border:1px solid var(--line);border-radius:8px;padding:5px 9px;cursor:pointer}
+.az button:hover{border-color:var(--violet);color:var(--ink)}
+.rc{scroll-margin-top:76px}
+.rc.flash{border-color:var(--violet);box-shadow:0 0 0 2px rgba(154,107,255,.35)}
+.cmp{display:grid;gap:14px}
+.cp{border:1px solid var(--line);border-radius:16px;background:var(--panel);overflow:hidden}
+.cp h3{margin:0;padding:12px 16px;font-size:.95rem;border-bottom:1px solid var(--line);background:rgba(154,107,255,.07)}
+.cp-g{display:grid;grid-template-columns:1fr 1fr}
+.cp-c{padding:12px 16px;display:flex;flex-direction:column;gap:6px}
+.cp-c+.cp-c{border-left:1px solid var(--line)}
+.cp-c b{font-size:.98rem}
+.cp-c p{margin:0;font-size:.84rem;color:var(--soft)}
+.cp-c p span{display:block;font-size:.64rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.cp-n{margin:0;padding:10px 16px;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted)}
+@media (min-width:900px){.cmp{grid-template-columns:repeat(3,1fr)}}
 .endrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
 @media (prefers-reduced-motion:no-preference){.rc,.tile,.ti{transition:border-color .18s ease,transform .18s ease}@media (hover:hover){.rc:hover,.tile:hover,.ti:hover{border-color:rgba(154,107,255,.45);transform:translateY(-2px)}}}
 </style>
@@ -170,11 +198,11 @@ section{margin-top:60px;scroll-margin-top:64px}
     <p class="lede">Everything worth knowing about peptides, in plain English: what they are, where they came from, the surprisingly weird origin stories, and what the published research actually says. Every claim links to its source.</p>
     <div class="chain" aria-hidden="true" id="chain"></div>
     <div class="cap">A peptide is a chain of amino acids. This one is KPV, three letters long.</div>
-    <div class="meta"><span>Last reviewed Oct 27, 2026</span><span>About 8 min read</span><button class="share" type="button" data-share>Share this page</button></div>
+    <div class="meta"><span>Last reviewed Oct 29, 2026</span><span>About 8 min read</span><button class="share" type="button" data-share>Share this page</button></div>
   </header>
 
   <nav class="toc" aria-label="Sections">
-    <a href="#basics">Peptides 101</a><a href="#timeline">Timeline</a><a href="#facts">Did you know?</a><a href="#studies">The research</a><a href="#coa">Reading a COA</a><a href="#storage">Storage</a><a href="#glossary">Glossary</a><a href="#quiz">Quiz</a>
+    <a href="#basics">Peptides 101</a><a href="#timeline">Timeline</a><a href="#facts">Did you know?</a><a href="#studies">The research</a><a href="#compare">Compare</a><a href="#faq">FAQ</a><a href="#coa">Reading a COA</a><a href="#storage">Storage</a><a href="#glossary">Glossary</a><a href="#quiz">Quiz</a>
   </nav>
 
   <section id="basics">
@@ -210,13 +238,37 @@ section{margin-top:60px;scroll-margin-top:64px}
   <section id="studies">
     <div class="sh"><div class="ey">04 · Literature</div><h2>The research, compound by compound</h2><p>What has actually been studied, with links to the original papers, trial records and regulators. Evidence ranges from approved drugs to early animal work, and every card is labeled honestly.</p></div>
     <div class="tools" id="tools"><input class="srch" id="rq" type="search" placeholder="Search a compound, e.g. BPC" aria-label="Search compounds"></div>
+    <div class="az" id="az" aria-label="Jump to a compound"></div>
     <div class="cards" id="cards"></div>
     <p class="none" id="none" hidden>No compounds match. Try another search.</p>
     <div class="more" id="more" hidden><button class="chip" id="more-b" type="button">Show all compounds</button></div>
   </section>
 
+  <section id="compare">
+    <div class="sh"><div class="ey">05 · Side by side</div><h2>Compare</h2><p>The three matchups people ask about most, in plain English.</p></div>
+    <div class="cmp">
+      <div class="cp"><h3>NVL-R3 vs NVL-T2</h3><div class="cp-g">
+        <div class="cp-c"><b>NVL-R3</b><p><span>Compound</span>Retatrutide</p><p><span>Targets</span>3 receptors: GIP, GLP-1 and glucagon</p><p><span>Furthest along</span>Phase 3 trials</p><p><span>Headline result</span>Up to 25% average weight loss at 80 weeks (TRIUMPH-1)</p></div>
+        <div class="cp-c"><b>NVL-T2</b><p><span>Compound</span>Tirzepatide</p><p><span>Targets</span>2 receptors: GIP and GLP-1</p><p><span>Furthest along</span>FDA-approved (2022)</p><p><span>Headline result</span>Up to 20.9% average weight loss at 72 weeks (SURMOUNT-1)</p></div>
+      </div><p class="cp-n">Different trials, lengths and people, so the numbers aren’t a head-to-head comparison.</p></div>
+      <div class="cp"><h3>BPC-157 vs TB-500</h3><div class="cp-g">
+        <div class="cp-c"><b>BPC-157</b><p><span>What it is</span>15 amino acids, from a protein in stomach juice</p><p><span>Studied for</span>Tendon, ligament, muscle and gut repair</p><p><span>Evidence</span>Almost all animal studies</p></div>
+        <div class="cp-c"><b>TB-500</b><p><span>What it is</span>A 7-amino-acid slice of thymosin beta-4</p><p><span>Studied for</span>Wound healing and cell movement</p><p><span>Evidence</span>Lab and animal studies, no human trials</p></div>
+      </div><p class="cp-n">Both are on the World Anti-Doping Agency’s prohibited list. They’re often paired in blends like Wolverine.</p></div>
+      <div class="cp"><h3>Semax vs Selank</h3><div class="cp-g">
+        <div class="cp-c"><b>Semax</b><p><span>Made from</span>A fragment of the hormone ACTH</p><p><span>Studied for</span>Stroke recovery, memory and focus</p><p><span>Status</span>Prescription drug in Russia</p></div>
+        <div class="cp-c"><b>Selank</b><p><span>Made from</span>Tuftsin, an immune-system peptide</p><p><span>Studied for</span>Anxiety and stress</p><p><span>Status</span>Prescription drug in Russia</p></div>
+      </div><p class="cp-n">Both were developed in Moscow. Most human studies are small and published in Russian.</p></div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="sh"><div class="ey">06 · Questions</div><h2>Common questions</h2><p>The things people ask most. Tap a question.</p></div>
+    <div class="gls" id="faqs"></div>
+  </section>
+
   <section id="coa">
-    <div class="sh"><div class="ey">05 · Quality</div><h2>How to read a COA</h2><p>A certificate of analysis (COA) is a lab report for one specific batch. These are the parts worth checking on any supplier’s COA.</p></div>
+    <div class="sh"><div class="ey">07 · Quality</div><h2>How to read a COA</h2><p>A certificate of analysis (COA) is a lab report for one specific batch. These are the parts worth checking on any supplier’s COA.</p></div>
     <div class="grid">
       <div class="tile"><span class="k">Identity</span><b>Mass spectrometry (MS)</b><p>Confirms the molecule is what the label says by matching its measured molecular weight to the expected weight. A purity number means little without it.</p></div>
       <div class="tile"><span class="k">Purity</span><b>HPLC purity %</b><p>Shows how much of the sample is the target peptide versus other material, usually as a percentage from the main peak on the chromatogram.</p></div>
@@ -225,11 +277,11 @@ section{margin-top:60px;scroll-margin-top:64px}
       <div class="tile"><span class="k">Content</span><b>Amount per vial</b><p>Some reports also measure how much peptide is actually in the vial, so you can compare it with the amount on the label.</p></div>
       <div class="tile"><span class="k">Appearance</span><b>Form and color</b><p>Lyophilized peptides are normally a white or off-white powder or cake. The COA usually notes this.</p></div>
     </div>
-    <div class="callout"><p><b>COAs are available upon request.</b> Email your order number or the product and dose you’re looking at, and I’ll send what’s available for that batch.</p><a class="btn" href="mailto:novrixlabs@gmail.com?subject=COA%20request">Request a COA</a></div>
+    <div class="callout"><p><b>Lab reports are posted for tested batches.</b> On the menu, tap the green badge on any product to see its report and verify it on the lab’s site, or tap the Lab tested filter to see them all.</p><a class="btn" href="https://novrixlabs.shop/#shop">See lab reports</a></div>
   </section>
 
   <section id="storage">
-    <div class="sh"><div class="ey">06 · Lab practice</div><h2>Storage &amp; handling</h2><p>General lab guidance for synthetic peptides, from published handling guides.</p></div>
+    <div class="sh"><div class="ey">08 · Lab practice</div><h2>Storage &amp; handling</h2><p>General lab guidance for synthetic peptides, from published handling guides.</p></div>
     <div class="grid">
       <div class="tile"><span class="k">Powder</span><b>Keep sealed vials cold</b><p>Freeze-dried peptides keep best cold, dry and sealed. Lab guides recommend a freezer (−20 °C or colder) for longer storage.</p></div>
       <div class="tile"><span class="k">Opening</span><b>Let it warm up first</b><p>Let a cold vial reach room temperature before opening it, so moisture from the air doesn’t condense inside.</p></div>
@@ -242,19 +294,19 @@ section{margin-top:60px;scroll-margin-top:64px}
   </section>
 
   <section id="glossary">
-    <div class="sh"><div class="ey">07 · Words</div><h2>Glossary</h2><p>The jargon, decoded. Tap a term.</p></div>
+    <div class="sh"><div class="ey">09 · Words</div><h2>Glossary</h2><p>The jargon, decoded. Tap a term.</p></div>
     <div class="gls" id="gls"></div>
   </section>
 
   <section id="quiz">
-    <div class="sh"><div class="ey">08 · Test yourself</div><h2>Peptide quiz</h2><p>Six questions, all answered somewhere on this page.</p></div>
+    <div class="sh"><div class="ey">10 · Test yourself</div><h2>Peptide quiz</h2><p>Six questions, all answered somewhere on this page.</p></div>
     <div class="quiz" id="qz" aria-live="polite"></div>
     <div class="endrow"><a class="btn back" href="https://novrixlabs.shop/#shop">Back to the menu</a><button class="share" type="button" data-share style="padding:10px 16px;font-size:.86rem">Share this page</button></div>
   </section>
 
   <div class="fine">
     <p><b>For research use only.</b> These summaries describe published studies, trial records and regulatory decisions about each compound. They are not claims about Novrix Labs products, which are sold strictly for in-vitro laboratory research and are not drugs, supplements, foods or cosmetics. Clinical results come from pharmaceutical-grade products tested under trial conditions. Nothing here is medical advice or a guide to human use.</p>
-    <p>Spot an error or a newer study? <a href="mailto:novrixlabs@gmail.com?subject=Research%20library%20correction">Email me</a> and I’ll update the page. Last reviewed Oct 27, 2026.</p>
+    <p>Spot an error or a newer study? <a href="mailto:novrixlabs@gmail.com?subject=Research%20library%20correction">Email me</a> and I’ll update the page. Last reviewed Oct 29, 2026.</p>
     <p>Questions? <a href="mailto:novrixlabs@gmail.com">novrixlabs@gmail.com</a> · <a href="https://discord.gg/XP9dz3jse" target="_blank" rel="noopener">Novrix Discord</a> · <a href="https://novrixlabs.shop/">novrixlabs.shop</a></p>
   </div>
 </div>
@@ -308,18 +360,69 @@ const R = [
   ["HCG", "Human chorionic gonadotropin", "appr", "FDA-approved for specific fertility and hormone conditions. Its label states it has not been shown effective for weight loss.", "A 1972 NIH test for hCG became the basis of modern pregnancy tests.", [["https://history.nih.gov/display/history/Pregnancy+Test+Timeline", "NIH Office of History"], ["https://www.rxlist.com/novarel-drug.htm", "Novarel prescribing information"]]],
   ["Cartalax & Testagen", "Khavinson “bioregulator” peptides", "early", "Short peptides from Vladimir Khavinson’s research group. The group’s own 2021 review describes mostly cell and animal work, with no randomized human trials of these two.", null, [["https://www.mdpi.com/1420-3049/26/22/7053", "Khavinson et al., Molecules 2021"]]]
 ];
+// plain-English research areas and the matching menu items (menu anchors are slugs of the menu item names)
+const XR = {
+  "NVL-R3": [["Weight & obesity", "Type 2 diabetes", "Fatty liver", "Knee arthritis"], [["NVL-R3", "nvl-r3"]]],
+  "NVL-T2": [["Weight & obesity", "Type 2 diabetes", "Sleep apnea", "Heart failure", "Fatty liver"], [["NVL-T2", "nvl-t2"]]],
+  "Eloralintide": [["Weight & obesity", "Appetite & fullness"], [["Eloralintide", "eloralintide"]]],
+  "5-Amino-1MQ": [["Fat cells (mice)", "Metabolism (mice)", "Aging muscle (mice)"], [["5-Amino-1MQ", "5-amino-1mq"]]],
+  "Tesamorelin": [["Belly fat in HIV", "Fatty liver in HIV", "Growth hormone release"], [["Tesamorelin", "tesamorelin"]]],
+  "CJC-1295 + Ipamorelin": [["Growth hormone release", "Gut recovery after surgery (ipamorelin)"], [["CJC-1295 & Ipamorelin", "cjc-1295-no-dac-and-ipamorelin"], ["Ipamorelin", "ipamorelin"]]],
+  "IGF-1 LR3": [["Cell culture growth", "Muscle cells (lab)"], [["IGF-1 LR3", "igf-1-lr3"]]],
+  "SS-31": [["Barth syndrome", "Mitochondrial muscle disease", "Heart failure", "Eye disease (dry AMD)"], [["SS-31", "ss-31"]]],
+  "MOTS-c": [["Metabolism & insulin (mice)", "Exercise capacity (mice)", "Aging (mice)"], [["MOTS-c", "mots-c"]]],
+  "NAD+": [["Aging", "Cell energy", "DNA repair"], [["NAD+", "nad-plus-buffered"]]],
+  "Glutathione": [["Antioxidant defense", "Liver", "Skin tone"], [["Glutathione", "korean-pink-glutathione"]]],
+  "Thymosin Alpha-1": [["Immune function", "Hepatitis B", "Vaccine response", "Severe infections"], [["Thymosin Alpha-1", "thymosin-alpha-1"]]],
+  "BPC-157": [["Tendon & ligament (animals)", "Gut lining (animals)", "Muscle & bone (animals)"], [["BPC-157", "bpc-157"], ["Wolverine blend", "wolverine-blend"]]],
+  "TB-500": [["Wound healing (animals)", "Cell movement (lab)", "Heart tissue (animals)"], [["TB-500", "tb-500"], ["Wolverine blend", "wolverine-blend"]]],
+  "KPV": [["Gut inflammation (mice)", "Skin & wound (lab)"], [["KPV", "kpv"]]],
+  "GHK-Cu": [["Skin & collagen", "Wound healing", "Hair (lab)"], [["GHK-Cu", "ghk-cu"]]],
+  "ARA-290": [["Nerve pain (small-fiber)", "Diabetic nerve damage", "Inflammation"], [["ARA-290", "ara-290"]]],
+  "Semax & Selank": [["Stroke recovery (Semax)", "Memory & focus", "Anxiety (Selank)"], [["Semax", "semax"], ["Selank", "selank"]]],
+  "Kisspeptin-10": [["Reproductive hormones", "Fertility research", "Puberty"], [["Kisspeptin-10", "kisspeptin-10"]]],
+  "PT-141": [["Low sexual desire (women)"], [["PT-141", "pt-141"]]],
+  "Melanotan 2": [["Skin tanning", "Sun protection (early)"], [["Melanotan 2", "melanotan-2"]]],
+  "HCG": [["Fertility", "Hormone conditions"], []],
+  "Cartalax & Testagen": [["Cartilage (lab)", "Aging (lab)"], [["Cartalax", "cartalax"], ["Testagen", "testagen"]]]
+};
+const rslug = (n) => "r-" + String(n).toLowerCase().replace(/\+/g, "-plus").replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+// live stock + lab-report info from the menu page (same site); the page works without it
+let MENU = null, redraw = () => {};
+fetch("https://novrixlabs.shop/", {cache: "no-cache"}).then((r) => r.ok ? r.text() : "").then((t) => {
+  const m = /^const DATA = (.*?);?$/m.exec(t || ""); if (!m) return; const D = JSON.parse(m[1]), out = {}, rank = {in: 3, low: 2, soon: 1, out: 0};
+  const sl = (n) => String(n).toLowerCase().replace(/\+/g, "-plus").replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  for (const g of D) for (const it of g.items || []) { let best = "out", lab = false; for (const d of it.doses || []) { if ((rank[d.s] ?? 0) > rank[best]) best = d.s; if (d.coa) lab = true; } out[sl(it.name)] = {s: best, lab}; }
+  MENU = out; redraw(); }).catch(() => {});
+const STL = {in: "In stock", low: "Low stock", soon: "Restocking", out: "Out of stock"};
 (() => { const box = document.getElementById("cards"), tools = document.getElementById("tools"), q = document.getElementById("rq"), none = document.getElementById("none"); let f = "all";
   const chips = [["all", "All"], ["appr", "Approved"], ["abroad", "Approved abroad"], ["human", "Human trials"], ["early", "Early"], ["nat", "Made by the body"]];
   for (const [k, t] of chips) { const b = el("button", "chip", t); b.type = "button"; b.dataset.f = k; b.setAttribute("aria-pressed", String(k === f)); b.addEventListener("click", () => { f = k; tools.querySelectorAll(".chip").forEach((x) => x.setAttribute("aria-pressed", String(x.dataset.f === f))); draw(); }); tools.insertBefore(b, q); }
   let all = false; const more = document.getElementById("more"); document.getElementById("more-b").addEventListener("click", () => { all = true; draw(); });
   const draw = () => { box.replaceChildren(); const s = q.value.trim().toLowerCase(); let n = 0, cap = !all && f === "all" && !s ? 8 : 1e9, hid = 0;
     for (const [name, sub, tag, sum, fun, srcs] of R) {
-      if (f !== "all" && tag !== f) continue; if (s && !(name + " " + sub + " " + sum).toLowerCase().includes(s)) continue; n++; if (n > cap) { hid++; continue; }
-      const c = el("article", "rc"), h = el("div", "rc-h"), t = el("div"); t.append(el("b", null, name), el("small", null, sub)); h.append(t, el("span", "tag t-" + tag, TAGS[tag])); c.append(h, el("p", null, sum));
+      if (f !== "all" && tag !== f) continue; if (s && !(name + " " + sub + " " + sum + " " + ((XR[name] || [[]])[0]).join(" ")).toLowerCase().includes(s)) continue; n++; if (n > cap) { hid++; continue; }
+      const c = el("article", "rc"); c.id = rslug(name); const h = el("div", "rc-h"), t = el("div"); t.append(el("b", null, name), el("small", null, sub)); h.append(t, el("span", "tag t-" + tag, TAGS[tag])); c.append(h, el("p", null, sum));
+      const x = XR[name]; if (x && x[0].length) { const sf = el("div", "sf"); sf.append(el("span", null, "Studied for")); for (const t of x[0]) sf.append(el("i", null, t)); c.append(sf); }
       if (fun) c.append(el("div", "fun", "✨ " + fun));
+      if (x && x[1].length) { const mn = el("div", "mn"); for (const [lbl, sg] of x[1]) { const a = el("a", "mb"); a.href = "https://novrixlabs.shop/#" + sg; a.append(el("span", null, "See " + lbl + " on the menu")); const info = MENU && MENU[sg];
+          if (info) { a.append(el("span", "st " + info.s, STL[info.s] || "")); if (info.lab) a.append(el("span", "lt", "✓ Lab tested")); } a.append(el("span", "ar", "→")); mn.append(a); } c.append(mn); }
       const ul = el("ul", "src"); for (const [u, l] of srcs) { const li = el("li"); li.append(lk(u, l)); ul.append(li); } c.append(ul); box.append(c); }
     none.hidden = n > 0; more.hidden = !hid; document.getElementById("more-b").textContent = "Show all " + n + " compounds"; };
-  q.addEventListener("input", draw); draw(); })();
+  q.addEventListener("input", draw); draw(); redraw = draw;
+  const az = document.getElementById("az"); for (const n of R.map((r) => r[0]).sort((a, b) => a.localeCompare(b))) { const b = el("button", null, n); b.type = "button";
+    b.addEventListener("click", () => { f = "all"; q.value = ""; all = true; tools.querySelectorAll(".chip").forEach((x) => x.setAttribute("aria-pressed", String(x.dataset.f === "all"))); draw();
+      const card = document.getElementById(rslug(n)); if (card) { card.scrollIntoView({behavior: "smooth", block: "start"}); card.classList.add("flash"); setTimeout(() => card.classList.remove("flash"), 1600); } }); az.append(b); } })();
+
+const FAQ = [
+  ["What does “research use only” mean?", "Novrix products are sold for laboratory (in-vitro) research. They aren’t drugs, supplements, foods or cosmetics, and they aren’t for human or animal use. The studies on this page describe the compounds in published research, not our products."],
+  ["Why does it come as a powder?", "Peptides break down fairly quickly in water, so they’re freeze-dried (lyophilized) into a powder or small cake. It keeps far longer that way, especially sealed and cold."],
+  ["What is bac water for?", "Bacteriostatic water is sterile water with 0.9% benzyl alcohol, which slows bacterial growth. Labs use it to dissolve (reconstitute) freeze-dried peptides. It’s on the menu as Reconstitution Solution."],
+  ["How do I know it’s real?", "Tested batches have their lab report posted on the menu. Tap the green badge on a product to see the report, then the Verify link to check it on the lab’s own site. The Lab tested filter shows them all."],
+  ["How fast does it ship?", "Most orders paid by 4 PM Monday to Friday ship the same day and usually arrive in about 2 days. 2-Day Air is a flat $15, or choose free local pickup. Checkout shows exactly when yours ships."],
+  ["What are Nov Creds?", "Store credit that comes off your next order automatically. You earn it when a friend uses your code on their first $100+ order, when you leave a review, and on your 3rd, 5th and every 5th order after. Check yours on the menu."]
+];
+(() => { const box = document.getElementById("faqs"); for (const [t, d] of FAQ) { const de = el("details", "gl"); de.append(el("summary", null, t), el("p", null, d)); box.append(de); } })();
 
 const GL = [["Amino acid", "One of the 20 building blocks that link together to make peptides and proteins."], ["Peptide", "A short chain of amino acids, roughly 2 to 50 long. Longer chains are usually called proteins."], ["Receptor", "A protein on or in a cell that a molecule binds to, like a lock for a key, to trigger a response."], ["Agonist", "A molecule that binds a receptor and switches it on. Dual and triple agonists hit two or three receptors."], ["Analog", "A lab-made version of a natural molecule, tweaked to last longer or work more strongly."], ["Secretagogue", "Something that prompts a gland to release a hormone, like ipamorelin prompting growth hormone release."], ["Half-life", "How long it takes for half of a molecule to be cleared. Many natural peptides last only minutes."], ["Lyophilized", "Freeze-dried. Water is removed under vacuum, leaving a stable powder or cake."], ["HPLC", "High-performance liquid chromatography: separates a sample’s parts to measure purity."], ["Mass spectrometry", "Weighs molecules very precisely to confirm a compound’s identity."], ["In vitro / in vivo", "In vitro means in a dish or test tube. In vivo means in a living organism."], ["Phase 1, 2, 3", "The stages of clinical trials: safety in a small group, then effectiveness in more people, then large confirmatory trials."], ["Topline results", "A company’s first summary of a trial’s main results, released before the full peer-reviewed paper."], ["Peer review", "When independent experts check a study before a journal publishes it."]];
 (() => { const box = document.getElementById("gls"); for (const [t, d] of GL) { const de = el("details", "gl"); de.append(el("summary", null, t), el("p", null, d)); box.append(de); } })();
