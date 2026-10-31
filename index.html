@@ -899,6 +899,39 @@ html.rvon .card.in{opacity:1;transform:none}
 .trk-x button{background:none;border:0;color:#c9b3ff;text-decoration:underline;font:inherit;cursor:pointer;padding:0}
 @media (prefers-reduced-motion:no-preference){.trk-s{animation:trkin .4s ease-out both;animation-delay:calc(var(--i) * 90ms)}@keyframes trkin{from{opacity:0;transform:translateX(-8px)}}.trk-s.now i{animation:trkp 1.8s ease-in-out infinite}@keyframes trkp{50%{box-shadow:0 0 0 8px rgba(155,77,255,0)}}}
 
+/* fx4: purity stat */
+.pstat{display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:7px 14px 7px 10px;border-radius:99px;text-decoration:none;color:var(--ink);font-size:.86rem;background:linear-gradient(rgba(10,14,24,.85),rgba(10,14,24,.85)) padding-box,linear-gradient(90deg,#3ddc97,#5bd8ff,#9b4dff) border-box;border:1px solid transparent;box-shadow:0 0 22px -6px rgba(91,216,255,.55)}
+.pstat svg{width:18px;height:18px;flex:none}
+.pstat b{font-family:var(--f-num);font-size:1.02rem;font-variant-numeric:tabular-nums;background:linear-gradient(90deg,#7dffb2,#5bd8ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pstat small{color:var(--muted);font-size:.74rem}
+.pstat:hover{box-shadow:0 0 28px -4px rgba(91,216,255,.8)}
+/* fx4: shipped-to map */
+.smap{margin-top:18px;border:1px solid var(--line);border-radius:16px;padding:18px;background:radial-gradient(500px 220px at 70% 0%,rgba(91,140,255,.10),transparent 70%),var(--panel);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:20px;align-items:center}
+.smap-t b{display:block;font-size:2.4rem;line-height:1;font-family:var(--f-num);background:linear-gradient(90deg,#fff,#9fc2ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.smap-t span{display:block;margin-top:6px;font-weight:600}.smap-t p{margin:8px 0 0;color:var(--muted);font-size:.84rem}
+.smap-g{display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:3px}
+.smap-g i{aspect-ratio:1;border-radius:5px;display:grid;place-items:center;font:600 clamp(6px,1.6vw,10px)/1 var(--f-num);font-style:normal;color:#4a4a5e;background:#14141e;border:1px solid #1d1d2a}
+.smap-g i.on{color:#fff;background:linear-gradient(135deg,#9b4dff,#2f8cff);border-color:transparent;box-shadow:0 0 12px rgba(91,120,255,.65)}
+.smap-g i.hq{background:linear-gradient(135deg,#3ddc97,#2f8cff);box-shadow:0 0 0 2px rgba(61,220,151,.35),0 0 16px rgba(61,220,151,.7)}
+@media (max-width:640px){.smap{grid-template-columns:1fr;gap:14px}.smap-t b{font-size:2rem}}
+@media (prefers-reduced-motion:no-preference){.smap.go i.on{animation:smon .6s cubic-bezier(.2,1.6,.4,1) both;animation-delay:calc(var(--d) * 90ms)}@keyframes smon{from{transform:scale(.2);opacity:0}}.smap i.hq{animation:smhq 2.4s ease-in-out infinite}.smap.go i.hq{animation:smon .6s cubic-bezier(.2,1.6,.4,1) both,smhq 2.4s ease-in-out .8s infinite}@keyframes smhq{50%{box-shadow:0 0 0 5px rgba(61,220,151,.12),0 0 22px rgba(61,220,151,.9)}}}
+/* fx4: 3D molecule viewer */
+.sqb{position:relative;display:block;width:100%;padding:0;margin:0;border:0;background:none;cursor:pointer;border-radius:10px}
+.sqb:focus-visible{outline:2px solid var(--violet,#9b4dff);outline-offset:2px}
+.sqb .s3{position:absolute;right:0;bottom:2px;font:700 .58rem/1 var(--f-num);letter-spacing:.12em;color:#c9b3ff;background:rgba(155,77,255,.16);border:1px solid rgba(155,77,255,.45);padding:3px 6px;border-radius:99px}
+.sqb:hover .s3{background:rgba(155,77,255,.32);color:#fff}
+.mol-ov .nf-in{width:min(100%,620px);border-color:rgba(155,77,255,.5);gap:8px}
+.mol-cv{width:100%;height:min(56vh,420px);display:block;border-radius:14px;background:radial-gradient(circle at 50% 45%,#141029,#07070d 70%);touch-action:none;cursor:grab}
+.mol-cv:active{cursor:grabbing}
+.mol-i{min-height:44px;border-radius:12px;background:var(--sunk);padding:9px 12px;font-size:.86rem;display:flex;align-items:center;gap:10px}
+.mol-i i{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font:700 .62rem var(--f-num);font-style:normal;color:#06060a}
+.mol-i b{display:block}.mol-i small{color:var(--muted);font-size:.76rem}
+.mol-lg{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:.72rem;color:var(--muted)}.mol-lg span{display:inline-flex;align-items:center;gap:5px}.mol-lg span::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--c)}
+.mol-sub{margin:-4px 0 0;color:var(--muted);font-size:.8rem}
+/* fx4: researcher card */
+.cr-card{margin-top:8px}
+.rc-ov{z-index:95}.rc-img{width:100%;max-height:60vh;object-fit:contain;border-radius:12px}
+
 </style>
 
 <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-h">
@@ -927,6 +960,7 @@ html.rvon .card.in{opacity:1;transform:none}
     <h1>NOVRIX</h1>
     <div class="tag" id="tag">Premium Research Peptides</div>
     <div class="hchain" id="hchain" aria-hidden="true"></div>
+    <a class="pstat" id="pstat" href="#shop" hidden></a>
     <div class="updated">Availability updated Oct 30, 2026</div>
     <p class="lede">Shipped fast, packed discreetly. Lab reports posted for tested batches. 35+ compounds across metabolism, recovery, sleep, focus and longevity research.</p>
     <div class="stats"><div><b>Discreet</b><span>plain packaging</span></div><div><b>Same-day</b><span>shipping on most orders</span></div><div><b>~2-day</b><span>typical delivery</span></div><div><b>35+</b><span>compounds</span></div></div>
@@ -973,6 +1007,7 @@ html.rvon .card.in{opacity:1;transform:none}
   </section>
   <section class="sec" id="shipping">
     <div class="sh"><span class="ey">The fine print, made simple</span><h2>Shipping &amp; policies</h2></div>
+    <div class="smap" id="smap" hidden></div>
     <div class="pg2"><div class="po"><b>Processing</b><p>Most orders paid by 4 PM Monday to Friday ship the same day. Otherwise, they go out the next ship day. Checkout shows exactly when yours ships.</p></div><div class="po"><b>Shipping</b><p>Ships anywhere in the US and usually arrives in about 2 days. Flat $15 for 2-Day Air, or free local pickup. VIPs ship free on orders of $150+, and promos with free shipping show in the banner up top.</p></div><div class="po"><b>Discreet packaging</b><p>Plain outer packaging with nothing on the outside about what’s inside.</p></div><div class="po"><b>Local pickup</b><p>In South Florida? Choose pickup and a time at checkout, 10 AM to 5 PM. I’ll confirm the spot before then.</p></div><div class="po"><b>Powder form</b><p>Every vial ships as a powder. Add reconstitution solution (bac water) to your order to mix it.</p></div><div class="po po-warn"><b>Record your unboxing</b><p><strong>Record a video every time you open a package.</strong> If there’s a problem with your order and no video, I may not be able to make it right. Lost, damaged or something not right? Email or message me with your order number and your video.</p></div></div>
   </section>
   <section class="sec" id="bulk">
@@ -1328,7 +1363,7 @@ function openCreds(getCode) {
     cp.addEventListener("click", async () => { try { await navigator.clipboard.writeText(link); cp.textContent = "Copied \u2713"; } catch (e) { cp.textContent = link; } });
     let upd = ""; try { const d = new Date(CREDS.at); if (!isNaN(d)) upd = " Updated " + d.toLocaleString("en-US", {month: "short", day: "numeric", hour: "numeric", minute: "2-digit"}) + "."; } catch (e) {}
     done.replaceChildren(amt, el("p", null, bal > 0 ? "Applied automatically to your next order." + upd : "Earn Nov Creds when a friend orders with your code or when you leave a review." + upd), cp);
-    { const n = CREDS && CREDS.n ? CREDS.n[fnv32("novcnt:" + e + "|" + v).toString(16).padStart(8, "0")] : undefined; if (Number.isFinite(n)) { const rb = rankBox(n); done.insertBefore(rb, cp); const tier = n >= 10 ? 3 : n >= 5 ? 2 : n >= 3 ? 1 : 0, rk = "novrank:" + fnv32(e + "|" + v).toString(16); let was = null; try { was = localStorage.getItem(rk); localStorage.setItem(rk, String(tier)); } catch (x) {} if (was !== null && tier > +was) { rb.classList.add("up"); rb.querySelector(".rk-t b").append(el("span", "rk-up", "RANK UP")); confetti(); setTimeout(confetti, 450); } else if (tier >= 2) confetti(); } }
+    { const n = CREDS && CREDS.n ? CREDS.n[fnv32("novcnt:" + e + "|" + v).toString(16).padStart(8, "0")] : undefined; if (Number.isFinite(n)) { const rb = rankBox(n); done.insertBefore(rb, cp); { const sc = el("button", "tbtn cr-card", "Save my researcher card"); sc.type = "button"; sc.addEventListener("click", () => researcherCard(n, v, sc)); done.append(sc); } const tier = n >= 10 ? 3 : n >= 5 ? 2 : n >= 3 ? 1 : 0, rk = "novrank:" + fnv32(e + "|" + v).toString(16); let was = null; try { was = localStorage.getItem(rk); localStorage.setItem(rk, String(tier)); } catch (x) {} if (was !== null && tier > +was) { rb.classList.add("up"); rb.querySelector(".rk-t b").append(el("span", "rk-up", "RANK UP")); confetti(); setTimeout(confetti, 450); } else if (tier >= 2) confetti(); } }
     done.hidden = false; };
   go.addEventListener("click", show); cd.addEventListener("keydown", (ev) => { if (ev.key === "Enter") show(); });
   const top = el("div", "co-top"); top.append(el("h2", null, "My Nov Creds"), x);
@@ -1445,6 +1480,7 @@ let VIPON = false, REFCODE = ""; try { REFCODE = localStorage.getItem("novrix-re
 const REF_OFF = 10, REF_MIN = 100, REF_RX = /^NVL\s*-?\s*(\d{2}-\d{2,4}|[A-HJ-NP-Z2-9]{4})$/i;
 const CREDS = {"at": "2026-10-30T21:46:17Z", "b": {"073a3b06": 0, "0771e6bf": 0, "0b2652dc": 0, "0ecab5ad": 0, "10ec5aed": 5, "1cfced27": 0, "27cc63c5": 0, "2ea09f97": 10, "48373436": 25, "48eb02ac": 0, "5328ac57": 5, "74a9553d": 15, "79dd28c6": 0, "83138e87": 0, "837c25b0": 0, "9b29a275": 0, "a47e667a": 0, "b5cd1a41": 0, "c534ab0e": 0, "cc8b67df": 0, "cf7d8372": 5, "d74e0c82": 0, "e53c2096": 0, "ffe37c0f": 10}, "c": {"0c7c4200": "19450e88b4530783343172", "194aead1": "2631779bb62164e17f", "1ff46f33": "7716650ce91c656b6d", "3334b5f8": "cacf8fef55b3e3", "3616e9bf": "793cfe27f14f80", "3a160b2f": "97eaa3fe09e1a395cd", "3ba1e9ad": "554e1428d33f7f", "699d46ce": "0e52c718945bc77d10", "6bc8ab7f": "70976957e5f51c", "71a113c9": "b14ee1ce2648e63efe36", "7c5939ed": "f6b6cdac71afcaeabb", "84b2694e": "618badf9928faee734f5", "875b8071": "8b103ae067103affdf6d4d", "878260ff": "9f24f5b17028f4d8c1", "887c9f61": "2e5efc8c9358fa9c742f", "8f611ea5": "5856f619cf50f00bcb22", "9585c23b": "ba94355623863e5715e6", "a9a5021f": "f2dea54372c2ad539cd5df38", "bb8d4372": "45a64716d5b3451ed4db", "bf40ead7": "7d712981d070308c1b1144", "c31f36f5": "20e385dd80f493c60884", "ca5aad7f": "4c5344512e555d470c20", "daac1bfb": "c544e4e5b541ec8386", "e13556ca": "a8d09e2539da85538e", "e1f1cc84": "2cd93ea14fd129b8a7ab", "fdf6894f": "146e9263ee1dee"}, "o": ["000660dd", "08b0b48e", "13eda835", "20ee4994", "2c5adfb2", "2e67f7a4", "4034124e", "4fd3a82a", "53161e3f", "5cf39adf", "5ee9ec5f", "70116467", "79eccc5e", "7c9ac8b9", "8cee25b7", "91dfdbcd", "a02206ef", "bcc67408", "c32c7046", "dd01029a", "e5a3e277", "f8660bb5", "ff5c481e", "ff8dd6c5"], "n": {"007e84f7": 1, "04b1fbeb": 3, "09370e9d": 1, "15e278f3": 1, "1e142cf2": 6, "25700a62": 1, "3b3bc1ef": 3, "4b6927ba": 2, "69711f5f": 1, "6b6b9982": 15, "6d8bbbba": 1, "78f7b551": 1, "7f81b185": 2, "82b34338": 4, "84348da0": 1, "84da8f70": 4, "9af5eb03": 1, "a68ecbf9": 2, "b7087f2a": 1, "bc09297e": 1, "c8809f16": 1, "caad7b4a": 5, "e8b17a25": 2, "f852e4ec": 5}};
 const TRACK = {"at": "2026-10-31T01:56:46Z", "t": {"0fc3abe3": "a3df586251dd782997705c27f52000614526163f95554d2621664b23b92a166572c1190efec31b1473c560df8ca92a9b6b892795aacd60c2bd3075dacb306ec45edd3fd9f69b60ce8b9c2a8266cc6ec83a667f8daf3020d6062267cd951715abdc11679eb30567c782080dc729047cc4800671c7710876c34a01647d8403727cab167a572b14784d8d106a4f0e466a58dd51", "12deb9c3": "7d538dcfa350bd818d1d928e070a9ace7e559fd3df03dcb143198e83da019b94bc47dcc7014dc8db3ab0a3d1415ca2c061e2ed8effe6eb8075bcacd5f4b6b8cb4cb9a3dbdda5a2ca2316e0bf891fe9f84afcb46131d6ab63a6ccb4640b9eaa76dac6bc773f8fe53d9797a47b5799a4627c99f33cb7cee5784304ab7bc44fab6c7101a577a403b376f71cbb6d1f1ab977ad1eab752e46ab62234e", "541db8f0": "32251f048c272f4a4e740041e4670801b92f0d0838774e6a00671c44b97c0943c3294e1c7e205a00c381215db29120529ccf6f063ed7690a84912e59099f3a41b198215b24882048dadb621374ae6b5ad34b3859645e2759f34b3850121826445352304fd20769077a1d28475e1b2850f5047f14c2566952da032a4f51482a5e24072447fd0432441e183a5192183845601c2a45c7422a504953", "788bd058": "3e6083ac8862b3e2724f9ce9f85894a9d51991a85c41d2cabc5580e4254395e3ff74d2a47a7fc6b897bc18c10eac19d6d0e8569a72ec5096d0a817c5b5a603d5fdbf18c768b319d46efc5b9fb8f452dec754013d58431e3de75e013c660f1f28d752092b6e065063fe1d112bda1b113c11184660fe4a5026ce0c132ba55b133238101d2bc9110b289a180335161b0129fc1c13294343133c6d5f", "7d502ce6": "0ebc0db9d8be3df522eb12fcc8fc1aba05ba1fb5aced5cd56cf80ef915e71bf02f915c914a9b488fa7ee7d3510c27c2a20ba336e62ba3562c0de723945d466218dd17d3b77c17c287e8e3e6ba8823732d7ea7c1168f16311f7e87c2716b9623cc7e0743f7ea82d770ecf6c37cacd6c2021ce3b7cee982d3a5e9569b7d5d369a6a89867bf799e71bc2a8179a186837bb50c8c69b5f3db69a0fed7", "a152d295": "6d5180e89356b0a49d1f9fadf71497eb4e5b92eccf01d18c531b83a0aa0396a98c45d1e071b3c5feeabc6d9b71a96c8a51f123c00fe925ce05a9629fa4a376817ca66d9d82b66c8c13e52ec5d91027827ac90a27e1da152956c30a21db921438ead302396f9a5b77c7841a3167861a24ac854d7a47db5b02f3de19b1149019a681db17b974da01b827330e97af300c8dddc719b37e9019a45374", "d419c296": "da1a96353415b67e124595708c11c9368c1cdf60786d8479ac5a827c5018df3a3b1cd7395b1bd523a8cff7640fabbd200483b02225cff7757ec2e369d0c1f87711cfa86e9988f7792099bd29e5c9f96361c7e8b60c96b7edc982f0fa7ab582ec7fc7f0ade8d3f0f46dda9af0e6deebf34be9e68cd2e7e18831bffc9effbcea9f1c90e288ec90e092669af2ecc5caf2fb42db", "d5667645": "1318ba1ec1198a52e34da55b555aad1d9862a8627d39eb02b52eb92e0831ac27f217eb06531dff18a010e43cc73ce52f3b7caa67b97cac6fff1ceb207a17ff3c8613e4221300e52da976a7620f7cae272010fea49f05e1a4c403fea5a54de0b1a809f6b21144affadd58eea2195aeeb5f657b9e93905afaff965ec56122dec43cb68e25e326bf4593d7efc48517dfe500766ecac8021ec456929"}};
+const SHIPMAP = ["FL", "GA", "MO", "MS", "ND", "OH", "VA"];
 const REFS = ["029e9ea8", "081395b5", "0e32eb59", "107f41dd", "12184202", "158e8c03", "1660bf93", "16ffeffa", "19e393cf", "1a2385d1", "1c0d58ba", "1d6006f8", "1f30d117", "1ff23fe9", "224c453e", "2c3b5fd3", "2f135251", "2f85748e", "3307d389", "39eb80f7", "41e52df9", "476e318b", "4898eb07", "49b97293", "58573ba8", "5a5e57df", "5f353dc8", "5f52837e", "6596f581", "6b8f4fe9", "6c332aaa", "6e64180c", "73826cfc", "73e4c0a2", "76244d00", "78cd80c1", "7d32f47b", "7e7be4ea", "80da138e", "832d30f5", "84fa25a9", "87542b70", "8b5eacc9", "8b7606db", "8d6f9a8e", "8dc2eba7", "8e77d224", "94358340", "9f610ae9", "a0382169", "a2a3d9a8", "a41600f7", "ab94312a", "ab9edcd4", "ae9e2f5c", "af7080ad", "b0887609", "b11231ea", "b74ee218", "bceaf6de", "bd6261f9", "bda17c67", "bddb4f1f", "bfa73800", "c2751bed", "cb7f1851", "cf96cc8c", "dbefbda8", "dcd3d7ce", "de1c20cc", "df144bf7", "e61a54d0", "e81e0ca8", "ea7d4164", "ecbe3cee", "ed20c979", "ef88c6e5", "efb23433", "f00ac730", "f24b62c1", "fe690563", "fede2944", "ff5e6185"];
 function refHash(code) { let h = 0x811c9dc5; for (const ch of new TextEncoder().encode("novrix:" + String(code || "").toUpperCase())) { h ^= ch; h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(16).padStart(8, "0"); }
 function refNorm(v) { return String(v || "").toUpperCase().replace(/[^A-Z0-9]/g, ""); }
@@ -1646,7 +1682,7 @@ function draw() {
       vw.addEventListener("click", () => vw.classList.toggle("flip"));
       const lk = el("button", "lnk"); lk.type = "button"; lk.innerHTML = svgLink; lk.title = "Copy link"; lk.setAttribute("aria-label", "Copy link to " + it.name);
       lk.addEventListener("click", () => copyLink(lk, card.id));
-      const h3 = el("h3", "sr", it.name); hd.append(labelEl(it), lk); card.append(h3, hd); { const sa = seqArt(it); if (sa) card.append(sa); } { const gd = GUIDE[norm(it.name)], inf = INFO[norm(it.name)]; if (gd) { const gc = GOALS.find((x) => x[0] === gd.c) || []; card.style.setProperty("--g1", gc[2] || "#9b4dff"); card.style.setProperty("--g2", gc[3] || "#2f8cff"); const gl = el("button", "gl", gd.c); gl.type = "button"; gl.addEventListener("click", () => { const sec = document.getElementById("g-" + slug(gd.c)); if (sec && !goal) sec.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start"}); else setGoal(gd.c, true); }); card.append(gl, el("p", "desc", gd.is)); const tg = el("div", "tags"); for (const t of gd.t) tg.append(el("span", null, t)); if (gd.does) { const dt = el("details", "wd"), sm = el("summary", null, "What it’s studied for"); dt.append(sm, el("p", null, gd.does), tg); card.append(dt); } else card.append(tg); } else if (inf) card.append(el("p", "desc", inf)); }
+      const h3 = el("h3", "sr", it.name); hd.append(labelEl(it), lk); card.append(h3, hd); { const sa = seqArt(it); if (sa) { if (SEQ[it.name]) { const sb = el("button", "sqb"); sb.type = "button"; sb.setAttribute("aria-label", "Explore " + it.name + " in 3D"); sb.append(sa, el("span", "s3", "3D")); sb.addEventListener("click", () => openMol(it)); card.append(sb); } else card.append(sa); } } { const gd = GUIDE[norm(it.name)], inf = INFO[norm(it.name)]; if (gd) { const gc = GOALS.find((x) => x[0] === gd.c) || []; card.style.setProperty("--g1", gc[2] || "#9b4dff"); card.style.setProperty("--g2", gc[3] || "#2f8cff"); const gl = el("button", "gl", gd.c); gl.type = "button"; gl.addEventListener("click", () => { const sec = document.getElementById("g-" + slug(gd.c)); if (sec && !goal) sec.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start"}); else setGoal(gd.c, true); }); card.append(gl, el("p", "desc", gd.is)); const tg = el("div", "tags"); for (const t of gd.t) tg.append(el("span", null, t)); if (gd.does) { const dt = el("details", "wd"), sm = el("summary", null, "What it’s studied for"); dt.append(sm, el("p", null, gd.does), tg); card.append(dt); } else card.append(tg); } else if (inf) card.append(el("p", "desc", inf)); }
       const ds = el("div", "doses");
       for (const d of it.doses) {
         const row = el("div", "dose s-" + d.s);
@@ -1946,6 +1982,94 @@ draw(); tray();
 
 // holographic foil follows the pointer
 list.addEventListener("pointermove", (e) => { const c = e.target.closest(".card.has-bs"); if (!c) return; const r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * 100, y = (e.clientY - r.top) / r.height * 100; c.style.setProperty("--mx", x + "%"); c.style.setProperty("--my", y + "%"); c.style.setProperty("--fx", x + "%"); c.style.setProperty("--fy", y + "%"); });
+// fx4: purity stat
+(() => {
+  const a = document.getElementById("pstat"); if (!a) return; const seen = new Map();
+  for (const g of DATA) for (const it of g.items) for (const d of it.doses) for (const r of coaList(d)) { if (r.kind && r.kind !== "full") continue; const v = parseFloat(r.purity); if (v > 90 && v <= 100) seen.set(r.code || r.coa || it.name + d.dose, v); }
+  if (seen.size < 3) return; const avg = [...seen.values()].reduce((x, y) => x + y, 0) / seen.size;
+  a.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="#5bd8ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h6M10 3v6L4.5 19a1.5 1.5 0 0 0 1.3 2h12.4a1.5 1.5 0 0 0 1.3-2L14 9V3"/><path d="M7 15h10" stroke="#7dffb2"/></svg>';
+  const b = el("b", null, avg.toFixed(2) + "%"); a.append(b, " average purity ", el("small", null, "· lab tested")); a.hidden = false; a.setAttribute("aria-label", avg.toFixed(2) + "% average purity in our lab reports. Show lab-tested products");
+  a.addEventListener("click", (e) => { const c = document.querySelector('.chip[data-f="coa"]'); if (c) { e.preventDefault(); c.click(); document.getElementById("shop").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start"}); } });
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return; const t0 = performance.now(), from = 90;
+  const step = (t) => { const k = Math.min(1, (t - t0) / 1600), e2 = 1 - Math.pow(1 - k, 4); b.textContent = (from + (avg - from) * e2).toFixed(2) + "%"; if (k < 1) requestAnimationFrame(step); }; setTimeout(() => requestAnimationFrame(step), 500);
+})();
+// fx4: shipped-to map
+(() => {
+  const box = document.getElementById("smap"); if (!box || !Array.isArray(SHIPMAP)) return; const on = new Set(SHIPMAP.concat("FL")); if (on.size < 3) return;
+  const G = ["AK,,,,,,,,,,ME", ",,,,,,,,,VT,NH", "WA,ID,MT,ND,MN,IL,WI,MI,NY,RI,MA", "OR,NV,WY,SD,IA,IN,OH,PA,NJ,CT,", "CA,UT,CO,NE,MO,KY,WV,VA,MD,DE,", ",AZ,NM,KS,AR,TN,NC,SC,DC,,", ",,,OK,LA,MS,AL,GA,,,", "HI,,,TX,,,,,FL,,"];
+  const t = el("div", "smap-t"), g = el("div", "smap-g"); g.setAttribute("role", "img"); g.setAttribute("aria-label", "Map of states Novrix has shipped to: " + [...on].sort().join(", "));
+  const n = on.size; t.append(el("b", null, String(n)), el("span", null, "states and counting"), el("p", null, "Shipped from South Florida to researchers across the country. Ships anywhere in the US."));
+  let k = 0; for (const row of G) for (const c of row.split(",")) { const i = el("i", c && on.has(c) ? "on" + (c === "FL" ? " hq" : "") : null, c || ""); if (!c) i.style.visibility = "hidden"; else if (on.has(c)) i.style.setProperty("--d", k++); i.setAttribute("aria-hidden", "true"); g.append(i); }
+  box.append(t, g); box.hidden = false;
+  if ("IntersectionObserver" in window) { const io = new IntersectionObserver((es) => { if (es[0].isIntersecting) { box.classList.add("go"); io.disconnect(); } }, {threshold: .3}); io.observe(box); } else box.classList.add("go");
+})();
+// fx4: 3D molecule viewer
+const AAN = {A: ["Ala", "Alanine"], R: ["Arg", "Arginine"], N: ["Asn", "Asparagine"], D: ["Asp", "Aspartic acid"], C: ["Cys", "Cysteine"], E: ["Glu", "Glutamic acid"], Q: ["Gln", "Glutamine"], G: ["Gly", "Glycine"], H: ["His", "Histidine"], I: ["Ile", "Isoleucine"], L: ["Leu", "Leucine"], K: ["Lys", "Lysine"], M: ["Met", "Methionine"], F: ["Phe", "Phenylalanine"], P: ["Pro", "Proline"], S: ["Ser", "Serine"], T: ["Thr", "Threonine"], W: ["Trp", "Tryptophan"], Y: ["Tyr", "Tyrosine"], V: ["Val", "Valine"], Aib: ["Aib", "α-Aminoisobutyric acid · non-standard"], Nle: ["Nle", "Norleucine · non-standard"], Nal: ["Nal", "3-(2-Naphthyl)alanine · non-standard"], Dmt: ["Dmt", "2′,6′-Dimethyltyrosine · non-standard"], Ac: ["Ac", "Acetyl group · caps the start of the chain"], pE: ["pGlu", "Pyroglutamic acid · ring-closed start"], Cu: ["Cu²⁺", "Copper ion · bound to the peptide"]};
+const AAC = [["#9b4dff", "Nonpolar"], ["#2f8cff", "Positive charge"], ["#ff5fd2", "Negative charge"], ["#5bd8ff", "Polar"], ["#3ddc97", "Non-standard / cap"], ["#ffb02e", "Metal ion"]];
+function aaInfo(t) { const u = t.replace(/[\[\]]/g, ""); if (u.length > 1) { const nm = AAN[u] || [u, u]; return {lab: u.toUpperCase(), code: nm[0], name: nm[1], c: u === "Cu" ? 5 : 4}; } const up = u.toUpperCase(), nm = AAN[up] || [up, up], d = u !== up; const c = "AVLIMFWP".includes(up) ? 0 : "KRH".includes(up) ? 1 : "DE".includes(up) ? 2 : 3; return {lab: up, code: (d ? "D-" : "") + nm[0], name: (d ? "D-" : "") + nm[1] + (d ? " · mirror-image form" : ""), c}; }
+function openMol(it) {
+  document.getElementById("nf")?.remove(); const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const toks = SEQ[it.name].match(/\[[^\]]+\]|\||./g), R = []; let chain = 0, k = 0;
+  for (const t of toks) { if (t === "|") { chain++; k += 3; continue; } R.push(Object.assign(aaInfo(t), {k: k++, chain})); }
+  const real = R.filter((r) => r.c < 4 || r.lab === "AIB" || r.lab === "NLE" || r.lab === "NAL" || r.lab === "DMT" || r.lab === "PE").length;
+  const dlg = el("div", "nf-ov mol-ov"); dlg.id = "nf"; dlg.setAttribute("role", "dialog"); dlg.setAttribute("aria-modal", "true"); dlg.setAttribute("aria-label", it.name + " 3D model");
+  const box = el("div", "nf-in"), x = el("button", "lb-x", "✕"); x.type = "button"; x.setAttribute("aria-label", "Close");
+  const top = el("div", "co-top"); top.append(el("h2", null, it.name.replace(/\s+blend$/i, "")), x);
+  const sub = el("p", "mol-sub", real + " residues" + (chain ? " · " + (chain + 1) + " peptides in one vial" : "") + " · drag to spin, tap a bead");
+  const cv = document.createElement("canvas"); cv.className = "mol-cv"; cv.setAttribute("aria-hidden", "true");
+  const info = el("div", "mol-i"); const lg = el("div", "mol-lg"); for (const ci of [...new Set(R.map((r) => r.c))].sort()) { const sp = el("span", null, AAC[ci][1]); sp.style.setProperty("--c", AAC[ci][0]); lg.append(sp); }
+  const setInfo = (r, i) => { info.replaceChildren(); if (!r) { info.append(el("small", null, "Tap any bead to see which amino acid it is.")); return; } const dot = el("i", null, r.lab.length > 3 ? r.lab.slice(0, 3) : r.lab); dot.style.background = AAC[r.c][0]; const tx = el("div"); tx.append(el("b", null, r.code + " · " + r.name.split(" · ")[0]), el("small", null, (r.name.split(" · ")[1] ? r.name.split(" · ")[1] + " · " : "") + AAC[r.c][1] + " · position " + (i + 1) + " of " + R.length)); info.append(dot, tx); };
+  setInfo(null); box.append(top, sub, cv, info, lg); dlg.append(box); document.body.append(dlg); document.body.classList.add("co-open");
+  let alive = true; const close = () => { alive = false; dlg.remove(); document.body.classList.remove("co-open"); removeEventListener("keydown", kd); };
+  const kd = (e) => { if (e.key === "Escape") close(); }; addEventListener("keydown", kd); x.addEventListener("click", close); dlg.addEventListener("click", (e) => { if (e.target === dlg) close(); });
+  const ctx = cv.getContext("2d"), dpr = Math.min(2, devicePixelRatio || 1); let W, H; const size = () => { const r = cv.getBoundingClientRect(); W = r.width; H = r.height; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }; size();
+  const N = k, rise = .95, rad = 2.6, P = R.map((r) => { const a = r.k * 1.745; return {x: (r.k - (N - 1) / 2) * rise, y: Math.cos(a) * rad, z: Math.sin(a) * rad}; });
+  let rotA = .4, rotB = -.25, sel = -1, drag = null, last = performance.now(), proj = [];
+  const draw = (now) => { if (!alive) return; const dt = Math.min(50, now - last); last = now; if (!drag && !reduce) rotA += dt * .00035;
+    ctx.clearRect(0, 0, W, H); const horiz = W >= H, span = Math.max(1, (N - 1) * rise + 2 * rad + 2), sc = Math.min((horiz ? W : H) * .86 / span, (horiz ? H : W) * .55 / (rad * 2 + 2), 34);
+    const ca = Math.cos(rotA), sa = Math.sin(rotA), cb = Math.cos(rotB), sb = Math.sin(rotB);
+    proj = P.map((p, i) => { let y = p.y * ca - p.z * sa, z = p.y * sa + p.z * ca; let xx = p.x * cb - z * sb; z = p.x * sb + z * cb; const persp = 28 / (28 + z); const u = xx * sc * persp, v = y * sc * persp; return {i, sx: horiz ? W / 2 + u : W / 2 + v, sy: horiz ? H / 2 + v : H / 2 + u, z, r: Math.max(4, sc * .78 * persp)}; });
+    ctx.lineCap = "round";
+    for (let i = 1; i < R.length; i++) { if (R[i].chain !== R[i - 1].chain) continue; const a = proj[i - 1], b = proj[i]; ctx.strokeStyle = "rgba(200,190,255," + (.18 + .25 * (1 - ((a.z + b.z) / 2 + rad) / (2 * rad))).toFixed(2) + ")"; ctx.lineWidth = Math.max(1.5, (a.r + b.r) * .14); ctx.beginPath(); ctx.moveTo(a.sx, a.sy); ctx.lineTo(b.sx, b.sy); ctx.stroke(); }
+    for (const q of [...proj].sort((a, b) => b.z - a.z)) { const r = R[q.i], col = AAC[r.c][0], dim = .55 + .45 * (1 - (q.z + rad) / (2 * rad));
+      ctx.globalAlpha = Math.max(.35, dim); const gr = ctx.createRadialGradient(q.sx - q.r * .35, q.sy - q.r * .35, q.r * .1, q.sx, q.sy, q.r); gr.addColorStop(0, "#fff"); gr.addColorStop(.28, col); gr.addColorStop(1, "rgba(0,0,0,.55)");
+      ctx.shadowColor = col; ctx.shadowBlur = q.i === sel ? 24 : 10; ctx.fillStyle = col; ctx.beginPath(); ctx.arc(q.sx, q.sy, q.r, 0, 6.283); ctx.fill(); ctx.shadowBlur = 0; ctx.fillStyle = gr; ctx.fill();
+      if (q.i === sel) { ctx.strokeStyle = "#fff"; ctx.lineWidth = 2; ctx.stroke(); }
+      if (q.r > 6.5) { ctx.fillStyle = "rgba(6,6,10,.9)"; ctx.font = "700 " + Math.round(q.r * (r.lab.length > 1 ? .55 : .8)) + "px ui-monospace,monospace"; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText(r.lab.length > 3 ? r.lab.slice(0, 3) : r.lab, q.sx, q.sy + .5); }
+      ctx.globalAlpha = 1; }
+    requestAnimationFrame(draw); };
+  requestAnimationFrame(draw); addEventListener("resize", size);
+  cv.addEventListener("pointerdown", (e) => { drag = {x: e.clientX, y: e.clientY, a: rotA, b: rotB, moved: false}; cv.setPointerCapture(e.pointerId); });
+  cv.addEventListener("pointermove", (e) => { if (!drag) return; const dx = e.clientX - drag.x, dy = e.clientY - drag.y; if (Math.abs(dx) + Math.abs(dy) > 4) drag.moved = true; const horiz = W >= H; rotA = drag.a + (horiz ? dy : -dx) * .012; rotB = Math.max(-1.2, Math.min(1.2, drag.b + (horiz ? dx : dy) * .006)); });
+  cv.addEventListener("pointerup", (e) => { const d = drag; drag = null; if (d && d.moved) return; const r = cv.getBoundingClientRect(), px = e.clientX - r.left, py = e.clientY - r.top; let best = -1, bz = 1e9; for (const q of proj) { if (Math.hypot(px - q.sx, py - q.sy) <= q.r + 4 && q.z < bz) { bz = q.z; best = q.i; } } sel = best; setInfo(best >= 0 ? R[best] : null, best); });
+  setTimeout(() => x.focus(), 50);
+}
+// fx4: shareable researcher card
+async function researcherCard(n, code, btn) {
+  const T = n >= 10 ? ["Platinum", "💎", ["#e8f7ff", "#8cdcff", "#c9a8ff"]] : n >= 5 ? ["Gold", "🥇", ["#fff3c4", "#ffc94d", "#ff8a3d"]] : n >= 3 ? ["Silver", "🥈", ["#ffffff", "#c9d2e0", "#8b97ab"]] : ["Bronze", "🥉", ["#ffd9b0", "#e09a5b", "#a8622e"]];
+  const W = 1080, H = 1350, c = document.createElement("canvas"); c.width = W; c.height = H; const x = c.getContext("2d");
+  try { await document.fonts.load("400 60px Michroma"); await document.fonts.load("800 60px 'Exo 2'"); } catch (e) {}
+  const bg = x.createLinearGradient(0, 0, W, H); bg.addColorStop(0, "#120b26"); bg.addColorStop(.5, "#07070d"); bg.addColorStop(1, "#0b1430"); x.fillStyle = bg; x.fillRect(0, 0, W, H);
+  let h = 0x811c9dc5; for (const ch of code) { h ^= ch.charCodeAt(0); h = Math.imul(h, 0x01000193) >>> 0; } const rnd = () => { h ^= h << 13; h >>>= 0; h ^= h >>> 17; h ^= h << 5; h >>>= 0; return h / 4294967296; };
+  const pts = []; for (let i = 0; i < 46; i++) pts.push([rnd() * W, rnd() * H, 2 + rnd() * 5, rnd() < .5 ? "155,77,255" : "47,140,255"]);
+  for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) { const d = Math.hypot(pts[i][0] - pts[j][0], pts[i][1] - pts[j][1]); if (d < 190) { x.strokeStyle = "rgba(" + pts[i][3] + "," + (.22 * (1 - d / 190)) + ")"; x.lineWidth = 2; x.beginPath(); x.moveTo(pts[i][0], pts[i][1]); x.lineTo(pts[j][0], pts[j][1]); x.stroke(); } }
+  for (const p of pts) { x.fillStyle = "rgba(" + p[3] + ",.8)"; x.shadowColor = "rgba(" + p[3] + ",1)"; x.shadowBlur = 16; x.beginPath(); x.arc(p[0], p[1], p[2], 0, 6.283); x.fill(); } x.shadowBlur = 0;
+  const rr = (X, Y, w, hh, r) => { x.beginPath(); x.moveTo(X + r, Y); x.arcTo(X + w, Y, X + w, Y + hh, r); x.arcTo(X + w, Y + hh, X, Y + hh, r); x.arcTo(X, Y + hh, X, Y, r); x.arcTo(X, Y, X + w, Y, r); x.closePath(); };
+  rr(70, 70, W - 140, H - 140, 48); x.fillStyle = "rgba(10,10,20,.62)"; x.fill(); const bd = x.createLinearGradient(70, 70, W - 70, H - 70); bd.addColorStop(0, T[2][1]); bd.addColorStop(.5, "#5d5dff"); bd.addColorStop(1, T[2][2]); x.strokeStyle = bd; x.lineWidth = 4; x.stroke();
+  x.textAlign = "center"; x.fillStyle = "#ecebf5"; x.font = "400 64px Michroma, sans-serif"; x.fillText("NOVRIX", W / 2, 210); x.font = "600 24px Inter, sans-serif"; x.fillStyle = "#9b9aaf"; x.fillText("L A B S   ·   R E S E A R C H E R   I D", W / 2, 258);
+  x.font = "150px serif"; x.fillText(T[1], W / 2, 480);
+  const tg = x.createLinearGradient(260, 0, W - 260, 0); tg.addColorStop(0, T[2][0]); tg.addColorStop(.5, T[2][1]); tg.addColorStop(1, T[2][2]); x.fillStyle = tg; x.font = "800 118px 'Exo 2', Inter, sans-serif"; x.shadowColor = T[2][1]; x.shadowBlur = 30; x.fillText(T[0].toUpperCase(), W / 2, 650); x.shadowBlur = 0;
+  x.fillStyle = "#ecebf5"; x.font = "600 40px Inter, sans-serif"; x.fillText("Researcher · " + n + " order" + (n === 1 ? "" : "s"), W / 2, 722);
+  rr(170, 820, W - 340, 230, 32); x.fillStyle = "rgba(155,77,255,.14)"; x.fill(); x.strokeStyle = "rgba(155,77,255,.6)"; x.lineWidth = 3; x.stroke();
+  x.fillStyle = "#c9b3ff"; x.font = "700 28px Inter, sans-serif"; x.fillText("MY CODE", W / 2, 880); x.fillStyle = "#fff"; x.font = "800 84px 'Exo 2', Inter, sans-serif"; x.fillText(code, W / 2, 970); x.fillStyle = "#c9c6e4"; x.font = "500 28px Inter, sans-serif"; x.fillText("$10 off your first order of $100+", W / 2, 1022);
+  x.fillStyle = "#ecebf5"; x.font = "600 40px Inter, sans-serif"; x.fillText("novrixlabs.shop", W / 2, 1160); x.fillStyle = "#6f6e85"; x.font = "500 22px Inter, sans-serif"; x.fillText("For research use only", W / 2, 1210);
+  const blob = await new Promise((r) => c.toBlob(r, "image/png")); if (!blob) return; const fn = "novrix-" + T[0].toLowerCase() + "-" + code.toLowerCase() + ".png";
+  try { const file = new File([blob], fn, {type: "image/png"}); if (navigator.canShare && navigator.canShare({files: [file]})) { await navigator.share({files: [file], text: "Use my code " + code + " at novrixlabs.shop"}); return; } } catch (e) { if (e && e.name === "AbortError") return; }
+  const u = URL.createObjectURL(blob), a = document.createElement("a"); a.href = u; a.download = fn; document.body.append(a); try { a.click(); } catch (e) {} a.remove();
+  const ov = el("div", "nf-ov rc-ov"), bx = el("div", "nf-in"), im = document.createElement("img"), cx = el("button", "lb-x", "✕"); cx.type = "button"; cx.setAttribute("aria-label", "Close"); im.src = u; im.alt = "Your Novrix researcher card"; im.className = "rc-img";
+  const tp = el("div", "co-top"); tp.append(el("h2", null, "Your researcher card"), cx); bx.append(tp, im, el("p", "nf-s", "Saved to your downloads. If it didn’t save, press and hold the card (or right-click) and save the image, then post it with your code."));
+  ov.append(bx); document.body.append(ov); const cl = () => { ov.remove(); URL.revokeObjectURL(u); }; cx.addEventListener("click", cl); ov.addEventListener("click", (e) => { if (e.target === ov) cl(); }); if (btn) btn.textContent = "Card ready ✓";
+}
 // fx2: molecule field in the hero
 (() => {
   const cv = document.getElementById("mol"), hero = document.querySelector(".hero"); if (!cv || !hero) return;
