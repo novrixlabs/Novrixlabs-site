@@ -932,6 +932,7 @@ html.rvon .card.in{opacity:1;transform:none}
 .cr-card{margin-top:8px}
 .rc-ov{z-index:95}.rc-img{width:100%;max-height:60vh;object-fit:contain;border-radius:12px}
 
+.bigb{margin:6px 0 0;font-size:.78rem;font-weight:600;color:#ffd24d;background:rgba(255,201,77,.08);border:1px solid rgba(255,201,77,.3);border-radius:10px;padding:7px 10px}.bigb.on{color:#06060a;background:linear-gradient(90deg,#ffe27a,#ffb02e);border-color:transparent}
 </style>
 
 <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-h">
@@ -1023,6 +1024,7 @@ html.rvon .card.in{opacity:1;transform:none}
     <div class="crg">
       <div class="crc"><b data-nov="$20">$10</b><span>Refer a friend</span><p data-nov="Share your code (your first initial + last name + 2 numbers, like JSMITH27). They get $10 off their first order of $100+, and you get $20 when they buy. Double referral creds all November.">Share your code (your first initial + last name + 2 numbers, like JSMITH27). They get $10 off their first order of $100+, and you get $10 when they buy.</p></div>
       <div class="crc"><b>$5</b><span>Leave a review</span><p>Once it’s approved and live on the site.</p></div>
+      <div class="crc"><b>$10</b><span>Big orders</span><p>Get $10 back on any order of $300+ (after discounts, before shipping), once it’s paid.</p></div>
       <div class="crc"><b>$5–$10</b><span>Keep ordering</span><p>$5 on your 3rd order, $10 on your 5th, then $10 every 5th order after.</p></div>
     </div>
     <div class="crcheck"><button class="cta cr-open" type="button">Check my Nov Creds</button><button class="tbtn cr-code" type="button">Get my code</button><p class="crnote">See your balance with your email and code. Paid customers can look up their code anytime.</p></div>
@@ -1645,6 +1647,7 @@ function tray() {
   if (T.pct) row(SALE.name + " (" + T.pct + "% off)", "-" + money(T.disc), "save"); if (T.ref) row("Referral " + REFCODE, "-" + money(T.ref), "save");
   row("Shipping", T.free ? "Free" : money(T.ship) + " or free pickup");
   { const fb = freeShipBar(T.after); if (fb) sm.append(fb); }
+  { const g = Math.round(T.after * 100) / 100; if (g >= 300) sm.append(el("p", "bigb on", "\uD83C\uDF89 Big order: you get $10 Nov Creds back once it\u2019s paid")); else if (g >= 150) sm.append(el("p", "bigb", "Add " + money(Math.round((300 - g) * 100) / 100) + " more to get $10 Nov Creds back")); }
   row("Estimated total", money(T.after + T.ship), "tot");
   if (T.vip + T.disc + T.ref > 0) row("You save", money(Math.round((T.vip + T.disc + T.ref) * 100) / 100), "save big");
   const BAC = "Reconstitution Solution 10ml";
@@ -1953,7 +1956,7 @@ draw(); tray();
     for (const g of DATA) for (const it of g.items) for (const d of it.doses) { if (d.coa && parseFloat(d.purity) && avail(d.s) && !seenL.has(it.name) && nl < 8) { seenL.add(it.name); nl++; P.push(["t-lab", "LAB VERIFIED", tn(it, d) + " · " + String(d.purity).replace("%", "") + "% purity", slug(it.name)]); } else if (d.pend && !d.coa && !seenP.has(it.name) && np < 4) { seenP.add(it.name); np++; P.push(["t-pend", "COA PENDING", tn(it, d), slug(it.name)]); } }
     for (let k = P.length - 1; k > 0; k--) { if (P[k][0] !== "t-lab") continue; const j = Math.floor(Math.random() * (k + 1)); if (P[j][0] === "t-lab") [P[k], P[j]] = [P[j], P[k]]; } }
   for (const g of DATA) for (const it of g.items) for (const d of it.doses) if (d.s === "soon" && P.filter((t) => t[0] === "t-soon").length < 5) P.push(["t-soon", "COMING SOON", tn(it, d), slug(it.name)]);
-  const I = [["FAST SHIPPING", "Most orders ship same day, ~2-day delivery"], ["DISCREET", "Plain packaging, nothing on the outside"], ["LAB TESTED", "COAs posted on the menu, tap Lab tested"], ["NOV CREDS", (NOVDBL ? "2× referrals in November: $20 per referral, $5 per review, plus" : "$10 per referral, $5 per review, plus") + " rewards on your 3rd and 5th orders"], ["LOCAL PICKUP", "Free in South Florida"], ["BULK ORDERS", "10+ vials? Ask for pricing"], ["INDEPENDENT", "Run by a first responder, no middleman markups"], ["DISCORD", "First pick on new drops and restocks"]];
+  const I = [["FAST SHIPPING", "Most orders ship same day, ~2-day delivery"], ["DISCREET", "Plain packaging, nothing on the outside"], ["LAB TESTED", "COAs posted on the menu, tap Lab tested"], ["NOV CREDS", (NOVDBL ? "2× referrals in November: $20 per referral, $5 per review, plus" : "$10 per referral, $5 per review, plus") + " rewards on your 3rd and 5th orders and $10 back on $300+ orders"], ["LOCAL PICKUP", "Free in South Florida"], ["BULK ORDERS", "10+ vials? Ask for pricing"], ["INDEPENDENT", "Run by a first responder, no middleman markups"], ["DISCORD", "First pick on new drops and restocks"]];
   if (saleOn) I.splice(1, 0, [SALE.name.toUpperCase(), "Up to " + SALE.tiers[0][1] + "% off" + (SALE.freeShip ? " · free shipping $" + SALE.freeShip + "+" : "")]);
   const tk = document.getElementById("tick"), ti = document.getElementById("tick-in");
   const info = ([k, t]) => { const sp = el("span", "t-ship"); sp.append(el("b", null, k), t); return sp; };
