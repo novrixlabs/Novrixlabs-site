@@ -967,7 +967,8 @@ html.rvon .card.in{opacity:1;transform:none}
   .hero .ctas{display:block!important}.hero .ctas .cta{width:100%;justify-content:center}
   .hero{padding-block:22px 6px;gap:4px}
   .pstat{margin-top:8px}
-  #potw,#popular,#finder,.legend,#vtop{display:none!important}
+  #potw,#popular,#finder,.legend{display:none!important}
+  #vtop{width:100%;margin-top:10px}
   .sec.cz>.sh{cursor:pointer;margin-bottom:0;position:relative;padding:14px 40px 14px 14px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
   .sec.cz>.sh::after{content:"";position:absolute;right:16px;top:50%;width:9px;height:9px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:translateY(-70%) rotate(45deg);transition:transform .2s}
   .sec.cz.open>.sh::after{transform:translateY(-30%) rotate(225deg)}
@@ -978,6 +979,13 @@ html.rvon .card.in{opacity:1;transform:none}
   .sec.cz .bk-t .ey,.sec.cz .bk-t h2{display:none}
 }
 
+@media (max-width:700px){
+  .rvc p{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer}
+  .rvc p.open{display:block;-webkit-line-clamp:unset}
+  .lf-r[hidden]{display:none!important}
+  .lf-more{width:100%;margin-top:10px}
+  .lf-r{padding-block:10px}
+}
 </style>
 
 <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-h">
@@ -1444,12 +1452,12 @@ function rvDraw() {
   if (!R.length) { const e = el("div", "rv-empty"); e.append(el("p", null, "No reviews yet. Ordered from Novrix? Be the first to share how it went."), btn()); box.append(e); return; }
   const avg = R.reduce((a, r) => a + r.stars, 0) / R.length, top = el("div", "rv-top"), av = el("div", "rv-avg");
   av.append(el("b", null, avg.toFixed(1)), rvStars(Math.round(avg)), el("small", null, R.length + " review" + (R.length > 1 ? "s" : ""))); top.append(av, btn()); box.append(top);
-  const grid = el("div", "rvs"); let all = false;
-  const fill = () => { grid.replaceChildren(); for (const r of all ? R : R.slice(0, 6)) { const c = el("article", "rvc"), m = el("div", "rv-m");
+  const grid = el("div", "rvs"); let all = false; const CAP = matchMedia("(max-width: 700px)").matches ? 2 : 6;
+  const fill = () => { grid.replaceChildren(); for (const r of all ? R : R.slice(0, CAP)) { const c = el("article", "rvc"), m = el("div", "rv-m");
       m.append(el("b", null, r.name || "Customer")); if (r.verified) m.append(el("span", "rv-v", "✓ Verified researcher")); if (r.date) { const d = new Date(r.date + "T12:00:00"); if (!isNaN(d)) m.append(el("span", null, d.toLocaleDateString("en-US", {month: "short", year: "numeric"}))); }
-      c.append(rvStars(r.stars), el("p", null, r.text), m); grid.append(c); } };
+      const tp = el("p", null, r.text); tp.addEventListener("click", () => tp.classList.toggle("open")); c.append(rvStars(r.stars), tp, m); grid.append(c); } };
   fill(); box.append(grid);
-  if (R.length > 6) { const more = el("button", "tbtn rv-more", "Show all " + R.length + " reviews"); more.type = "button"; more.addEventListener("click", () => { all = !all; fill(); more.textContent = all ? "Show fewer" : "Show all " + R.length + " reviews"; }); box.append(more); }
+  if (R.length > CAP) { const more = el("button", "tbtn rv-more", "Show all " + R.length + " reviews"); more.type = "button"; more.addEventListener("click", () => { all = !all; fill(); more.textContent = all ? "Show fewer" : "Show all " + R.length + " reviews"; }); box.append(more); }
 }
 function openReview() {
   let dlg = document.getElementById("nf"); if (dlg) dlg.remove();
@@ -2059,6 +2067,7 @@ list.addEventListener("pointermove", (e) => { const c = e.target.closest(".card.
   const c2 = el("div", "lf-c"); c2.append(el("span", "lf-k", "Vote: what should we test next?"));
   const vl = el("div", "lf-v"); for (const n of opts) { const row = el("div", "lf-r" + (mine === n ? " mine" : "")), vb = el("div", "lf-vb"), vi = el("i"); vi.style.width = Math.round((votes[n] || 0) / vmax * 100) + "%"; vb.append(vi); const b = el("button", "tbtn" + (mine ? "" : " pri"), mine === n ? "Your vote ✓" : "Vote"); b.type = "button"; b.disabled = !!mine; b.addEventListener("click", () => labVote(n)); row.append(el("span", null, n.replace(/\s+blend$/i, "")), b, vb, el("small", null, (votes[n] || 0) + " vote" + ((votes[n] || 0) === 1 ? "" : "s"))); vl.append(row); }
   c2.append(vl, el("p", "lf-s", mine ? "Thanks for voting! Counts update within the hour." : "One vote per person each round."));
+  if (matchMedia("(max-width: 700px)").matches && opts.length > 3) { const rows = [...vl.children].sort((a, b) => parseInt(b.lastChild.textContent) - parseInt(a.lastChild.textContent)); vl.replaceChildren(...rows); rows.slice(3).forEach((x) => x.hidden = true); const mb = el("button", "tbtn lf-more", "See all " + opts.length + " options"); mb.type = "button"; mb.addEventListener("click", () => { rows.forEach((x) => x.hidden = false); mb.remove(); }); vl.after(mb); }
   box.append(c1, c2); sec.hidden = false;
   if ("IntersectionObserver" in window) { const io = new IntersectionObserver((es) => { if (es[0].isIntersecting) { fill.style.width = Math.round(raised / goal * 100) + "%"; io.disconnect(); } }); io.observe(bar); } else fill.style.width = Math.round(raised / goal * 100) + "%";
   const dlg = (title) => { document.getElementById("nf")?.remove(); const d = el("div", "nf-ov"); d.id = "nf"; d.setAttribute("role", "dialog"); d.setAttribute("aria-modal", "true"); d.setAttribute("aria-label", title); const b = el("div", "nf-in"), x = el("button", "lb-x", "✕"); x.type = "button"; x.setAttribute("aria-label", "Close"); const top = el("div", "co-top"); top.append(el("h2", null, title), x); b.append(top); d.append(b); document.body.append(d); document.body.classList.add("co-open"); const close = () => { d.remove(); document.body.classList.remove("co-open"); }; x.addEventListener("click", close); d.addEventListener("click", (e) => { if (e.target === d) close(); }); return b; };
