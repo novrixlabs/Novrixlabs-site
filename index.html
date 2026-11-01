@@ -958,6 +958,7 @@ html.rvon .card.in{opacity:1;transform:none}
 .lf-pay{font-size:.84rem;background:var(--sunk);border-radius:12px;padding:10px 12px;line-height:1.6}.lf-pay b{font-family:var(--f-num)}
 .lf-code{font:700 1.3rem var(--f-num);letter-spacing:.08em;color:#ffd24d;text-align:center;padding:6px;border:1px dashed rgba(255,201,77,.5);border-radius:10px}
 
+.rv-disc{margin:12px 2px 0;font-size:.74rem;color:var(--muted)}
 </style>
 
 <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-h">
@@ -1053,7 +1054,6 @@ html.rvon .card.in{opacity:1;transform:none}
     <p class="crlede">Free store credit that comes off your next order automatically. It never expires.</p>
     <div class="crg">
       <div class="crc"><b data-nov="$20">$10</b><span>Refer a friend</span><p data-nov="Share your code (your first initial + last name + 2 numbers, like JSMITH27). They get $10 off their first order of $100+, and you get $20 when they buy. Double referral creds all November.">Share your code (your first initial + last name + 2 numbers, like JSMITH27). They get $10 off their first order of $100+, and you get $10 when they buy.</p></div>
-      <div class="crc"><b>$5</b><span>Leave a review</span><p>Once it’s approved and live on the site.</p></div>
       <div class="crc"><b>$10</b><span>Big orders</span><p>Get $10 back on any order of $300+ (after discounts, before shipping), once it’s paid.</p></div>
       <div class="crc"><b>$5–$10</b><span>Keep ordering</span><p>$5 on your 3rd order, $10 on your 5th, then $10 every 5th order after.</p></div>
     </div>
@@ -1062,6 +1062,7 @@ html.rvon .card.in{opacity:1;transform:none}
   <section class="sec" id="reviews">
     <div class="sh"><span class="ey">From customers</span><h2>Reviews</h2></div>
     <div id="rv"></div>
+    <p class="rv-disc">Some reviewers received $5 in store credit for leaving an honest review. Credit is given for any rating.</p>
   </section>
   <section class="sec" id="faq">
     <div class="sh"><span class="ey">Questions</span><h2>FAQ</h2></div>
@@ -1463,7 +1464,7 @@ function openReview() {
     const msg = done.querySelector("p"); if (msg) msg.textContent = ok ? "Thank you! You\u2019ll get an email as soon as your review is live on the site." : "Almost there! Your email app just opened with your review filled in. Tap Send there to submit it."; const ag = done.querySelector(".rv-again"); if (ag) ag.hidden = ok;
     done.hidden = false; for (const c of [...box.children]) if (c !== done && c !== top) c.hidden = true; });
   const top = el("div", "co-top"); top.append(el("h2", null, "Write a review"), x);
-  box.append(top, el("p", "nf-s", "Tell others how your order went. Keep it about ordering, shipping, packaging and service. Verified researchers earn $5 in Nov Creds once it’s approved."), pick, el("p", "rv-hint", "This name is shown with your review on the site:"), nm, el("p", "rv-hint", "Your email is only used to check for a verified-researcher badge. It’s never shown."), em, tx, cnt, go, err, done);
+  box.append(top, el("p", "nf-s", "Tell others how your order went. Keep it about ordering, shipping, packaging and service. Verified buyers get $5 in Nov Creds for an honest review, good or bad, once it’s approved."), pick, el("p", "rv-hint", "This name is shown with your review on the site:"), nm, el("p", "rv-hint", "Your email is only used to check for a verified-researcher badge. It’s never shown."), em, tx, cnt, go, err, done);
   dlg.append(box); document.body.append(dlg); document.body.classList.add("co-open"); setTimeout(() => pick.querySelector("button").focus(), 50);
 }
 rvDraw(); if (location.hash === "#write-review") setTimeout(openReview, 400)
@@ -1996,7 +1997,7 @@ draw(); tray();
     for (const g of DATA) for (const it of g.items) for (const d of it.doses) { if (d.coa && parseFloat(d.purity) && avail(d.s) && !seenL.has(it.name) && nl < 8) { seenL.add(it.name); nl++; P.push(["t-lab", "LAB VERIFIED", tn(it, d) + " · " + String(d.purity).replace("%", "") + "% purity", slug(it.name)]); } else if (d.pend && !d.coa && !seenP.has(it.name) && np < 4) { seenP.add(it.name); np++; P.push(["t-pend", "COA PENDING", tn(it, d), slug(it.name)]); } }
     for (let k = P.length - 1; k > 0; k--) { if (P[k][0] !== "t-lab") continue; const j = Math.floor(Math.random() * (k + 1)); if (P[j][0] === "t-lab") [P[k], P[j]] = [P[j], P[k]]; } }
   for (const g of DATA) for (const it of g.items) for (const d of it.doses) if (d.s === "soon" && P.filter((t) => t[0] === "t-soon").length < 5) P.push(["t-soon", "COMING SOON", tn(it, d), slug(it.name)]);
-  const I = [["FAST SHIPPING", "Most orders ship same day, ~2-day delivery"], ["DISCREET", "Plain packaging, nothing on the outside"], ["LAB TESTED", "COAs posted on the menu, tap Lab tested"], ["NOV CREDS", (NOVDBL ? "2× referrals in November: $20 per referral, $5 per review, plus" : "$10 per referral, $5 per review, plus") + " rewards on your 3rd and 5th orders and $10 back on $300+ orders"], ["LOCAL PICKUP", "Free in South Florida"], ["5+ ITEM DEAL", "10% off any order of 5 or more items (bac water not counted)"], ["BULK ORDERS", "10+ vials? Ask for pricing"], ["INDEPENDENT", "Run by a first responder, no middleman markups"], ["DISCORD", "First pick on new drops and restocks"]];
+  const I = [["FAST SHIPPING", "Most orders ship same day, ~2-day delivery"], ["DISCREET", "Plain packaging, nothing on the outside"], ["LAB TESTED", "COAs posted on the menu, tap Lab tested"], ["NOV CREDS", (NOVDBL ? "2× referrals in November: $20 per referral, plus" : "$10 per referral, plus") + " rewards on your 3rd and 5th orders and $10 back on $300+ orders"], ["LOCAL PICKUP", "Free in South Florida"], ["5+ ITEM DEAL", "10% off any order of 5 or more items (bac water not counted)"], ["BULK ORDERS", "10+ vials? Ask for pricing"], ["INDEPENDENT", "Run by a first responder, no middleman markups"], ["DISCORD", "First pick on new drops and restocks"]];
   if (saleOn) I.splice(1, 0, [SALE.name.toUpperCase(), "Up to " + SALE.tiers[0][1] + "% off" + (SALE.freeShip ? " · free shipping $" + SALE.freeShip + "+" : "")]);
   const tk = document.getElementById("tick"), ti = document.getElementById("tick-in");
   const info = ([k, t]) => { const sp = el("span", "t-ship"); sp.append(el("b", null, k), t); return sp; };
