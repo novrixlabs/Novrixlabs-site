@@ -961,6 +961,23 @@ html.rvon .card.in{opacity:1;transform:none}
 .rv-disc{margin:12px 2px 0;font-size:.74rem;color:var(--muted)}
 .lt i.aka{display:inline-block;margin:4px auto 0;padding:.5cqw 2.6cqw .55cqw 3.2cqw;font:800 3.4cqw/1.15 "Exo 2",var(--f-body);font-style:normal;letter-spacing:.42em;color:#fff;border-radius:99px;background:linear-gradient(#0a0a14,#0a0a14) padding-box,linear-gradient(90deg,#22c8ff,#4b6bff 50%,#ff4fd8) border-box;border:1.5px solid transparent;box-shadow:0 0 10px rgba(75,107,255,.35)}
 .lt i.aka+hr{margin-top:6px}
+/* mobile declutter */
+@media (max-width:700px){
+  .hero .lede,.hero .stats,.hero .hchain,.hero .updated,.hero .ctas .ghost,.hero .crpill{display:none!important}
+  .hero .ctas{display:block!important}.hero .ctas .cta{width:100%;justify-content:center}
+  .hero{padding-block:22px 6px;gap:4px}
+  .pstat{margin-top:8px}
+  #potw,#popular,#finder,.legend,#vtop{display:none!important}
+  .sec.cz>.sh{cursor:pointer;margin-bottom:0;position:relative;padding:14px 40px 14px 14px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+  .sec.cz>.sh::after{content:"";position:absolute;right:16px;top:50%;width:9px;height:9px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:translateY(-70%) rotate(45deg);transition:transform .2s}
+  .sec.cz.open>.sh::after{transform:translateY(-30%) rotate(225deg)}
+  .sec.cz.open>.sh{margin-bottom:14px}
+  .sec.cz:not(.open)>:not(.sh){display:none!important}
+  .sec.cz{margin-top:14px}
+  .sec.cz>.sh h2{font-size:1.05rem}
+  .sec.cz .bk-t .ey,.sec.cz .bk-t h2{display:none}
+}
+
 </style>
 
 <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-h">
@@ -2060,6 +2077,18 @@ list.addEventListener("pointermove", (e) => { const c = e.target.closest(".card.
     go.addEventListener("click", async () => { const n = nm.value.trim(), v = em.value.trim(); if (n.split(/\s+/).length < 2) { err.textContent = "Please enter your first and last name."; nm.focus(); return; } if (!okEmail(v)) { err.textContent = "Please enter your email so your Nov Creds land on your account."; em.focus(); return; } go.disabled = true; go.textContent = "Sending…"; const subj = "Lab fund – " + code, body = "LAB FUND PLEDGE\nRound: " + (F.round || 1) + "\nTest: " + (tgt || "") + "\nName: " + n + "\nEmail: " + v + "\nAmount: $" + amt + "\nPayment code: " + code; const ok = await sendDirect(subj, body, v); if (!ok) mailtoOpen(subj, body); done.replaceChildren(el("b", null, ok ? "You’re a backer ✓" : "One last step: tap Send"), el("p", null, (ok ? "" : "Your email app opened with your pledge filled in. Tap Send there. ") + "Now send " + money(amt) + " with " + code + " in the note. You’ll get " + money(amt) + " in Nov Creds when the report is posted.")); done.hidden = false; go.hidden = true; });
     b.append(el("p", "nf-s", "Your money goes toward the independent test" + (tgt ? " of " + tgt : "") + ". When the report is posted, you get the full " + money(amt) + " back in Nov Creds for your next order."), nm, em, pay, el("div", "lf-code", code), go, err, done); setTimeout(() => (nm.value ? em : nm).focus(), 50);
   }
+})();
+// mobile declutter: tap-to-open info sections
+(() => {
+  if (!matchMedia("(max-width: 700px)").matches) return;
+  for (const id of ["how", "shipping", "bulk"]) {
+    const sec = document.getElementById(id); if (!sec) continue; const sh = sec.querySelector(".sh") || (() => { const b = sec.querySelector(".bk-t"); if (!b) return null; const h = el("div", "sh"); h.append(el("span", "ey", "Bulk orders"), el("h2", null, "Buying 10+ vials?")); sec.prepend(h); return h; })(); if (!sh) continue;
+    sec.classList.add("cz"); sh.setAttribute("role", "button"); sh.tabIndex = 0; sh.setAttribute("aria-expanded", "false");
+    const t = () => { const o = sec.classList.toggle("open"); sh.setAttribute("aria-expanded", String(o)); };
+    sh.addEventListener("click", t); sh.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); t(); } });
+    if (location.hash === "#" + id) sec.classList.add("open");
+  }
+  addEventListener("hashchange", () => { const s = document.getElementById(location.hash.slice(1)); if (s && s.classList.contains("cz")) s.classList.add("open"); });
 })();
 // fx4: purity stat
 (() => {
