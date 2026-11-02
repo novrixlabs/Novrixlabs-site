@@ -1014,6 +1014,7 @@ html[lang="es"] #list:not(.flat) .gh span::after{content:" \00b7  desliza \2192"
 #finder{display:none!important}
 .gate-t{font-size:.78rem;color:var(--muted);margin:-6px 0 14px}.gate-t a,.co-ruo a{color:#c9b3ff}
 .co-scam{font-size:.8rem;color:#ffd08a;background:rgba(255,201,77,.08);border:1px solid rgba(255,201,77,.35);border-radius:10px;padding:8px 11px;margin:10px 0 0}
+@media (max-width:560px){.gh span{flex-basis:100%}#list:not(.flat) .gh span.one::after{content:none}}
 </style>
 
 <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-h">
@@ -1778,7 +1779,7 @@ function draw() {
       .filter((it) => it.doses.length && (!toks.length || matches(it, toks, hits)) && (!goal || (GUIDE[norm(it.name)] || {}).c === goal));
     if (!items.length) continue;
     const sec = el("section", "grp"), gh = el("div", "gh"); sec.id = "g-" + slug(g.group); { const gc = GOALS.find((x) => x[0] === g.group); if (gc) { sec.style.setProperty("--g1", gc[2]); sec.style.setProperty("--g2", gc[3]); } }
-    gh.append(el("h2", null, g.group), el("span", null, items.length + " product" + (items.length === 1 ? "" : "s")));
+    gh.append(el("h2", null, g.group), el("span", items.length === 1 ? "one" : null, items.length + " product" + (items.length === 1 ? "" : "s")));
     const grid = el("div", "grid");
     for (const it of items) {
       const card = el("article", "card"), hd = el("div", "ch"), vw = el("button", "vw"); card.id = slug(it.name); const capd = it.doses.find((d) => d.cap) || it.doses[0]; const best = it.doses.reduce((a, d) => (RANK[d.s] ?? 3) < (RANK[a] ?? 3) ? d.s : a, "out"); if (best === "out") card.classList.add("all-out"); const pd = it.doses.find((d) => d.purity), ready = it.doses.filter((d) => d.s === "in" || d.s === "low").length;
