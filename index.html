@@ -1051,13 +1051,16 @@ html[lang="es"] #list:not(.flat) .gh span::after{content:" \00b7  desliza \2192"
   article.card>.sqb{position:absolute;top:62px;right:12px;width:auto;padding:0;z-index:2}
   article.card>.sqb .sq{display:none}
   article.card>.sqb .s3{position:static;display:inline-block;padding:5px 9px;font-size:.62rem}
-  article.card>.desc{order:1;margin-top:10px}
+  article.card>.desc{order:1;margin-top:2px}
   article.card>.doses{order:2}
   article.card>.tpn{order:3}
   article.card>.wd{order:4;margin-top:8px}
 }
 .wd2{margin:10px 0 0;font-size:.82rem;line-height:1.5;color:#a9a7c2}
 article.card>.desc{order:1}article.card>.doses{order:2}article.card>.tpn{order:3}article.card>.wd2{order:4;margin-top:6px}
+/* cards size to their content (no empty box space) */
+.grid{align-items:start!important}
+@media (max-width:560px){#list:not(.flat) .grid{align-items:start!important}}
 </style>
 
 <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-h">
