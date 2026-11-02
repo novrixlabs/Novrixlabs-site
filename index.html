@@ -1046,9 +1046,9 @@ html[lang="es"] #list:not(.flat) .gh span::after{content:" \00b7  desliza \2192"
 /* phone: compact product cards, prices up top */
 @media (max-width:560px){
   article.card{position:relative}
-  article.card>.ch .lbl{flex:0 1 auto;width:60%}
+  article.card>.ch .lbl{flex:0 1 auto;width:80%}
   article.card>svg.sq{display:none}
-  article.card>.sqb{position:absolute;top:58px;right:14px;width:auto;padding:0;z-index:2}
+  article.card>.sqb{position:absolute;top:62px;right:12px;width:auto;padding:0;z-index:2}
   article.card>.sqb .sq{display:none}
   article.card>.sqb .s3{position:static;display:inline-block;padding:5px 9px;font-size:.62rem}
   article.card>.desc{order:1;margin-top:10px}
@@ -1056,6 +1056,8 @@ html[lang="es"] #list:not(.flat) .gh span::after{content:" \00b7  desliza \2192"
   article.card>.tpn{order:3}
   article.card>.wd{order:4;margin-top:8px}
 }
+.wd2{margin:10px 0 0;font-size:.82rem;line-height:1.5;color:#a9a7c2}
+article.card>.desc{order:1}article.card>.doses{order:2}article.card>.tpn{order:3}article.card>.wd2{order:4;margin-top:6px}
 </style>
 
 <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-h">
@@ -1842,7 +1844,7 @@ function draw() {
       vw.addEventListener("click", () => vw.classList.toggle("flip"));
       const lk = el("button", "lnk"); lk.type = "button"; lk.innerHTML = svgLink; lk.title = "Copy link"; lk.setAttribute("aria-label", "Copy link to " + it.name);
       lk.addEventListener("click", () => copyLink(lk, card.id));
-      const h3 = el("h3", "sr", it.name); hd.append(labelEl(it), lk); card.append(h3, hd); { const sa = seqArt(it); if (sa) { if (SEQ[it.name]) { const sb = el("button", "sqb"); sb.type = "button"; sb.setAttribute("aria-label", "Explore " + it.name + " in 3D"); sb.append(sa, el("span", "s3", "3D")); sb.addEventListener("click", () => openMol(it)); card.append(sb); } else card.append(sa); } } { const gd = GUIDE[norm(it.name)], inf = INFO[norm(it.name)]; if (gd) { const gc = GOALS.find((x) => x[0] === gd.c) || []; card.style.setProperty("--g1", gc[2] || "#9b4dff"); card.style.setProperty("--g2", gc[3] || "#2f8cff"); const gl = el("button", "gl", gd.c); gl.type = "button"; gl.addEventListener("click", () => { const sec = document.getElementById("g-" + slug(gd.c)); if (sec && !goal) sec.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start"}); else setGoal(gd.c, true); }); card.append(gl, el("p", "desc", gd.is)); const tg = el("div", "tags");  if (gd.does) { const dt = el("details", "wd"), sm = el("summary", null, "What it’s studied for"); dt.append(sm, el("p", null, gd.does), tg); card.append(dt); } else card.append(tg); } else if (inf) card.append(el("p", "desc", inf)); }
+      const h3 = el("h3", "sr", it.name); hd.append(labelEl(it), lk); card.append(h3, hd); { const sa = seqArt(it); if (sa) { if (SEQ[it.name]) { const sb = el("button", "sqb"); sb.type = "button"; sb.setAttribute("aria-label", "Explore " + it.name + " in 3D"); sb.append(sa, el("span", "s3", "3D")); sb.addEventListener("click", () => openMol(it)); card.append(sb); } else card.append(sa); } } { const gd = GUIDE[norm(it.name)], inf = INFO[norm(it.name)]; if (gd) { const gc = GOALS.find((x) => x[0] === gd.c) || []; card.style.setProperty("--g1", gc[2] || "#9b4dff"); card.style.setProperty("--g2", gc[3] || "#2f8cff"); const gl = el("button", "gl", gd.c); gl.type = "button"; gl.addEventListener("click", () => { const sec = document.getElementById("g-" + slug(gd.c)); if (sec && !goal) sec.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start"}); else setGoal(gd.c, true); }); card.append(gl, el("p", "desc", gd.is)); const tg = el("div", "tags");  if (gd.does) card.append(el("p", "wd2", gd.does)); } else if (inf) card.append(el("p", "desc", inf)); }
       const ds = el("div", "doses");
       for (const d of it.doses) {
         const row = el("div", "dose s-" + d.s);
