@@ -2325,7 +2325,7 @@ list.addEventListener("pointermove", (e) => { const c = e.target.closest(".card.
 })();
 // fx4: shipped-to map
 (() => {
-  const box = document.getElementById("smap"); if (!box || !Array.isArray(SHIPMAP)) return; const SHIPEXTRA = ["NY", "OR"], OVERSEAS = true; const on = new Set(SHIPMAP.concat("FL", SHIPEXTRA)); if (OVERSEAS) on.add("APO"); if (on.size < 3) return;
+  const box = document.getElementById("smap"); if (!box || !Array.isArray(SHIPMAP)) return; const SHIPEXTRA = ["NY", "OR", "AZ", "CA", "MT", "NC"], OVERSEAS = true; const on = new Set(SHIPMAP.concat("FL", SHIPEXTRA)); if (OVERSEAS) on.add("APO"); if (on.size < 3) return;
   const G = ["AK,,,,,,,,,,ME", ",,,,,,,,,VT,NH", "WA,ID,MT,ND,MN,IL,WI,MI,NY,RI,MA", "OR,NV,WY,SD,IA,IN,OH,PA,NJ,CT,", "CA,UT,CO,NE,MO,KY,WV,VA,MD,DE,", ",AZ,NM,KS,AR,TN,NC,SC,DC,,", ",,,OK,LA,MS,AL,GA,,,", "HI,,,TX,,,,,FL,,APO"];
   const t = el("div", "smap-t"), g = el("div", "smap-g"); g.setAttribute("role", "img"); g.setAttribute("aria-label", "Map of states Novrix has shipped to: " + [...on].filter((x) => x !== "APO").sort().join(", ") + (OVERSEAS ? ", plus overseas military (APO/FPO)" : ""));
   const n = on.size - (OVERSEAS ? 1 : 0); t.append(el("b", null, String(n)), el("span", null, "states and counting")); if (OVERSEAS) t.append(el("span", "smap-ov", "✈ Plus overseas military (APO/FPO)")); t.append(el("p", null, "Shipped from South Florida to researchers across the country. Ships anywhere in the US."));
