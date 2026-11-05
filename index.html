@@ -1432,8 +1432,13 @@ const MENU_URL = "https://novrixlabs.shop/";
 let WAITED = new Set(); try { WAITED = new Set(JSON.parse(localStorage.getItem("novrix-waited") || "[]")); } catch (e) {}
 // Sends a form straight to Tyler's inbox (no email app). Falls back to the email app if it can't.
 async function sendDirect(subject, text, email) {
-  for (let k = 0; k < 2; k++) { const ok = await sendOnce(subject, text, email, k ? 25000 : 15000); if (ok !== null) return ok; }
-  return false;
+  for (let k = 0; k < 2; k++) { const ok = await sendOnce(subject, text, email, k ? 25000 : 15000); if (ok === true) return true; if (ok === false) break; }
+  // Backup: a plain form post (works when the quick send is blocked by the browser, a content blocker or a slow connection). Only if this also fails does the email-app fallback show.
+  try {
+    const f = new URLSearchParams({_subject: subject, _template: "basic", _captcha: "false", email: email || "", message: text});
+    const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 30000);
+    await fetch("https://formsubmit.co/novrixlabs@gmail.com", {method: "POST", mode: "no-cors", body: f, signal: ctl.signal}); clearTimeout(t); return true;
+  } catch (e) { return false; }
 }
 async function sendOnce(subject, text, email, ms) {
   try {
