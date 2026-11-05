@@ -485,8 +485,10 @@ html{scroll-behavior:smooth}
 .nl a:hover{color:var(--ink)}
 .nl .nl-b{all:unset;cursor:pointer;color:var(--muted);font-size:.88rem;font-weight:500}.nl .nl-b:hover{color:var(--ink)}.nl .nl-b:focus-visible{outline:2px solid var(--violet);outline-offset:3px;border-radius:4px}
 .nl a,.nl .nl-b,.nbtn{white-space:nowrap}
+@media (max-width:1240px){.nl{gap:16px}.nl a,.nl .nl-b{font-size:.84rem}}
 @media (max-width:1000px){.nl{gap:16px}.nl a,.nl .nl-b{font-size:.82rem}}
 @media (max-width:900px){.nl a[href="#shipping"],.nl a[href="#bulk"]{display:none}}
+@media (max-width:860px){.nl a[href="#reviews"],.nl a[href="#incoming"]{display:none}}
 .nbtn{background:var(--grad);color:#fff;text-decoration:none;font-weight:600;font-size:.85rem;padding:9px 16px;border-radius:10px}
 .nav a:focus-visible,.pp:focus-visible,.ghost:focus-visible,.fq summary:focus-visible{outline:2px solid var(--violet);outline-offset:3px}
 @media (max-width:700px){.nl{display:none}.nbtn{margin-left:auto}}
@@ -1108,7 +1110,7 @@ html.is-vip b.dealp{color:#ff9a5c}
 <div class="wrap" id="top">
   <nav class="nav" aria-label="Main">
     <a class="brand" href="#top">NOVRIX<span>LABS</span></a>
-    <div class="nl"><a href="#shop">Menu</a><a href="#incoming">Incoming</a><a href="#creds">Nov Creds</a><a href="#labfund">Lab Fund</a><a href="#shipping">Shipping</a><a href="#bulk">Bulk</a><a href="#reviews">Reviews</a><a href="#faq">FAQ</a><a href="https://novrixlabs.shop/research.html">Research</a><button class="nl-b st-open" type="button">Track order</button></div>
+    <div class="nl"><a href="#shop">Menu</a><a href="#incoming">Incoming</a><a href="#creds">Nov Creds</a><a href="#bulk">Bulk</a><a href="#shipping">Shipping</a><a href="#reviews">Reviews</a><a href="#faq">FAQ</a><a href="https://novrixlabs.shop/research.html">Research</a><button class="nl-b st-open" type="button">Track order</button></div>
     <button class="lng" id="lng" type="button" data-noes lang="es">Español</button>
     <a class="nbtn" href="#shop">Order now</a>
   </nav>
@@ -1144,20 +1146,6 @@ html.is-vip b.dealp{color:#ff9a5c}
     <div class="sh"><span class="ey">On order</span><h2>Incoming</h2></div>
     <div class="inc" id="inc" role="list" tabindex="0" aria-label="Products on order"></div>
     <p class="isn-foot">These are ordered and on the way. Tap one to see it in the menu.</p>
-    <form class="rq" id="rq" novalidate>
-      <b>Don't see what you need?</b>
-      <p>Request a product and I'll let you know if I can get it.</p>
-      <div class="cof">
-        <label class="cf-w">Product<input name="product" required maxlength="80" placeholder="e.g. BPC-157" autocomplete="off"></label>
-        <label>Vials<input name="vials" type="number" inputmode="numeric" min="1" max="999" step="1" required placeholder="e.g. 5"></label>
-        <label>Milligrams per vial<input name="mg" required maxlength="20" inputmode="decimal" placeholder="e.g. 10mg"></label>
-        <label class="cf-w">Email<input name="email" type="email" required maxlength="120" placeholder="you@email.com" autocomplete="email"></label>
-        <label class="cf-w">Notes <small>(optional)</small><textarea name="notes" rows="3" maxlength="500" placeholder="How soon you need it, anything else"></textarea></label>
-      </div>
-      <p class="co-err" id="rq-err" aria-live="polite"></p>
-      <button class="cta co-sub" type="submit">Send request</button>
-      <div class="rq-ok" id="rq-ok" hidden aria-live="polite">Got it. I'll get back to you by email.</div>
-    </form>
   </section>
   <div class="sh" id="shop" style="margin-top:56px"><span class="ey">Live availability</span><h2>The menu</h2><div class="vtop" id="vtop"><span class="vtop-l">VIP or referral code?</span></div></div>
   <div class="bar">
@@ -1175,6 +1163,22 @@ html.is-vip b.dealp{color:#ff9a5c}
     </div>
   <div class="legend"><span><i class="dot d-in"></i>In stock</span><span><i class="dot d-low"></i>Low stock, order soon</span><span><i class="dot d-soon"></i>Restocking, on the way</span><span><i class="dot d-out"></i>Out of stock</span></div>
   <main id="list"></main>
+  <section class="sec" id="request">
+    <form class="rq" id="rq" style="margin-top:0" novalidate>
+      <b>Don't see what you need?</b>
+      <p>Request a product and I'll let you know if I can get it.</p>
+      <div class="cof">
+        <label class="cf-w">Product<input name="product" required maxlength="80" placeholder="e.g. BPC-157" autocomplete="off"></label>
+        <label>Vials<input name="vials" type="number" inputmode="numeric" min="1" max="999" step="1" required placeholder="e.g. 5"></label>
+        <label>Milligrams per vial<input name="mg" required maxlength="20" inputmode="decimal" placeholder="e.g. 10mg"></label>
+        <label class="cf-w">Email<input name="email" type="email" required maxlength="120" placeholder="you@email.com" autocomplete="email"></label>
+        <label class="cf-w">Notes <small>(optional)</small><textarea name="notes" rows="3" maxlength="500" placeholder="How soon you need it, anything else"></textarea></label>
+      </div>
+      <p class="co-err" id="rq-err" aria-live="polite"></p>
+      <button class="cta co-sub" type="submit">Send request</button>
+      <div class="rq-ok" id="rq-ok" hidden aria-live="polite">Got it. I'll get back to you by email.</div>
+    </form>
+  </section>
   <section class="sec" id="how">
     <div class="sh"><span class="ey">Four steps</span><h2>How ordering works</h2></div>
     <ol class="steps">
@@ -1184,23 +1188,6 @@ html.is-vip b.dealp{color:#ff9a5c}
       <li><span>4</span><b>It ships fast</b><p>Most orders paid by 4 PM Mon–Fri go out the same day and usually arrive in about 2 days.</p></li>
     </ol>
     <div class="ctas" style="justify-content:flex-start"><a class="cta" href="#shop">Order now</a><button class="ghost st-open" type="button">Where’s my order?</button></div>
-  </section>
-  <section class="sec" id="shipping">
-    <div class="sh"><span class="ey">The fine print, made simple</span><h2>Shipping &amp; policies</h2></div>
-    <div class="smap" id="smap" hidden></div>
-    <div class="pg2"><div class="po"><b>Processing</b><p>Most orders paid by 4 PM Monday to Friday ship the same day. Otherwise, they go out the next ship day. Checkout shows exactly when yours ships.</p></div><div class="po"><b>Shipping</b><p>Ships anywhere in the US and usually arrives in about 2 days. Flat $15 for 2-Day Air, or free local pickup. Your first order of $100+ ships free, VIPs ship free on $150+, and promos with free shipping show in the banner up top.</p></div><div class="po"><b>Discreet packaging</b><p>Plain outer packaging with nothing on the outside about what’s inside.</p></div><div class="po"><b>Local pickup</b><p>In South Florida? Choose pickup and a time at checkout, 10 AM to 5 PM. I’ll confirm the spot before then.</p></div><div class="po"><b>Powder form</b><p>Every vial ships as a lyophilized (freeze-dried) powder, sealed for storage.</p></div><div class="po po-warn"><b>Record your unboxing</b><p><strong>Record a video every time you open a package.</strong> If there’s a problem with your order and no video, I may not be able to make it right. Lost, damaged or something not right? Email or message me with your order number and your video.</p></div></div>
-  </section>
-  <section class="sec" id="bulk">
-    <div class="bulk">
-      <div class="bk-t"><span class="ey">Bulk orders</span><h2>Buy more, save more</h2><p>Stocking up, splitting a group order, or ordering for a research team? Bulk discounts come off automatically at checkout. Mix and match any products.</p></div>
-      <div class="bk-p"><div><b>10%</b><span>5+ items</span></div><div><b>15%</b><span>10+ items</span></div><div><b>20%</b><span>20+ items</span></div><p>Applied automatically · 50+ vials? Email for a custom quote</p></div>
-      <div class="ctas" style="justify-content:flex-start;margin-top:0"><a class="cta" style="margin-top:0" href="mailto:novrixlabs@gmail.com?subject=Bulk%20order%20quote%20(50%2B%20vials)">Email for a 50+ quote</a><a class="ghost" href="https://discord.gg/XP9dz3jse" target="_blank" rel="noopener">Discord</a></div>
-    </div>
-  </section>
-  <section class="sec" id="labfund" hidden>
-    <div class="sh"><span class="ey">Community Lab Fund</span><h2>You pick what gets tested</h2></div>
-    <p class="lf-lede">Vote for the next product to send to an independent lab, and chip in toward the test if you want. Every backer gets <b>100% back in Nov Creds</b> when the report is posted.</p>
-    <div class="lf" id="lf"></div>
   </section>
   <section class="sec" id="creds">
     <div class="sh crh"><span class="ey">Rewards</span><div class="crt"><h2>Nov Creds</h2><svg class="nvc nvc-lg" viewBox="0 0 64 64" aria-hidden="true"><use href="#nvcoin"/></svg></div></div>
@@ -1212,20 +1199,37 @@ html.is-vip b.dealp{color:#ff9a5c}
     </div>
     <div class="crcheck"><button class="cta cr-open" type="button">Check my Nov Creds</button><button class="tbtn cr-code" type="button">Get my code</button><p class="crnote">See your balance with your email and code. Paid customers can look up their code anytime.</p></div>
   </section>
+  <section class="sec" id="bulk">
+    <div class="bulk">
+      <div class="bk-t"><span class="ey">Bulk orders</span><h2>Buy more, save more</h2><p>Stocking up, splitting a group order, or ordering for a research team? Bulk discounts come off automatically at checkout. Mix and match any products.</p></div>
+      <div class="bk-p"><div><b>10%</b><span>5+ items</span></div><div><b>15%</b><span>10+ items</span></div><div><b>20%</b><span>20+ items</span></div><p>Applied automatically · 50+ vials? Email for a custom quote</p></div>
+      <div class="ctas" style="justify-content:flex-start;margin-top:0"><a class="cta" style="margin-top:0" href="mailto:novrixlabs@gmail.com?subject=Bulk%20order%20quote%20(50%2B%20vials)">Email for a 50+ quote</a><a class="ghost" href="https://discord.gg/XP9dz3jse" target="_blank" rel="noopener">Discord</a></div>
+    </div>
+  </section>
+  <section class="sec" id="shipping">
+    <div class="sh"><span class="ey">The fine print, made simple</span><h2>Shipping &amp; policies</h2></div>
+    <div class="smap" id="smap" hidden></div>
+    <div class="pg2"><div class="po"><b>Processing</b><p>Most orders paid by 4 PM Monday to Friday ship the same day. Otherwise, they go out the next ship day. Checkout shows exactly when yours ships.</p></div><div class="po"><b>Shipping</b><p>Ships anywhere in the US and usually arrives in about 2 days. Flat $15 for 2-Day Air, or free local pickup. Your first order of $100+ ships free, VIPs ship free on $150+, and promos with free shipping show in the banner up top.</p></div><div class="po"><b>Discreet packaging</b><p>Plain outer packaging with nothing on the outside about what’s inside.</p></div><div class="po"><b>Local pickup</b><p>In South Florida? Choose pickup and a time at checkout, 10 AM to 5 PM. I’ll confirm the spot before then.</p></div><div class="po"><b>Powder form</b><p>Every vial ships as a lyophilized (freeze-dried) powder, sealed for storage.</p></div><div class="po po-warn"><b>Record your unboxing</b><p><strong>Record a video every time you open a package.</strong> If there’s a problem with your order and no video, I may not be able to make it right. Lost, damaged or something not right? Email or message me with your order number and your video.</p></div></div>
+  </section>
   <section class="sec" id="reviews">
     <div class="sh"><span class="ey">From customers</span><h2>Reviews</h2></div>
     <div id="rv"></div>
   </section>
-  <section class="sec" id="faq">
-    <div class="sh"><span class="ey">Questions</span><h2>FAQ</h2></div>
-    <div class="fqs"><details class="fq"><summary>How do I order?<i aria-hidden="true"></i></summary><p>Tap + on anything in the menu to add it to your cart, set quantities, then hit Checkout. Choose shipping or pickup, fill in your info, pay and submit.</p></details><details class="fq"><summary>Where’s my order?<i aria-hidden="true"></i></summary><p>Tap the button below, enter your order number (or payment code) and email, and tap Send. You’ll get an email back with your order status and tracking link, usually within the hour. Tracking is also emailed to you automatically the moment your order ships.</p><p><button class="tbtn st-open" type="button">Check my order</button></p></details><details class="fq"><summary>What’s a COA?<i aria-hidden="true"></i></summary><p>A Certificate of Analysis is a report from an independent lab that confirms what’s in the vial and how pure it is. COAs for tested batches are posted right on the menu (use the Lab tested filter). For anything else, just email me or ask in the Discord. <a href="https://novrixlabs.shop/research.html#coa">How to read a COA</a>.</p></details><details class="fq"><summary>Who did the testing?<i aria-hidden="true"></i></summary><p>Some reports are tests I sent in myself. Others come from group tests, where buyers of the same batch pool together and send vials to the lab. Every report says which one it is when you open it, and you can verify each one on the lab’s site.</p></details><details class="fq"><summary>What’s a blend?<i aria-hidden="true"></i></summary><p>Two or more peptides combined in one vial, like Wolverine (BPC-157 + TB-500). Same compounds, more convenient.</p></details><details class="fq"><summary>How do I avoid scammers?<i aria-hidden="true"></i></summary><p>I will never DM you first asking for payment, and I never take payment through gift cards, wire transfers or anyone else’s account. Only pay using the details shown at checkout on novrixlabs.shop, with your payment code in the note. If anyone else asks you to pay, on Discord, text or social media, it isn’t Novrix. Email novrixlabs@gmail.com to check.</p></details><details class="fq"><summary>What does “research use only” mean?<i aria-hidden="true"></i></summary><p>These compounds are sold for laboratory research. They are not approved medications, not for human consumption, and nothing on this site is medical advice.</p></details></div>
+  <section class="sec" id="labfund" hidden>
+    <div class="sh"><span class="ey">Community Lab Fund</span><h2>You pick what gets tested</h2></div>
+    <p class="lf-lede">Vote for the next product to send to an independent lab, and chip in toward the test if you want. Every backer gets <b>100% back in Nov Creds</b> when the report is posted.</p>
+    <div class="lf" id="lf"></div>
   </section>
-  <section class="sec">
+  <section class="sec" id="about">
     <figure class="fn">
       <blockquote>I’m a first responder, and I started Novrix with one goal: get quality peptides out to more people at prices that actually make sense. Novrix is independently run. No big ad budget, no influencer or affiliate markups baked into your price. You get direct access to me by email or Discord for any questions or anything you want personalized.</blockquote>
       <figcaption><b>Tyler</b><span>Founder, Novrix Labs</span></figcaption>
       <div class="ctas" style="justify-content:flex-start;margin-top:16px"><a class="ghost" href="mailto:novrixlabs@gmail.com">Email me</a><a class="ghost" href="https://discord.gg/XP9dz3jse" target="_blank" rel="noopener">Discord</a></div>
     </figure>
+  </section>
+  <section class="sec" id="faq">
+    <div class="sh"><span class="ey">Questions</span><h2>FAQ</h2></div>
+    <div class="fqs"><details class="fq"><summary>How do I order?<i aria-hidden="true"></i></summary><p>Tap + on anything in the menu to add it to your cart, set quantities, then hit Checkout. Choose shipping or pickup, fill in your info, pay and submit.</p></details><details class="fq"><summary>Where’s my order?<i aria-hidden="true"></i></summary><p>Tap the button below, enter your order number (or payment code) and email, and tap Send. You’ll get an email back with your order status and tracking link, usually within the hour. Tracking is also emailed to you automatically the moment your order ships.</p><p><button class="tbtn st-open" type="button">Check my order</button></p></details><details class="fq"><summary>What’s a COA?<i aria-hidden="true"></i></summary><p>A Certificate of Analysis is a report from an independent lab that confirms what’s in the vial and how pure it is. COAs for tested batches are posted right on the menu (use the Lab tested filter). For anything else, just email me or ask in the Discord. <a href="https://novrixlabs.shop/research.html#coa">How to read a COA</a>.</p></details><details class="fq"><summary>Who did the testing?<i aria-hidden="true"></i></summary><p>Some reports are tests I sent in myself. Others come from group tests, where buyers of the same batch pool together and send vials to the lab. Every report says which one it is when you open it, and you can verify each one on the lab’s site.</p></details><details class="fq"><summary>What’s a blend?<i aria-hidden="true"></i></summary><p>Two or more peptides combined in one vial, like Wolverine (BPC-157 + TB-500). Same compounds, more convenient.</p></details><details class="fq"><summary>How do I avoid scammers?<i aria-hidden="true"></i></summary><p>I will never DM you first asking for payment, and I never take payment through gift cards, wire transfers or anyone else’s account. Only pay using the details shown at checkout on novrixlabs.shop, with your payment code in the note. If anyone else asks you to pay, on Discord, text or social media, it isn’t Novrix. Email novrixlabs@gmail.com to check.</p></details><details class="fq"><summary>What does “research use only” mean?<i aria-hidden="true"></i></summary><p>These compounds are sold for laboratory research. They are not approved medications, not for human consumption, and nothing on this site is medical advice.</p></details></div>
   </section>
   <button class="totop" id="totop" type="button" aria-label="Back to top" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
 <nav class="bnav" aria-label="Quick links"><a href="#shop"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Menu</a><button type="button" class="st-open"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>Track</button><button type="button" id="bn-cart"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.4 11h10.2L20 8H6.2"/><circle cx="9" cy="19.5" r="1.4"/><circle cx="17" cy="19.5" r="1.4"/></svg>Cart<span class="bdg" id="bn-n" hidden>0</span></button><a href="https://discord.gg/XP9dz3jse" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg>Discord</a></nav>
