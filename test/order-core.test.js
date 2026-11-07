@@ -22,12 +22,17 @@ test("a truthy success string is not acceptance", () => {
   assert.notEqual(core.classifyFormsubmit(200, {success: "yes"}, false).state, "delivered");
 });
 
-test("intake acceptance must echo the same payment code", () => {
-  assert.equal(core.classifyIntake(200, {accepted: true, paymentCode: "AB12"}, "AB12").state, "delivered");
-  assert.equal(core.classifyIntake(200, {accepted: true, paymentCode: "ZZZZ"}, "AB12").state, "rejected");
-  assert.equal(core.classifyIntake(200, {accepted: true}, "AB12").state, "rejected");
-  assert.equal(core.classifyIntake(422, {accepted: false}, "AB12").state, "rejected");
-  assert.equal(core.classifyIntake(503, null, "AB12").state, "unconfirmed");
+test("a changed cart clears a held order once, then keeps the new payment code", () => {
+  const hold = {code: "HOLD", sig: "A:1"};
+  let minted = 0;
+  const mint = () => "NEW" + (++minted);
+  const same = core.resumeCheckout(hold, "A:1", "DRAFT", mint);
+  assert.deepEqual(same, {code: "HOLD", accepted: true, clearHold: false});
+  const changed = core.resumeCheckout(hold, "B:2", "DRAFT", mint);
+  assert.deepEqual(changed, {code: "NEW1", accepted: false, clearHold: true});
+  const again = core.resumeCheckout(null, "B:2", changed.code, mint);
+  assert.deepEqual(again, {code: "NEW1", accepted: false, clearHold: false});
+  assert.equal(minted, 1);
 });
 
 test("checkout validation matches the existing field rules", () => {
@@ -75,6 +80,7 @@ test("the page no longer treats an opaque post or the mail app as order delivery
   assert.equal(html.includes("mailtoOpen("), false);
   assert.equal(html.includes("function mailtoOpen"), false);
   assert.match(html, /classifyFormsubmit/);
+  assert.equal(html.includes("NOVRIX_INTAKE_URL"), false);
   assert.match(html, /order-core\.js/);
   const checkout = html.slice(html.indexOf('id="co"'), html.indexOf('id="tray"'));
   assert.equal(checkout.includes("mailto:"), false);

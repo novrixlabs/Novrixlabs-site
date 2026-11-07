@@ -22,16 +22,14 @@
     return {state: "rejected", via: "formsubmit"};
   }
 
-  function classifyIntake(status, body, paymentCode) {
-    if (typeof status !== "number" || status <= 0 || status >= 500) return {state: "unconfirmed", via: "intake"};
-    if (status >= 200 && status < 300 && body && body.accepted === true && paymentCode && body.paymentCode === paymentCode) {
-      return {state: "delivered", via: "intake"};
-    }
-    return {state: "rejected", via: "intake"};
-  }
-
   function classifyOpaque() {
     return {state: "unconfirmed", via: "opaque"};
+  }
+
+  function resumeCheckout(hold, sig, draft, mint) {
+    if (hold && hold.code && hold.sig === sig) return {code: hold.code, accepted: true, clearHold: false};
+    if (hold && hold.code) return {code: mint(), accepted: false, clearHold: true};
+    return {code: draft, accepted: false, clearHold: false};
   }
 
   function checkoutErrors(f) {
@@ -86,7 +84,7 @@
   }
 
   return {
-    LOWCAP, CODE_ALPHABET, capFor, classifyFormsubmit, classifyIntake, classifyOpaque,
+    LOWCAP, CODE_ALPHABET, capFor, classifyFormsubmit, classifyOpaque, resumeCheckout,
     checkoutErrors, lineErrors, feePercent, amountDue, cartSig, paymentCodeFromBytes
   };
 });

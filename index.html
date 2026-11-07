@@ -1454,19 +1454,13 @@ let WAITED = new Set(); try { WAITED = new Set(JSON.parse(localStorage.getItem("
 async function deliverNotice(subject, text, email, paymentCode) {
   if (typeof NovrixOrder === "undefined") return {state: "unconfirmed", via: "missing"};
   const net = typeof window.NOVRIX_FETCH === "function" ? window.NOVRIX_FETCH : fetch;
-  const intake = typeof window.NOVRIX_INTAKE_URL === "string" ? window.NOVRIX_INTAKE_URL.trim() : "";
   const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 20000);
   try {
-    if (intake) {
-      const r = await net(intake, {method: "POST", headers: {"Content-Type": "application/json", "Accept": "application/json"}, body: JSON.stringify({subject, email: email || "", message: text, paymentCode: paymentCode || "", ruo: true}), signal: ctl.signal});
-      const body = await r.json().catch(() => null);
-      return NovrixOrder.classifyIntake(r.status, body, paymentCode || "");
-    }
     const r = await net("https://formsubmit.co/ajax/novrixlabs@gmail.com", {method: "POST", headers: {"Content-Type": "application/json", "Accept": "application/json"}, body: JSON.stringify({_subject: subject, _template: "basic", _captcha: "false", email: email || "", message: text}), signal: ctl.signal});
     const body = await r.json().catch(() => null);
     return NovrixOrder.classifyFormsubmit(r.status, body, false);
   } catch (e) {
-    return intake ? NovrixOrder.classifyIntake(0, null, paymentCode || "") : NovrixOrder.classifyFormsubmit(0, null, true);
+    return NovrixOrder.classifyFormsubmit(0, null, true);
   } finally { clearTimeout(timer); }
 }
 async function sendDirect(subject, text, email) {
@@ -1483,7 +1477,7 @@ function openNotify(key, label) {
   const em = el("input"); em.type = "email"; em.autocomplete = "email"; em.placeholder = "you@email.com"; em.value = saved.email || ""; em.setAttribute("aria-label", "Your email");
   const nm = el("input"); nm.autocomplete = "given-name"; nm.placeholder = "First name (optional)"; nm.value = (saved.name || "").split(" ")[0] || ""; nm.setAttribute("aria-label", "First name");
   const go = el("button", "cta nf-go", "Notify me"); go.type = "button"; const err = el("p", "co-err"), done = el("div", "co-done"); done.hidden = true;
-  done.append(el("b", null, "One last step: tap Send"), el("p", null, "You’ll get one email when it’s back:  " + key + " is back."));
+  done.append(el("b", null, "You’re on the list"), el("p", null, "You’ll get one email the moment " + key + " is back in stock."));
   const close = () => { dlg.remove(); document.body.classList.remove("co-open"); };
   x.addEventListener("click", close); dlg.addEventListener("click", (e) => { if (e.target === dlg) close(); });
   go.addEventListener("click", async () => { if (go.disabled) return; const v = em.value.trim(); err.textContent = ""; if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) { err.textContent = "Please enter a valid email."; em.focus(); return; }
@@ -2103,7 +2097,7 @@ if (selfRef(fv("name"), em)) { REFCODE = ""; try { localStorage.removeItem("novr
     if (result.state === "delivered") { document.getElementById("ps-f").hidden = true; document.getElementById("ps-ok").hidden = false; }
     else { er.textContent = "Payment notice was not confirmed. Your payment code is unchanged. Tap Confirm payment sent to try again."; } });
   document.getElementById("co-copy").addEventListener("click", (e) => { const b = e.currentTarget; try { navigator.clipboard.writeText(fullOrder()).then(() => { b.textContent = "Copied"; }); } catch (x) {} });
-  const open = () => { if (!picks.size) return; let hold = null; try { hold = JSON.parse(sessionStorage.getItem("novrix-hold") || "null"); } catch (e) {} const sig = cartSig(); if (hold && hold.code && hold.sig === sig) { PCODE = hold.code; sent = true; } else if (hold && hold.code) { PCODE = mkCode(); sent = false; try { sessionStorage.setItem("novrix-draft-code", PCODE); } catch (e) {} } draw2(); if (sent) showAccepted(); else { document.getElementById("co-done").hidden = true; const sb = document.getElementById("co-submit"); sb.hidden = false; if (!placing) { sb.disabled = false; sb.textContent = "Submit order"; } } co.hidden = false; document.body.classList.add("co-open"); document.getElementById("co-x").focus(); };
+  const open = () => { if (!picks.size) return; let hold = null; try { hold = JSON.parse(sessionStorage.getItem("novrix-hold") || "null"); } catch (e) {} const next = NovrixOrder.resumeCheckout(hold, cartSig(), PCODE, mkCode); PCODE = next.code; sent = next.accepted; try { sessionStorage.setItem("novrix-draft-code", PCODE); if (next.clearHold) sessionStorage.removeItem("novrix-hold"); } catch (e) {} draw2(); if (sent) showAccepted(); else { document.getElementById("co-done").hidden = true; const sb = document.getElementById("co-submit"); sb.hidden = false; if (!placing) { sb.disabled = false; sb.textContent = "Submit order"; } } co.hidden = false; document.body.classList.add("co-open"); document.getElementById("co-x").focus(); };
   document.getElementById("co-another").addEventListener("click", () => { sent = false; placing = false; PCODE = mkCode(); try { sessionStorage.removeItem("novrix-hold"); sessionStorage.setItem("novrix-draft-code", PCODE); } catch (e) {} document.getElementById("co-done").hidden = true; document.getElementById("ps-open").hidden = false; document.getElementById("ps-f").hidden = true; document.getElementById("ps-ok").hidden = true; document.getElementById("ps-from").value = ""; const sb = document.getElementById("co-submit"); sb.hidden = false; sb.disabled = false; sb.textContent = "Submit order"; document.getElementById("co-err").textContent = ""; draw2(); });
   const close = () => { co.hidden = true; document.body.classList.remove("co-open"); };
   document.getElementById("tray-order").addEventListener("click", open);
@@ -2340,7 +2334,7 @@ list.addEventListener("pointermove", (e) => { const c = e.target.closest(".card.
     const sent = await sendReview("Product request: " + pr.slice(0, 50) + " " + mg.slice(0, 12) + " × " + vi, text, em);
     btn.disabled = false; btn.textContent = "Send request";
     if (sent) { f.reset(); ok.hidden = false; btn.hidden = true; setTimeout(() => { ok.hidden = true; btn.hidden = false; }, 8000); }
-    else err.textContent = "Couldn't send. Email novrixlabs@gmail.com or ask in the Discord.";
+    else err.textContent = "Not confirmed. Nothing was sent. Your request is still here. Tap Send request to try again.";
   });
 })();
 // fx4: purity stat
