@@ -2,6 +2,7 @@
    and any attempt to continue that request fails the run. Nothing is sent. */
 import http from "node:http";
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createRequire } from "node:module";
@@ -9,8 +10,19 @@ const require = createRequire(import.meta.url);
 const puppeteer = require(process.env.PUPPETEER_CORE || "puppeteer-core");
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const outDir = process.env.ARTIFACT_DIR || "/opt/cursor/artifacts";
-fs.mkdirSync(outDir, { recursive: true });
+function shotDir() {
+  const preferred = process.env.ARTIFACT_DIR || "/opt/cursor/artifacts";
+  try {
+    fs.mkdirSync(preferred, { recursive: true });
+    fs.accessSync(preferred, fs.constants.W_OK);
+    return preferred;
+  } catch {
+    const alt = path.join(os.tmpdir(), "novrix-checkout-shots");
+    fs.mkdirSync(alt, { recursive: true });
+    return alt;
+  }
+}
+const outDir = shotDir();
 const shots = [];
 const posts = [];
 

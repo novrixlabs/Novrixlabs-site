@@ -1,0 +1,42 @@
+# Runs the local checkout tests only. It does not deploy, send mail, or read secrets.
+name: Checkout tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  logic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Order rules
+        run: node --test test/order-core.test.js
+
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install browser driver
+        run: npm install --prefix "$RUNNER_TEMP/ui" puppeteer-core@24.43.1
+      - name: Desktop and phone checkout
+        env:
+          PUPPETEER_CORE: ${{ runner.temp }}/ui/node_modules/puppeteer-core
+          ARTIFACT_DIR: ${{ runner.temp }}/checkout-shots
+        run: |
+          export CHROME="$(command -v google-chrome || command -v google-chrome-stable)"
+          test -n "$CHROME"
+          node test/checkout-ui.mjs
