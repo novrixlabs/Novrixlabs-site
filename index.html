@@ -1288,7 +1288,7 @@ html.is-vip b.dealp{color:#ff9a5c}
 
 const ORDER_URL = "#shop";
 const SALES = [
-  {name: "Veterans Day", start: "2026-11-11", ends: "2026-11-12", teaseFrom: "2026-11-08", startIso: "2026-11-11T05:00:00Z", endIso: "2026-11-13T05:00:00Z", card: {title: "Veterans Day Flash Sale", when: "48 hours · Wed Nov 11 + Thu Nov 12", points: ["Free shipping on every order", "10% off any order of $150+, taken off automatically at checkout", "Veterans & families: code NOVRIXHERO gets VIP pricing all year"], fine: "Total savings on one order max out at 25%. If your bulk discount is bigger, you get that instead. Ends Thursday at midnight ET."}, tiers: [[1, 10]], minSub: 150, freeShip: 1, blurb: "Free shipping on every order · 10% off orders of $150+ · Veterans & families: code NOVRIXHERO for VIP pricing all year"},
+  {name: "Veterans Day", start: "2026-11-11", ends: "2026-11-12", teaseFrom: "2026-11-08", startIso: "2026-11-11T05:00:00Z", endIso: "2026-11-13T05:00:00Z", card: {title: "Veterans Day Flash Sale", when: "48 hours · Wed Nov 11 + Thu Nov 12", points: ["Free shipping on every order", "10% off any order of $150+, taken off automatically at checkout", "Veterans & families: message me for VIP pricing all year"], fine: "Total savings on one order max out at 25%. If your bulk discount is bigger, you get that instead. Ends Thursday at midnight ET."}, tiers: [[1, 10]], minSub: 150, freeShip: 1, blurb: "Free shipping on every order · 10% off orders of $150+ · Veterans & families: message me for VIP pricing"},
   {name: "Black Friday Week", start: "2026-11-23", vipStart: "2026-11-20", ends: "2026-11-30", tiers: [[10, 25], [5, 20], [1, 15]], freeShip: 150},
   {name: "Holiday Stock-Up", start: "2026-12-09", ends: "2026-12-19", tiers: [], freeShip: 1, back: 150, blurb: "Free shipping on every order · $10 back in Nov Creds on $150+"}
 ];
@@ -2573,4 +2573,30 @@ html.rvon .card{opacity:1!important;transform:none!important;transition:none!imp
 .rank.rk-gold .rk-t b,.rank.rk-plat .rk-t b{animation:none!important}
 .rank.rk-plat{box-shadow:none}
 </style>
+<style id="fx-premium">
+/* Premium details: one slow aurora behind the hero, a light sweep on the chrome wordmark, film grain, drawn section rules, glass CTAs. All calm, all off for reduced motion. */
+.hero{position:relative;isolation:isolate}
+.hero::before{content:"";position:absolute;left:50%;top:-30px;width:min(760px,140vw);height:460px;transform:translateX(-50%);z-index:-1;pointer-events:none;background:radial-gradient(38% 46% at 38% 42%,rgba(155,77,255,.20),transparent 70%),radial-gradient(34% 40% at 64% 48%,rgba(47,140,255,.16),transparent 70%),radial-gradient(30% 34% at 50% 70%,rgba(255,95,210,.07),transparent 70%);filter:blur(18px)}
+.hero img{filter:drop-shadow(0 0 14px rgba(120,90,255,.35))!important}
+.hero h1{background-image:linear-gradient(110deg,transparent 42%,rgba(255,255,255,.95) 50%,transparent 58%),var(--chrome)!important;background-size:250% 100%,100% 100%!important;background-position:120% 0,0 0!important;background-repeat:no-repeat!important}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:999;opacity:.045;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.sh h2::after{content:"";display:block;width:56px;height:2px;margin-top:12px;border-radius:2px;background:var(--grad);transform-origin:left center;transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+html.fxu .sh:not(.drawn) h2::after{transform:scaleX(.18)}
+.cta{position:relative;overflow:hidden}
+.cta::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.28) 50%,transparent 65%);transform:translateX(-120%);pointer-events:none}
+.card{background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,0) 38%),var(--panel)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+.fsale{background:linear-gradient(180deg,rgba(233,207,143,.07),rgba(233,207,143,0) 45%),var(--panel)}
+@media (hover:none){.card:active{transform:scale(.992)!important;transition:transform .12s ease!important}.dose:active{background:#1d1d29}}
+@media (prefers-reduced-motion:no-preference){
+  .hero::before{animation:aur 18s ease-in-out infinite alternate}
+  @keyframes aur{0%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-47%) scale(1.06)}100%{transform:translateX(-53%) scale(.97)}}
+  .hero img{animation:lg 6s ease-in-out infinite!important}
+  @keyframes lg{0%,100%{filter:drop-shadow(0 0 12px rgba(120,90,255,.3))}50%{filter:drop-shadow(0 0 22px rgba(100,130,255,.55))}}
+  .hero h1{animation:wsweep 9s ease-in-out 1.2s infinite!important}
+  @keyframes wsweep{0%,70%{background-position:120% 0,0 0}100%{background-position:-20% 0,0 0}}
+  .cta::after{animation:csweep 7s ease-in-out 2s infinite}
+  @keyframes csweep{0%,82%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+}
+</style>
+<script>(()=>{if(matchMedia("(prefers-reduced-motion: reduce)").matches||!("IntersectionObserver" in window))return;document.documentElement.classList.add("fxu");const io=new IntersectionObserver((es)=>{for(const e of es)if(e.isIntersecting){e.target.classList.add("drawn");io.unobserve(e.target)}},{rootMargin:"0px 0px -15% 0px"});document.querySelectorAll(".sh").forEach((x)=>io.observe(x));})();</script>
 </body></html>
