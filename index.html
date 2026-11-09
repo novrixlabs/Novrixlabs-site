@@ -1909,7 +1909,7 @@ setTimeout(() => { let q = ""; try { q = new URLSearchParams(location.search).ge
   tray(); const t = el("div", "refpop"); t.setAttribute("role", "status"); t.append(el("b", null, "$" + REF_OFF + " off from a friend"), el("span", null, "Code " + rc + " is applied to your first order of $" + REF_MIN + "+.")); document.body.append(t); setTimeout(() => t.classList.add("go"), 7000); setTimeout(() => t.remove(), 7600); }, 0);
 function tray() {
   if (window.__trayHook) window.__trayHook();
-  { const vt = document.getElementById("vtop"); if (vt) { vt.replaceChildren(); vt.classList.toggle("lounge", VIPON); if (VIPON) vt.append(vipLounge()); else { if (!REFCODE) vt.append(el("span", "vtop-l", "VIP or referral code?")); vt.append(codeBox()); } } }
+  { const vt = document.getElementById("vtop"); if (vt) { vt.replaceChildren(); vt.classList.toggle("lounge", VIPON); vt.classList.remove("vtop-c"); if (VIPON) vt.append(vipLounge()); else if (REFCODE) vt.append(codeBox()); else { vt.classList.add("vtop-c"); const t = el("button", "vtop-t", "Have a VIP or referral code?"); t.type = "button"; t.addEventListener("click", () => { vt.classList.remove("vtop-c"); vt.replaceChildren(el("span", "vtop-l", "VIP or referral code?"), codeBox()); vt.querySelector("input")?.focus(); }); vt.append(t); } } }
   for (const f of CARD_SYNC.values()) f();
   const n = picks.size;
   trayEl.hidden = !n; document.body.classList.toggle("has-tray", !!n);
@@ -1978,7 +1978,7 @@ function draw() {
       lk.addEventListener("click", () => copyLink(lk, card.id));
       const h3 = el("h3", "sr", it.name); hd.append(labelEl(it), lk); card.append(h3, hd); { const sa = seqArt(it); if (sa) { if (SEQ[it.name]) { const sb = el("button", "sqb"); sb.type = "button"; sb.setAttribute("aria-label", "Explore " + it.name + " in 3D"); sb.append(sa, el("span", "s3", "3D")); sb.addEventListener("click", () => openMol(it)); card.append(sb); } else card.append(sa); } } { const gd = GUIDE[norm(it.name)], inf = INFO[norm(it.name)]; if (gd) { const gc = GOALS.find((x) => x[0] === gd.c) || []; card.style.setProperty("--g1", gc[2] || "#9b4dff"); card.style.setProperty("--g2", gc[3] || "#2f8cff"); const gl = el("button", "gl", gd.c); gl.type = "button"; gl.addEventListener("click", () => { const sec = document.getElementById("g-" + slug(gd.c)); if (sec && !goal) sec.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start"}); else setGoal(gd.c, true); }); card.append(gl, el("p", "desc", gd.is)); const tg = el("div", "tags");  if (gd.does) card.append(el("p", "wd2", gd.does)); } else if (inf) card.append(el("p", "desc", inf)); }
       const ds = el("div", "doses");
-      for (const d of it.doses) {
+      for (const d of [...it.doses].sort((a, b) => (RANK[a.s] ?? 3) - (RANK[b.s] ?? 3))) {
         const row = el("div", "dose s-" + d.s);
         const dv = el("span", "dv"); if (it.doses.some((x) => x.cap !== capd.cap)) { const mv = el("span", "mv"); mv.innerHTML = vialSVG(d.cap, 20, d.s); dv.append(mv, " "); } dv.append(el("span", "dn", String(d.dose).replace(/\s*vial$/i, ""))); const db = el("span", "db"); if (d.badge) { db.append(el("span", "bs", "★ " + d.badge)); card.classList.add("has-bs"); } if (fresh(d)) { db.append(el("span", "fresh", "Just restocked")); card.classList.add("has-fresh"); } 
         const key = it.name + " " + d.dose, pk = el("button", "pk"); pk.type = "button"; pk.innerHTML = svgPlus; pk.setAttribute("aria-label", "Add " + key + " to your cart");
@@ -2590,6 +2590,11 @@ html.rvon .card{opacity:1!important;transform:none!important;transition:none!imp
 </style>
 <style id="fx-premium">
 html,body{overflow-x:clip}
+.vtop.vtop-c{padding:0;border:0;background:none;margin-top:6px}.vtop-t{all:unset;cursor:pointer;font-size:.82rem;font-weight:600;color:#c9b3ff;display:inline-flex;align-items:center;gap:6px}.vtop-t::before{content:"+";display:grid;place-items:center;width:18px;height:18px;border-radius:50%;border:1px solid rgba(154,107,255,.5);font-size:.8rem;line-height:1}.vtop-t:focus-visible{outline:2px solid #9a6bff;outline-offset:3px;border-radius:6px}
+.card .desc{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer;margin:0}.card .desc::after{content:""}.card:not(.dopen) .wd2{display:none}.card.dopen .desc{display:block}
+.card .desc-m{all:unset;cursor:pointer;font-size:.76rem;font-weight:600;color:#c9b3ff;margin-top:-6px;align-self:flex-start;order:1}.card.dopen .desc-m{display:none}
+.rowx{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);padding-right:24px}.rowx::-webkit-scrollbar{display:none}.rowx>.chips{flex:none;overflow:visible;-webkit-mask-image:none;mask-image:none;padding:0;margin:0}.rowx .rsep{flex:none;width:1px;align-self:stretch;margin:4px 2px;background:var(--line)}
+
 .nav .nbtn{padding:7px 14px!important;font-size:.8rem!important;border-radius:9px!important;box-shadow:none!important}@media (max-width:700px){.nav .nbtn{padding:6px 12px!important;font-size:.76rem!important}}
 @media (max-width:700px){.sec{margin-top:68px!important}.sh{margin-bottom:18px}}
 /* Premium details: one slow aurora behind the hero, a light sweep on the chrome wordmark, film grain, drawn section rules, glass CTAs. All calm, all off for reduced motion. */
@@ -2618,4 +2623,12 @@ html.fxu .sh:not(.drawn) h2::after{transform:scaleX(.18)}
 .rvs{align-items:start}.shr{margin-top:14px;padding:14px;border-radius:14px;border:1px solid rgba(233,207,143,.35);background:linear-gradient(180deg,rgba(233,207,143,.07),transparent 60%),var(--sunk)}.shr b{color:#e9cf8f!important;font-size:.98rem}.shr p{margin:4px 0 10px!important;font-size:.84rem;color:#c9c6e4}.shr-a{display:flex;flex-wrap:wrap;gap:8px}.shr-a .tbtn{text-decoration:none}.shr-c{margin:10px 0 0!important;font-family:var(--f-num);font-size:.8rem!important;color:var(--muted)!important;letter-spacing:.04em}.pstat{position:relative;overflow:hidden;isolation:isolate}.pstat .pfill{position:absolute;left:0;top:0;bottom:0;width:0;z-index:-1;border-radius:inherit;background:linear-gradient(90deg,rgba(61,220,151,.10),rgba(61,220,151,.28));box-shadow:inset -2px 0 0 rgba(125,255,178,.55)}.pstat.pdone .pfill{box-shadow:inset -1px 0 0 rgba(125,255,178,.35)}
 </style>
 <script>(()=>{if(matchMedia("(prefers-reduced-motion: reduce)").matches||!("IntersectionObserver" in window))return;document.documentElement.classList.add("fxu");const io=new IntersectionObserver((es)=>{for(const e of es)if(e.isIntersecting){e.target.classList.add("drawn");io.unobserve(e.target)}},{rootMargin:"0px 0px -15% 0px"});document.querySelectorAll(".sh").forEach((x)=>io.observe(x));})();</script>
+<script>(()=>{
+ /* descriptions: 2 lines, tap for more */
+ const addMore=()=>document.querySelectorAll('#list .card').forEach(c=>{const d=c.querySelector('.desc');if(!d||c.querySelector('.desc-m'))return;if(d.scrollHeight<=d.clientHeight+2&&!c.querySelector('.wd2'))return;const b=document.createElement('button');b.type='button';b.className='desc-m';b.textContent='More';d.after(b);});
+ document.addEventListener('click',e=>{const t=e.target.closest('#list .card .desc, #list .card .desc-m');if(t)t.closest('.card').classList.toggle('dopen');});
+ const L=document.getElementById('list');if(L){new MutationObserver(()=>requestAnimationFrame(addMore)).observe(L,{childList:true,subtree:false});}setTimeout(addMore,300);
+ /* phones: one sticky filter row */
+ if(matchMedia('(max-width:700px)').matches){const bar=document.querySelector('.bar'),j=document.getElementById('jtabs'),f=document.querySelector('.fchips');if(bar&&j&&f){const r=document.createElement('div');r.className='rowx';j.before(r);r.append(f,Object.assign(document.createElement('span'),{className:'rsep'}),j);}}
+})();</script>
 </body></html>
