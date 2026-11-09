@@ -1361,25 +1361,52 @@ const coaList = (d) => [...(d.coa ? [{coa: d.coa, lab: d.lab, purity: d.purity, 
 const coaText = (c) => c.kind === "sterility" ? "Sterility test · Pass" : c.kind === "full" ? "COA · " + c.purity + " purity · endotoxin pass" : "COA · " + c.purity + " purity";
 const svgShield = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v6c0 4.2-2.9 7.7-7 9-4.1-1.3-7-4.8-7-9V6z"/><path d="m9 12 2 2 4-4"/></svg>';
 function openCoa(title, list, idx) {
-  const lb = el("div", "lb"); lb.setAttribute("role", "dialog"); lb.setAttribute("aria-modal", "true"); lb.setAttribute("aria-label", "Lab reports for " + title);
-  const h = el("div", "lb-h"), x = el("button", "lb-x", "✕"); x.setAttribute("aria-label", "Close");
-  const ttl = el("b", null, title), v = el("a"); v.target = "_blank"; v.rel = "noopener";
-  h.append(ttl, v, x);
-  const tabs = el("div", "lb-tabs"), body = el("div", "lb-body"), img = el("img"), note = el("div", "lb-note"), src = el("div", "lb-src"), pur = el("div", "lb-pur"); pur.hidden = true;
-  body.append(img);
-  const show = (k) => { const d = list[k], L = LABS[d.lab] || LABS.kovera; img.src = d.coa; img.alt = (d.kind === "sterility" ? "Sterility test" : d.kind === "endotoxin" ? "Endotoxin test" : "Certificate of analysis") + " for " + title;
-    v.textContent = "Verify ↗"; v.href = L.url; v.title = "Verify at " + L.name;
-    const me = /^Tested for Novrix/i.test(d.note || ""), grp = /^Group test/i.test(d.note || ""); src.hidden = !(me || grp); src.className = "lb-src" + (me ? " me" : ""); src.textContent = me ? "Tested by me · I sent this vial to the lab" : "Group test · same batch, tested through a community lab group";
-    note.textContent = [d.note, L.name, L.rep + " " + d.report, L.code + " " + d.code].filter(Boolean).join(" · ");
-    tabs.querySelectorAll("button").forEach((b, n) => b.setAttribute("aria-pressed", String(n === k)));
-    const pv = parseFloat(d.purity); clearInterval(pur.t); if (pv && (!d.kind || d.kind === "full")) { pur.hidden = false; const lab = el("small", null, "HPLC purity"), num = document.createTextNode(""); pur.replaceChildren(num, lab);
-      if (REDUCE) num.data = pv.toFixed(2) + "%"; else { const t0 = performance.now(); pur.t = setInterval(() => { const q = Math.min(1, (performance.now() - t0) / 900), e2 = 1 - Math.pow(1 - q, 3); num.data = (pv * e2).toFixed(2) + "%"; if (q >= 1) clearInterval(pur.t); }, 16); } } else pur.hidden = true; };
-  if (list.length > 1) { const seen = {}; list.forEach((d, k) => { const base = d.kind === "sterility" ? "Sterility · Pass" : d.kind === "endotoxin" ? "Endotoxin · " + (d.result || "") : d.kind === "content" ? "Content test" : "Purity " + (d.purity || ""); const lbl = (d.dz ? d.dz + " \u00b7 " : "") + base; seen[lbl] = (seen[lbl] || 0) + 1; const b = el("button", null, lbl + (seen[lbl] > 1 ? " (" + seen[lbl] + ")" : "")); b.type = "button"; b.addEventListener("click", () => show(k)); tabs.append(b); }); }
-  lb.append(h); if (list.length > 1) lb.append(tabs); lb.append(pur, body, src, note);
-  const close = () => { lb.remove(); document.removeEventListener("keydown", esc); };
+  const svgX = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>';
+  const kindOf = (d) => d.kind === "sterility" ? "Sterility" : d.kind === "endotoxin" ? "Endotoxin" : d.kind === "content" ? "Content" : "Purity";
+  const sizes = []; list.forEach((d) => { const z = d.dz || ""; if (!sizes.includes(z)) sizes.push(z); });
+  const bg = el("div", "rp-bg"), sh = el("div", "rp"); sh.setAttribute("role", "dialog"); sh.setAttribute("aria-modal", "true"); sh.setAttribute("aria-label", "Lab reports for " + title);
+  const grab = el("div", "rp-grab"); grab.setAttribute("aria-hidden", "true");
+  const hd = el("div", "rp-h"), ht = el("div", "rp-ht"), x = el("button", "rp-x"); x.type = "button"; x.innerHTML = svgX; x.setAttribute("aria-label", "Close");
+  ht.append(el("b", null, title), el("span", null, list.length > 1 ? list.length + " lab reports" : "Lab report")); hd.append(ht, x);
+  const szRow = el("div", "rp-sz"), kRow = el("div", "rp-k");
+  const sum = el("div", "rp-sum"), big = el("div", "rp-big"), bigN = el("b"), bigL = el("small"); big.append(bigN, bigL);
+  const meta = el("div", "rp-meta"); sum.append(big, meta);
+  const act = el("div", "rp-act"), ver = el("a", "rp-ver"); ver.target = "_blank"; ver.rel = "noopener"; const cp = el("button", "rp-cp"); cp.type = "button"; act.append(ver, cp);
+  const fig = el("a", "rp-img"); fig.target = "_blank"; fig.rel = "noopener"; const img = el("img"); img.decoding = "async"; fig.append(img, el("span", "rp-zoom", "Tap to open full size"));
+  const note = el("p", "rp-note");
+  sh.append(grab, hd, szRow, kRow, sum, act, fig, note); bg.append(sh);
+  let cur = -1, tmr = 0;
+  const show = (k) => { if (k === cur) return; cur = k; const d = list[k], L = LABS[d.lab] || LABS.kovera;
+    szRow.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.z === (d.dz || ""))));
+    kRow.replaceChildren(); const same = list.map((r, i) => [r, i]).filter(([r]) => (r.dz || "") === (d.dz || ""));
+    if (same.length > 1) for (const [r, i] of same) { const b = el("button", null, kindOf(r)); b.type = "button"; b.setAttribute("aria-pressed", String(i === k)); b.addEventListener("click", () => show(i)); kRow.append(b); }
+    kRow.hidden = same.length < 2;
+    const pv = parseFloat(d.purity), isP = pv && (!d.kind || d.kind === "full"); clearInterval(tmr);
+    if (isP) { bigL.textContent = "HPLC purity"; if (REDUCE) bigN.textContent = pv.toFixed(2) + "%"; else { const t0 = performance.now(); tmr = setInterval(() => { const q = Math.min(1, (performance.now() - t0) / 700), e = 1 - Math.pow(1 - q, 3); bigN.textContent = (pv * e).toFixed(2) + "%"; if (q >= 1) clearInterval(tmr); }, 16); } }
+    else { bigN.textContent = d.kind === "sterility" ? "Pass" : d.kind === "endotoxin" ? (d.result || "Pass") : "Tested"; bigL.textContent = kindOf(d) + (d.kind === "sterility" ? " · no growth" : ""); }
+    big.classList.toggle("sm", !isP && bigN.textContent.length > 6);
+    const me = /^Tested for Novrix/i.test(d.note || ""), grp = /^Group test/i.test(d.note || "");
+    meta.replaceChildren(el("b", null, L.name), el("span", null, (d.dz ? d.dz + " · " : "") + L.rep + " " + (d.report || "")));
+    if (me || grp) meta.append(el("i", me ? "me" : "", me ? "Sent to the lab by me" : "Community group test"));
+    ver.textContent = "Verify on " + L.name.replace(/ \(.*\)$/, "") + " ↗"; ver.href = L.url;
+    cp.hidden = !d.code; cp.textContent = "Copy " + L.code; cp.dataset.code = d.code || "";
+    fig.href = d.coa; fig.classList.remove("ok"); img.alt = (d.kind === "sterility" ? "Sterility test" : d.kind === "endotoxin" ? "Endotoxin test" : "Certificate of analysis") + " for " + title + (d.dz ? " " + d.dz : "");
+    img.onload = () => fig.classList.add("ok"); img.src = d.coa; if (img.complete && img.naturalWidth) fig.classList.add("ok");
+    note.textContent = [d.note && d.note.replace(/^Tested for Novrix Labs · |^Group test · /i, ""), d.code ? L.code + ": " + d.code : ""].filter(Boolean).join(" · ");
+    sh.scrollTop = 0; };
+  if (sizes.length > 1) { for (const z of sizes) { const b = el("button", null, z); b.type = "button"; b.dataset.z = z; b.addEventListener("click", () => show(list.findIndex((r) => (r.dz || "") === z))); szRow.append(b); } } else szRow.hidden = true;
+  cp.addEventListener("click", async () => { const c = cp.dataset.code; let ok = false; try { await navigator.clipboard.writeText(c); ok = true; } catch (e) {} const t = cp.textContent; cp.textContent = ok ? "Copied ✓" : c; cp.classList.add("done"); setTimeout(() => { cp.textContent = t; cp.classList.remove("done"); }, 1600); });
+  for (const d of list) { const p = new Image(); p.src = d.coa; }
+  const prevFocus = document.activeElement;
+  const close = () => { if (bg.classList.contains("out")) return; bg.classList.add("out"); bg.classList.remove("in"); document.removeEventListener("keydown", esc); document.body.classList.remove("rp-open"); clearInterval(tmr); setTimeout(() => { bg.remove(); try { prevFocus && prevFocus.focus({preventScroll: true}); } catch (e) {} }, REDUCE ? 0 : 280); };
   const esc = (e) => { if (e.key === "Escape") close(); };
-  x.addEventListener("click", close); lb.addEventListener("click", (e) => { if (e.target === lb) close(); }); document.addEventListener("keydown", esc);
-  show(idx || 0); document.body.append(lb); x.focus();
+  x.addEventListener("click", close); bg.addEventListener("click", (e) => { if (e.target === bg) close(); }); document.addEventListener("keydown", esc);
+  { let y0 = null, dy = 0; const start = (e) => { if (sh.scrollTop > 0) return; y0 = e.touches[0].clientY; dy = 0; sh.style.transition = "none"; };
+    const move = (e) => { if (y0 == null) return; dy = Math.max(0, e.touches[0].clientY - y0); if (dy > 0) { sh.style.transform = "translateY(" + dy + "px)"; e.cancelable && e.preventDefault(); } };
+    const endT = () => { if (y0 == null) return; y0 = null; sh.style.transition = ""; sh.style.transform = ""; if (dy > 90) close(); };
+    for (const t of [grab, hd]) { t.addEventListener("touchstart", start, {passive: true}); t.addEventListener("touchmove", move, {passive: false}); t.addEventListener("touchend", endT); } }
+  show(Math.max(0, idx || 0)); document.body.append(bg); document.body.classList.add("rp-open");
+  requestAnimationFrame(() => requestAnimationFrame(() => bg.classList.add("in"))); x.focus({preventScroll: true});
 }
 
 const SHARDS = '<svg class="sh" viewBox="0 0 300 146" preserveAspectRatio="none" aria-hidden="true"><defs>'
@@ -1992,7 +2019,7 @@ function draw() {
         const prs = el("span", "pr"); if (DEALP[key] && PRICE[key] <= DEALP[key] && !(VIPON && PRICE[key] < DEALP[key])) { prs.append(el("s", null, money(NPRICE[key])), " ", el("b", "dealp", money(PRICE[key]))); } else if (VIPON && PRICE[key] < NPRICE[key]) { prs.append(el("s", null, money(NPRICE[key])), " ", el("b", "vipp", money(PRICE[key]))); } else if (d.p) prs.textContent = money(d.p);
         let nfy = null; if (!avail(d.s) && !picks.has(key)) { pk.hidden = true; nfy = el("button", "pk nfy" + (WAITED.has(key) ? " on" : "")); nfy.type = "button"; nfy.innerHTML = svgBell; nfy.title = WAITED.has(key) ? "Restock alert requested" : "Get an email when it\u2019s back"; nfy.setAttribute("aria-label", "Get an email when " + key + " is back in stock"); nfy.addEventListener("click", () => openNotify(key, d.label)); }
         const stE = el("span", "st", d.s === "in" ? "" : d.label); if (d.s === "in") stE.append(el("span", "sr", "In stock")); row.append(el("i", "dot d-" + d.s), dv, prs, stE, nfy || pk, qs);
-        { const cl = coaList(d); if (cl.length) { const best = cl.find((c) => c.purity); const tc = el("button", "tci"); tc.type = "button"; tc.innerHTML = svgShield; tc.title = best ? best.purity + " pure \u00b7 view report" : "Lab tested \u00b7 view report"; tc.setAttribute("aria-label", "View lab report for " + key + (best ? ", " + best.purity + " pure" : "")); tc.addEventListener("click", () => openCoa(it.name + " " + d.dose, cl, 0)); dv.append(tc); } if (db.childNodes.length) row.append(db); }
+        { const cl = coaList(d); if (cl.length) { const best = cl.find((c) => c.purity); const tc = el("button", "tci"); tc.type = "button"; tc.innerHTML = svgShield; tc.title = best ? best.purity + " pure \u00b7 view report" : "Lab tested \u00b7 view report"; tc.setAttribute("aria-label", "View lab report for " + key + (best ? ", " + best.purity + " pure" : "")); tc.addEventListener("click", () => openCoa(it.name.replace(/\s+blend$/i, ""), cl.map((c) => ({...c, dz: String(d.dose).replace(/\s*vial$/i, "")})), 0)); dv.append(tc); } if (db.childNodes.length) row.append(db); }
         ds.append(row); shown++;
       }
       { const pend = it.doses.filter((x) => x.pend && !x.coa).map((x) => String(x.dose).replace(/\s*vial$/i, ""));
@@ -2593,6 +2620,38 @@ html.rvon .card{opacity:1!important;transform:none!important;transition:none!imp
 </style>
 <style id="fx-premium">
 html,body{overflow-x:clip}
+.rp-bg{position:fixed;inset:0;z-index:70;background:rgba(3,3,8,0);-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0);display:flex;align-items:flex-end;justify-content:center;transition:background .28s ease,backdrop-filter .28s ease}
+.rp-bg.in{background:rgba(3,3,8,.72);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.rp{position:relative;width:100%;max-width:560px;max-height:92vh;max-height:92dvh;overflow:auto;overscroll-behavior:contain;background:var(--panel);border:1px solid rgba(61,220,151,.28);border-bottom:0;border-radius:22px 22px 0 0;padding:6px 18px calc(18px + env(safe-area-inset-bottom,0px));box-shadow:0 -20px 60px rgba(0,0,0,.6);transform:translateY(100%);transition:transform .32s cubic-bezier(.2,.9,.25,1)}
+.rp-bg.in .rp{transform:none}
+.rp-grab{width:40px;height:4px;border-radius:4px;background:rgba(255,255,255,.22);margin:4px auto 10px}
+.rp-h{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.rp-ht{flex:1;min-width:0;display:flex;flex-direction:column}.rp-ht b{font-size:1.05rem}.rp-ht span{font-size:.76rem;color:var(--muted)}
+.rp-x{all:unset;cursor:pointer;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--sunk);color:var(--ink)}.rp-x svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round}.rp-x:focus-visible{outline:2px solid #3ddc97;outline-offset:2px}
+.rp-sz,.rp-k{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:10px}.rp-sz::-webkit-scrollbar,.rp-k::-webkit-scrollbar{display:none}
+.rp-sz button{all:unset;cursor:pointer;flex:none;font-size:.84rem;font-weight:600;padding:7px 14px;border-radius:99px;background:var(--sunk);color:var(--muted);border:1px solid var(--line);transition:background .15s,color .15s,border-color .15s}
+.rp-sz button[aria-pressed="true"]{background:#3ddc97;color:#04140c;border-color:#3ddc97}
+.rp-k{display:inline-flex;padding:3px;border-radius:12px;background:var(--sunk);border:1px solid var(--line);gap:2px}.rp-k[hidden]{display:none}
+.rp-k button{all:unset;cursor:pointer;font-size:.78rem;font-weight:600;padding:6px 12px;border-radius:9px;color:var(--muted)}.rp-k button[aria-pressed="true"]{background:var(--panel);color:var(--ink);box-shadow:0 1px 0 rgba(255,255,255,.06),0 2px 8px rgba(0,0,0,.35)}
+.rp-sz button:focus-visible,.rp-k button:focus-visible{outline:2px solid #3ddc97;outline-offset:2px}
+.rp-sum{display:flex;align-items:center;gap:16px;padding:14px 16px;border-radius:16px;background:linear-gradient(135deg,rgba(61,220,151,.12),rgba(61,220,151,.03));border:1px solid rgba(61,220,151,.3)}
+.rp-big{display:flex;flex-direction:column;min-width:0}.rp-big b{font-family:var(--f-num);font-size:1.9rem;font-weight:700;line-height:1.05;color:#3ddc97;letter-spacing:-.01em;font-variant-numeric:tabular-nums}.rp-big.sm b{font-size:1.35rem;white-space:nowrap}.rp-big small{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-top:3px}
+.rp-meta{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:2px;text-align:right;min-width:0}.rp-meta b{font-size:.86rem}.rp-meta span{font-size:.74rem;color:var(--muted)}.rp-meta i{font-style:normal;font-size:.7rem;font-weight:600;color:var(--muted);margin-top:3px}.rp-meta i.me{color:#3ddc97}
+.rp-act{display:flex;gap:8px;margin:12px 0}
+.rp-ver{flex:1;display:flex;align-items:center;justify-content:center;font-size:.86rem;font-weight:600;color:#fff;text-decoration:none;padding:11px 14px;border-radius:12px;background:var(--grad)}
+.rp-cp{all:unset;cursor:pointer;font-size:.84rem;font-weight:600;padding:11px 14px;border-radius:12px;background:var(--sunk);border:1px solid var(--line);color:var(--ink);white-space:nowrap}.rp-cp.done{color:#3ddc97;border-color:rgba(61,220,151,.5)}
+.rp-ver:focus-visible,.rp-cp:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.rp-img{position:relative;display:block;border-radius:14px;overflow:hidden;background:linear-gradient(100deg,#15151f 30%,#1d1d2a 50%,#15151f 70%);background-size:300% 100%;min-height:260px;animation:rpsk 1.2s linear infinite}
+.rp-img.ok{min-height:0;animation:none;background:#fff}
+.rp-img img{display:block;width:100%;height:auto;opacity:0;transition:opacity .25s ease}.rp-img.ok img{opacity:1}
+.rp-zoom{position:absolute;right:8px;bottom:8px;font-size:.68rem;font-weight:600;color:#fff;background:rgba(0,0,0,.6);padding:3px 8px;border-radius:99px;opacity:0;transition:opacity .25s}.rp-img.ok .rp-zoom{opacity:1}
+@keyframes rpsk{to{background-position:-300% 0}}
+.rp-note{margin:10px 2px 0;font-size:.74rem;color:var(--muted);line-height:1.5}
+body.rp-open{overflow:hidden}
+@media (min-width:700px){.rp-bg{align-items:center;padding:24px}.rp{border-radius:22px;border-bottom:1px solid rgba(61,220,151,.28);transform:translateY(16px) scale(.97);opacity:0;transition:transform .28s cubic-bezier(.2,.9,.25,1),opacity .2s ease;max-height:88vh;padding-bottom:20px}.rp-bg.in .rp{transform:none;opacity:1}.rp-grab{display:none}.rp-h{margin-top:8px}}
+.rp-bg.out{background:rgba(3,3,8,0);-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0)}.rp-bg.out .rp{transform:translateY(100%)}
+@media (min-width:700px){.rp-bg.out .rp{transform:translateY(16px) scale(.97);opacity:0}}
+@media (prefers-reduced-motion:reduce){.rp-bg,.rp,.rp-img img{transition:none}.rp-img{animation:none}}
 .dose .dv{display:flex;flex-wrap:nowrap;align-items:center;gap:4px}
 .dose.s-in{grid-template-columns:auto minmax(0,1fr) auto auto auto}.dose.s-in .st{display:none}
 @media (max-width:420px){.dose{column-gap:6px}}.dose .tci{width:20px}.dose .tci svg{width:14px;height:14px}
