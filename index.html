@@ -1172,6 +1172,7 @@ html.is-vip b.dealp{color:#ff9a5c}
       <button class="chip" data-f="best" aria-pressed="false">Best sellers</button><button class="chip" data-f="coa" aria-pressed="false">Lab tested</button>
     </div>
   <div class="legend"><span><i class="dot d-in"></i>In stock</span><span><i class="dot d-low"></i>Low stock, order soon</span><span><i class="dot d-soon"></i>Restocking, on the way</span><span><i class="dot d-out"></i>Out of stock</span></div>
+  <p class="labkey"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v6c0 4.2-2.9 7.7-7 9-4.1-1.3-7-4.8-7-9V6z"/><path d="m9 12 2 2 4-4"/></svg><span><b>= lab tested</b> · tap it to see the report</span></p>
   <main id="list"></main>
   <section class="sec" id="request">
     <form class="rq" id="rq" style="margin-top:0" novalidate>
@@ -2599,7 +2600,9 @@ html,body{overflow-x:clip}
 .labbar .lbt>span{white-space:nowrap}
 .bsi{color:#c9b3ff;font-size:.8rem;line-height:1}
 .tci{all:unset;cursor:pointer;display:inline-grid;place-items:center;width:22px;height:22px;margin:-4px 0;border-radius:50%;color:#3ddc97}.tci svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}.tci:focus-visible{outline:2px solid #3ddc97;outline-offset:1px}
-.labbar{all:unset;box-sizing:border-box;cursor:pointer;order:3;display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border-radius:12px;border:1px solid rgba(61,220,151,.35);background:rgba(61,220,151,.07)}
+article.card>.labbar{order:2}article.card>.doses{order:3}article.card>.tpn{order:3}
+.labkey{display:flex;align-items:center;gap:6px;margin:12px 2px 0;font-size:.78rem;color:var(--muted)}.labkey svg{width:15px;height:15px;flex:none;stroke:#3ddc97;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}.labkey b{color:#3ddc97;font-weight:600}
+.labbar{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border-radius:12px;border:1px solid rgba(61,220,151,.35);background:rgba(61,220,151,.07)}
 .labbar>svg{width:18px;height:18px;flex:none;stroke:#3ddc97;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .labbar .lbt{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px;font-size:.8rem;color:#c9c6e4}.labbar .lbt b{color:#3ddc97;font-weight:600}.labbar .lbt small{flex-basis:100%;font-size:.72rem;color:var(--muted)}
 .labbar .lbv{font-style:normal;font-size:.76rem;font-weight:600;color:#3ddc97;white-space:nowrap}
