@@ -2139,15 +2139,24 @@ togEl.addEventListener("click", () => { cartEl.hidden = !cartEl.hidden; togEl.se
 
 function vipStats() { let n = 0, best = 0; for (const k in NPRICE) if (PRICE[k] < NPRICE[k]) { n++; best = Math.max(best, Math.round((1 - PRICE[k] / NPRICE[k]) * 100)); } return {n, best}; }
 function vipSince() { let d = ""; try { d = localStorage.getItem("novrix-vip-since") || ""; if (!d) { d = new Date().toISOString().slice(0, 7); localStorage.setItem("novrix-vip-since", d); } } catch (e) {} if (!/^\d{4}-\d{2}$/.test(d)) return ""; return new Date(d + "-15T12:00:00").toLocaleDateString("en-US", {month: "short", year: "numeric"}); }
-function vipLounge() {
-  const {n, best} = vipStats(), w = el("div", "vl"), hd = el("div", "vl-h"), crown = el("span", "vl-crown"); crown.innerHTML = '<svg viewBox="0 0 48 32" aria-hidden="true"><path d="M4 26 L8 8 L18 18 L24 4 L30 18 L40 8 L44 26 Z" fill="currentColor"/><rect x="4" y="27" width="40" height="4" rx="2" fill="currentColor"/></svg>';
-  const tt = el("div"); tt.append(el("span", "vl-k", "VIP Lounge"), el("b", "vl-t", "VIP pricing on")); hd.append(crown, tt);
-  const since = vipSince(); if (since) hd.append(el("span", "vl-since", "Member since " + since));
+function vipLounge(open) {
+  const {n, best} = vipStats(), w = el("div", "vl");
+  const crown = el("span", "vl-crown"); crown.innerHTML = '<svg viewBox="0 0 48 32" aria-hidden="true"><path d="M4 26 L8 8 L18 18 L24 4 L30 18 L40 8 L44 26 Z" fill="currentColor"/><rect x="4" y="27" width="40" height="4" rx="2" fill="currentColor"/></svg>';
+  const tog = el("button", "vl-tog"); tog.type = "button"; tog.setAttribute("aria-controls", "vl-more");
+  tog.append(crown, el("span", "vl-k", "VIP Lounge"), el("b", "vl-t", "VIP pricing on"));
+  const x = el("button", "vl-x", "Remove"); x.type = "button"; x.setAttribute("aria-label", "Remove VIP pricing");
+  x.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); vipOff(); draw(); tray(); if (window.__coRefresh) window.__coRefresh(); });
+  const row = el("div", "vl-row"); row.append(tog, x);
+  const more = el("div", "vl-more"); more.id = "vl-more";
+  const since = vipSince(); if (since) more.append(el("span", "vl-since", "Member since " + since));
   const g = el("div", "vl-g"), st = (b, t) => { const d = el("div"); d.append(el("b", null, b), el("span", null, t)); return d; };
   if (best > 0) g.append(st("Up to " + best + "%", "off regular prices")); if (n) g.append(st(String(n), "items at VIP prices")); g.append(st("Free", "shipping on $150+"));
   const save = totals().vip, ft = el("div", "vl-f"); ft.append(el("span", null, save > 0 ? "Saving " + money(save) + " on this cart" : "Stacks with bulk deals, up to 25% off total"));
-  const x = el("button", "vl-x", "Remove VIP"); x.type = "button"; x.addEventListener("click", () => { vipOff(); draw(); tray(); if (window.__coRefresh) window.__coRefresh(); }); ft.append(x);
-  w.append(hd, g, ft); return w;
+  more.append(g, ft);
+  const setOpen = (on) => { w.setAttribute("data-open", on ? "1" : "0"); more.hidden = !on; tog.setAttribute("aria-expanded", String(!!on)); };
+  tog.addEventListener("click", () => setOpen(w.getAttribute("data-open") !== "1"));
+  setOpen(!!open);
+  w.append(row, more); return w;
 }
 function codeBox() {
   const w = el("div", "codeb");
@@ -2167,7 +2176,7 @@ setTimeout(() => { let q = ""; try { q = new URLSearchParams(location.search).ge
   tray(); const t = el("div", "refpop"); t.setAttribute("role", "status"); t.append(el("b", null, "$" + REF_OFF + " off from a friend"), el("span", null, "Code " + rc + " is applied to your first order of $" + REF_MIN + "+.")); document.body.append(t); setTimeout(() => t.classList.add("go"), 7000); setTimeout(() => t.remove(), 7600); }, 0);
 function tray() {
   if (window.__trayHook) window.__trayHook();
-  { const vt = document.getElementById("vtop"); if (vt) { const st = VIPON ? "vip" : REFCODE ? "ref:" + REFCODE : "empty"; const inp = vt.querySelector(".codeb input"), typing = !!(inp && document.activeElement === inp), err = !!(vt.querySelector(".codem") && vt.querySelector(".codem").textContent); if (!(vt.dataset.vst === st && st === "empty" && (typing || err))) { vt.dataset.vst = st; vt.replaceChildren(); vt.classList.toggle("lounge", !!VIPON); vt.classList.remove("vtop-c"); if (VIPON) vt.append(vipLounge()); else { vt.append(el("span", "vtop-l", "VIP or referral code?"), codeBox()); } } } }
+  { const vt = document.getElementById("vtop"); if (vt) { const st = VIPON ? "vip" : REFCODE ? "ref:" + REFCODE : "empty"; const inp = vt.querySelector(".codeb input"), typing = !!(inp && document.activeElement === inp), err = !!(vt.querySelector(".codem") && vt.querySelector(".codem").textContent); if (!(vt.dataset.vst === st && st === "empty" && (typing || err))) { vt.dataset.vst = st; vt.replaceChildren(); const loungeOpen = !!(VIPON && vt.querySelector(".vl[data-open=\"1\"]")); vt.classList.toggle("lounge", !!VIPON); vt.classList.remove("vtop-c"); if (VIPON) vt.append(vipLounge(loungeOpen)); else { vt.append(el("span", "vtop-l", "VIP or referral code?"), codeBox()); } } } }
   for (const f of CARD_SYNC.values()) f();
   const n = picks.size;
   trayEl.hidden = !n; document.body.classList.toggle("has-tray", !!n);
@@ -3487,6 +3496,52 @@ button.nxc-go.on{box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 0 16px rgba(12
   #vtop.vtop,#shop + .bar #vtop{flex:none;width:100%}
 }
 
+/* slim VIP lounge: one 44px row, details on tap */
+#vtop.lounge,.vtop.lounge,#shop + .bar #vtop.lounge{
+  flex:0 1 auto;min-width:0;width:auto;max-width:none;
+}
+.vl{box-sizing:border-box;width:100%;flex:1 1 auto;padding:0;border-radius:12px;box-shadow:0 0 0 1px rgba(255,201,77,.12),0 8px 24px rgba(0,0,0,.35)}.vl:not([data-open="1"]){height:44px;max-height:44px;overflow:hidden}.vl:not([data-open="1"]) .vl-row{height:42px;min-height:42px}
+.vl::before{display:none}
+.vl-row{display:flex;align-items:center;gap:6px;min-height:44px;height:44px;padding:0 6px 0 8px}
+.vl-tog{all:unset;box-sizing:border-box;cursor:pointer;flex:1;min-width:0;min-height:44px;display:flex;align-items:center;gap:8px}
+.vl-tog:focus-visible{outline:2px solid #ffc94d;outline-offset:2px;border-radius:8px}
+.vl-crown{width:26px;height:26px;border-radius:8px;box-shadow:0 0 10px rgba(255,201,77,.35)}
+.vl-crown svg{width:16px;height:11px}
+.vl-k{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.vl-t{display:block;font-size:.86rem;font-weight:700;letter-spacing:.02em;background:var(--gold);-webkit-background-clip:text;background-clip:text;color:transparent;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vl-x{all:unset;box-sizing:border-box;cursor:pointer;flex:none;min-width:44px;min-height:44px;padding:0 10px;display:grid;place-items:center;border-radius:10px;font-size:.74rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#1a1200;background:var(--gold)}
+.vl-x:hover{filter:brightness(1.08)}
+.vl-x:focus-visible{outline:2px solid #ffc94d;outline-offset:2px}
+.vl-more{padding:0 10px 10px;border-top:1px solid rgba(255,201,77,.18)}
+.vl-more[hidden]{display:none!important}
+.vl-more .vl-since{display:inline-flex;margin:8px 0 0;margin-left:0}
+.vl-more .vl-g{margin-top:8px}
+.vl-more .vl-f{margin-top:8px;padding-bottom:2px}
+@media (min-width:701px){
+  #vtop.lounge{flex:1 1 260px;max-width:420px}
+}
+
+/* mobile: don't stack header + search + VIP + chips over the grid; only chips stick */
+@media (max-width:700px){
+  #vtop.lounge,#shop + .bar #vtop.lounge{flex:none!important;width:100%!important;max-width:none}
+  .bar{
+    position:static!important;top:auto!important;z-index:auto!important;
+    transform:none!important;opacity:1!important;pointer-events:auto!important;
+    clip-path:none!important;box-shadow:none!important;
+  }
+  .bar.nx-off,.bar.bar-off{transform:none!important;opacity:1!important;pointer-events:auto!important}
+  .nxchiprow{
+    position:sticky;top:var(--nx-hdr);z-index:20;
+    background:#06060a;
+    box-shadow:0 0 0 100vmax #06060a,0 1px 0 100vmax rgba(214,220,235,.12);
+    clip-path:inset(0 -100vmax -1px);
+    padding:8px 0;
+    margin:0;
+  }
+  .nxgrp,.nxc{scroll-margin-top:calc(var(--nx-hdr) + 60px)}
+  #shop.sh{scroll-margin-top:calc(var(--nx-hdr) + 8px)}
+}
+
 .bar{padding-block:8px!important;gap:8px!important}
 .labkey,.legend{display:none!important}
 .nxmeta{margin:4px 0 8px}
@@ -4085,7 +4140,7 @@ N.setStatus(() => { if (location.hash === "#track-order") route(); else location
 
 /* ---------- header, chips, cart ---------- */
 { const lng = $("#lng"); if (lng) $("#nxh-lng").append(lng); }
-const chipRow = () => { const bar = $(".bar"), gch = $("#gchips"), fch = $(".fchips"); if (bar && gch && fch && !$(".nxchiprow")) { const row = mk("div", "nxchiprow"); row.append(gch, mk("span", "nxsep"), fch); bar.append(row); } };
+const chipRow = () => { const bar = $(".bar"), gch = $("#gchips"), fch = $(".fchips"); if (bar && gch && fch && !$(".nxchiprow")) { const row = mk("div", "nxchiprow"); row.append(gch, mk("span", "nxsep"), fch); if (matchMedia("(max-width:700px)").matches) bar.after(row); else bar.append(row); } };
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", chipRow); else chipRow();
 { const rq = $("#request"), fq = $("#faq"); if (rq && fq) fq.after(rq); }
 $("#nx-search").addEventListener("click", () => { if (location.hash !== "#shop") location.hash = "#shop"; setTimeout(() => { const q = $("#q"); q.focus({preventScroll: true}); $("#shop").scrollIntoView({block: "start"}); }, 30); });
@@ -4178,6 +4233,6 @@ addEventListener("hashchange", route); route();
  document.addEventListener('click',e=>{const t=e.target.closest('#list .card .desc, #list .card .desc-m');if(t)t.closest('.card').classList.toggle('dopen');});
  const L=document.getElementById('list');if(L){new MutationObserver(()=>requestAnimationFrame(addMore)).observe(L,{childList:true,subtree:false});}setTimeout(addMore,300);
  /* phones: one sticky filter row */
- if(matchMedia('(max-width:700px)').matches){const bar=document.querySelector('.bar'),j=document.getElementById('jtabs'),f=document.querySelector('.fchips');if(bar&&j&&f){const r=document.createElement('div');r.className='rowx';j.before(r);r.append(f,Object.assign(document.createElement('span'),{className:'rsep'}),j);}}
+ if(matchMedia('(max-width:700px)').matches && !document.querySelector('.nxchiprow')){const bar=document.querySelector('.bar'),j=document.getElementById('jtabs'),f=document.querySelector('.fchips');if(bar&&j&&f){const r=document.createElement('div');r.className='rowx';j.before(r);r.append(f,Object.assign(document.createElement('span'),{className:'rsep'}),j);}}
 })();</script>
 </body></html>
