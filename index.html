@@ -3653,10 +3653,12 @@ button.nxsz-ntf:focus-visible{outline:2px solid #b9a6ff;outline-offset:2px}
 }
 
 /* cart qty 44px + remove */
-#cart .qs{gap:2px}
+#cart .qs{gap:2px;flex:none}
 #cart .qb{width:44px;height:44px;border-radius:12px;flex:none}
 #cart .qn{min-width:22px}
-#cart .cl{align-items:center;gap:8px}
+#cart .cl{align-items:center;gap:6px;grid-template-columns:minmax(0,1fr) auto auto 44px}
+#cart .cn{min-width:0}
+#cart .ct{white-space:nowrap}
 #cart .cl-x{all:unset;box-sizing:border-box;cursor:pointer;width:44px;height:44px;display:grid;place-items:center;border-radius:12px;font-size:1.25rem;line-height:1;color:#eceaf8;flex:none}
 #cart .cl-x:hover{background:rgba(155,77,255,.16);color:#c9b3ff}
 #cart .cl-x:focus-visible{outline:2px solid #b9a6ff;outline-offset:2px}
@@ -3755,9 +3757,17 @@ const capId = (c) => { const id = "nxcap" + c.replace(/[^0-9a-f]/gi, ""); if (!d
 function vial(rec, d) {
   const cap = (d && d.cap) || (rec.doses.find((x) => x.s === "in") || rec.doses[0]).cap, c = /^#[0-9a-f]{3,8}$/i.test((N.CAPS[cap] || [])[0] || "") ? N.CAPS[cap][0] : "#7b3fe4", ci = capId(c);
   const nm0 = rec.it.name.replace(/\s+blend$/i, ""), nm = nm0.length > 11 ? nm0.split(/[ (]/)[0] : nm0;
-  return `<svg class="nxvial" viewBox="0 0 80 150" aria-hidden="true"><rect x="18" y="6" width="44" height="20" rx="4" fill="url(#${ci})"/><rect x="21" y="26" width="38" height="9" fill="url(#nxr)"/><path d="M24 35h32v6c6 2 10 5 10 11v84a8 8 0 0 1-8 8H22a8 8 0 0 1-8-8V52c0-6 4-9 10-11z" fill="#0d0d16" fill-opacity=".55" stroke="rgba(255,255,255,.35)"/><path d="M16 118h48v18a6 6 0 0 1-6 6H22a6 6 0 0 1-6-6z" fill="#f2efe9" fill-opacity=".92"/><rect x="14" y="66" width="52" height="44" fill="#0b0b12"/><rect x="14" y="66" width="52" height="2" fill="url(#nxl)"/><rect x="14" y="108" width="52" height="2" fill="url(#nxl)"/><text x="40" y="85" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,sans-serif" font-weight="800" font-size="${nm.length > 8 ? 9 : 12}" fill="#fff">${esc(nm.toUpperCase())}</text><text x="40" y="96" text-anchor="middle" font-family="Michroma,Arial" font-size="4.6" letter-spacing="1.2" fill="#b9a6ff">NOVRIX LABS</text><text x="40" y="104" text-anchor="middle" font-family="Arial" font-size="3.6" letter-spacing=".6" fill="#8d8ca0">RESEARCH USE ONLY</text><path d="M14 52c0-6 4-9 10-11h32c6 2 10 5 10 11v84a8 8 0 0 1-8 8H22a8 8 0 0 1-8-8z" fill="url(#nxg)"/></svg>`;
+  const nameSize = nm.length > 8 ? 9 : 11, fit = 42;
+  return `<svg class="nxvial" viewBox="0 0 80 150" aria-hidden="true"><rect x="18" y="6" width="44" height="20" rx="4" fill="url(#${ci})"/><rect x="21" y="26" width="38" height="9" fill="url(#nxr)"/><path d="M24 35h32v6c6 2 10 5 10 11v84a8 8 0 0 1-8 8H22a8 8 0 0 1-8-8V52c0-6 4-9 10-11z" fill="#0d0d16" fill-opacity=".55" stroke="rgba(255,255,255,.35)"/><path d="M16 118h48v18a6 6 0 0 1-6 6H22a6 6 0 0 1-6-6z" fill="#f2efe9" fill-opacity=".92"/><rect x="14" y="66" width="52" height="44" fill="#0b0b12"/><rect x="14" y="66" width="52" height="2" fill="url(#nxl)"/><rect x="14" y="108" width="52" height="2" fill="url(#nxl)"/><text class="nxv-nm" x="40" y="85" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,sans-serif" font-weight="800" font-size="${nameSize}" fill="#fff">${esc(nm.toUpperCase())}</text><text class="nxv-br" x="40" y="96" text-anchor="middle" font-family="Michroma,Arial" font-size="4.15" fill="#b9a6ff" textLength="${fit}" lengthAdjust="spacing">NOVRIX LABS</text><text class="nxv-ru" x="40" y="104" text-anchor="middle" font-family="Arial" font-size="3.45" fill="#8d8ca0" textLength="${fit}" lengthAdjust="spacing">RESEARCH USE ONLY</text><path d="M14 52c0-6 4-9 10-11h32c6 2 10 5 10 11v84a8 8 0 0 1-8 8H22a8 8 0 0 1-8-8z" fill="url(#nxg)"/></svg>`;
 }
-const bestPur = (rec) => { const v = rec.doses.flatMap((d) => N.coaList(d).map((c) => parseFloat(c.purity))).filter((x) => x > 0); return v.length ? Math.max(...v) : 0; };
+function fitVial(root) {
+  const maxW = 42, nodes = root && root.matches && root.matches("svg.nxvial") ? [root] : [...((root && root.querySelectorAll) ? root.querySelectorAll("svg.nxvial") : [])];
+  for (const svg of nodes) {
+    const t = svg.querySelector(".nxv-nm"); if (!t) continue;
+    try { t.removeAttribute("textLength"); t.removeAttribute("lengthAdjust"); if (t.getBBox().width > maxW) { t.setAttribute("textLength", String(maxW)); t.setAttribute("lengthAdjust", "spacingAndGlyphs"); } } catch (e) {}
+  }
+}
+document.fonts && document.fonts.ready && document.fonts.ready.then(() => fitVial(document)).catch(() => {});const bestPur = (rec) => { const v = rec.doses.flatMap((d) => N.coaList(d).map((c) => parseFloat(c.purity))).filter((x) => x > 0); return v.length ? Math.max(...v) : 0; };
 let tt; const toast = (m) => { const t = $("#nx-toast"); t.textContent = m; t.classList.add("on"); clearTimeout(tt); tt = setTimeout(() => t.classList.remove("on"), 1800); };
 
 /* ---------- product cards (rendered from the menu's own filter/search output) ---------- */
@@ -3789,7 +3799,7 @@ function card(rec, i) {
   const ok = rec.doses.filter((d) => N.avail(d.s)), pool = ok.length ? ok : rec.doses, from = pool.reduce((m, d) => { const p = priceOf(rec.it, d).now; return p != null && p < m.p ? {p, d} : m; }, {p: Infinity, d: pool[0]});
   const pur = bestPur(rec), bs = !rec.nop && rec.doses.some((d) => d.badge === "Best seller");
   const hit = mk("button", "nxc-hit"); hit.type = "button"; hit.setAttribute("aria-label", "View " + rec.it.name + " details");
-  const pl = mk("div", "nxc-plate"); pl.innerHTML = vial(rec, from.d);
+  const pl = mk("div", "nxc-plate"); pl.innerHTML = vial(rec, from.d); fitVial(pl);
   const st = mk("span", "nxpill"); st.append(mk("i", "nxdot nx-" + rec.s), mk("span", null, SL[rec.s])); pl.append(st);
   if (pur) { const c = mk("span", "nxcoa"); c.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg>'; c.append(pur.toFixed(2) + "%"); c.title = "HPLC purity"; pl.append(c); }
   const b = mk("div", "nxc-b"); b.append(mk("span", "nxc-cat", N.SHORT[rec.cat] || rec.cat), mk("h3", rec.it.name.length > 16 ? "long" : null, rec.it.name), mk("span", "nxc-sz", sizeSpan(rec)));
@@ -3883,7 +3893,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !SH.hidd
 function drawSheet() {
   const {rec, d} = cur, it = rec.it, k = keyOf(it, d), has = N.picks.has(k), cap = N.capQ(k), B = $("#nx-sh-b"), F = $("#nx-sh-f"); cur.q = Math.min(cur.q, cap);
   B.replaceChildren(); F.replaceChildren();
-  const top = mk("div", "nxsh-top"), pl = mk("div", "nxc-plate"); pl.innerHTML = vial(rec, d);
+  const top = mk("div", "nxsh-top"), pl = mk("div", "nxc-plate"); pl.innerHTML = vial(rec, d); fitVial(pl);
   const tx = mk("div"), ey = mk("span", "nxey"); ey.append(N.SHORT[rec.cat] || rec.cat); if (/blend$/i.test(it.name) || rec.group === "Blends") ey.append(" · ", mk("span", null, "Blend"));
   const h = mk("h2", it.name.length > 14 ? "long" : null, it.name); h.id = "nx-sh-name";
   const sl = mk("p", "nxsh-st"); sl.append(mk("i", "nxdot nx-" + d.s), mk("span", null, SL[d.s]), mk("span", "nxsep-d", "·"), mk("span", null, dz(d))); if (d.s === "low") sl.append(mk("span", "nxsep-d", "·"), mk("span", null, "Limit " + cap + " per order"));
@@ -3996,7 +4006,7 @@ const REPS = []; for (const r of ITEMS) for (const d of r.doses) { const cl = N.
 REPS.sort((a, b) => a.r.it.name.localeCompare(b.r.it.name) || parseFloat(a.d.dose) - parseFloat(b.d.dose));
 const labShort = (n) => n ? n.replace(/\s*\(.*\)/, "").replace(/ (Labs?|Laboratories|Diagnostics)$/, "") : "lab";
 function repCard(x, compact) {
-  const a = mk("article", "nxrep"), pv = mk("span", "nxrep-v"); pv.innerHTML = vial(x.r, x.d);
+  const a = mk("article", "nxrep"), pv = mk("span", "nxrep-v"); pv.innerHTML = vial(x.r, x.d); fitVial(pv);
   const t = mk("div", "nxrep-t"), h = mk("h3", null, x.r.it.name + " " + dz(x.d)), lab = x.c ? (N.LABS[x.c.lab] || {}) : {};
   const meta = mk("p"); meta.append(x.pend ? "Results pending" : (lab.name || x.c.lab || "")); if (x.c && x.c.report) meta.append(" · " + x.c.report); t.append(h, meta);
   const pp = mk("div", "nxrep-p"); if (x.c && x.c.purity) pp.append(mk("b", null, x.c.purity), mk("small", null, "HPLC purity")); else if (x.pend) pp.append(mk("b", "soon", "Soon"), mk("small", null, "In testing")); else pp.append(mk("b", "kind", "✓"), mk("small", null, x.c.kind ? x.c.kind[0].toUpperCase() + x.c.kind.slice(1) : "Tested"));
