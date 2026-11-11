@@ -3777,6 +3777,150 @@ button.nxsz-ntf:focus-visible{outline:2px solid #b9a6ff;outline-offset:2px}
   #shop.sh{margin-top:12px!important;margin-bottom:16px!important}
 }
 </style>
+
+<style id="polish-sweep">
+/* === ticker + header: opaque sticky stack, nothing paints through === */
+#sale.sale, #sale.sale.nov{
+  position:sticky;top:0;z-index:45;
+  background:#121018!important;
+  background-image:linear-gradient(180deg,#1a1a22,#101018)!important;
+  isolation:isolate;
+  color:#e9cf8f!important;
+}
+#sale #sale-s{min-width:0;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:560px){
+  #sale.sale,#sale.sale.nov{letter-spacing:0;font-size:.68rem;flex-wrap:wrap;white-space:normal;overflow:hidden;text-align:center;line-height:1.3;padding:6px 12px;gap:2px 8px}
+  #sale.sale b,#sale.sale.nov b,#sale #sale-n{letter-spacing:.08em;font-size:.58rem}
+  #sale #sale-s{display:inline;white-space:normal;overflow:visible}
+}
+.nxh{
+  position:sticky;
+  top:var(--sale-h,0px);
+  z-index:46;
+  background:#07070b!important;
+  -webkit-backdrop-filter:none;
+  backdrop-filter:none;
+  isolation:isolate;
+}
+.nxh-brand img{mix-blend-mode:normal}
+html{scroll-padding-top:calc(var(--nx-hdr) + var(--sale-h,0px) + 16px)}
+#shop.sh{scroll-margin-top:calc(var(--nx-hdr) + var(--sale-h,0px) + 8px)}
+@media (max-width:700px){
+  .nxchiprow{top:calc(var(--nx-hdr) + var(--sale-h,0px))!important}
+}
+
+/* typography: wording must fit its surface */
+.nxey{letter-spacing:.1em;line-height:1.35;max-width:100%;overflow-wrap:break-word}
+.nx-h1k{letter-spacing:.2em;max-width:100%}
+#shop.sh{max-width:100%;padding-inline:2px}
+#shop.sh h2{font-size:clamp(1.35rem,6.6vw,2.35rem);letter-spacing:.06em;line-height:1.08;max-width:100%;overflow-wrap:break-word}
+#shop.sh .ey,.sh .ey,.ey{letter-spacing:.16em;max-width:100%}
+@media (max-width:700px){
+  .nxhero{padding-top:16px!important}
+  .nxey{letter-spacing:.08em;font-size:clamp(.56rem,3.1vw,.62rem)}
+  .nx-h1k{letter-spacing:.16em}
+  #shop.sh h2{letter-spacing:.05em;font-size:clamp(1.28rem,7vw,1.7rem)}
+  .ey,#shop.sh .ey{letter-spacing:.14em}
+}
+
+/* live board + HPLC: even spacing, not tight to the edge */
+.nxpur{padding:8px 12px!important;gap:10px;min-width:0}
+.nxpur > div{min-width:0}
+@media (max-width:700px){
+  .nxboard{padding:10px 12px!important}
+  .nxboard-g{gap:10px!important}
+  .nxstats{gap:8px}
+  .nxstat{min-width:0}
+  .nxstat span{white-space:normal;line-height:1.25;overflow-wrap:break-word}
+}
+
+/* trust rail: 2x2 on small screens so labels aren't crushed; 4th tile no longer clipped */
+.nxrail .nxtr{min-width:0}
+.nxrail .nxtr b{letter-spacing:.06em;line-height:1.25;white-space:normal;overflow-wrap:break-word}
+@media (max-width:899px){
+  .nxrail{flex-direction:column}
+  .nxrail .nxtrust{
+    display:grid!important;grid-template-columns:1fr 1fr;gap:0;
+    overflow:visible!important;border-bottom:1px solid rgba(214,220,235,.1)
+  }
+  .nxrail .nxtr{min-width:0!important;flex:none;padding:8px 10px;border-radius:0}
+  .nxrail .nxtr:nth-child(odd){border-right:1px solid rgba(214,220,235,.1)}
+  .nxrail .nxtr:nth-child(even){border-right:0}
+  .nxrail .nxtr:nth-child(n+3){border-top:1px solid rgba(214,220,235,.1)}
+  #potw.potw{flex:none;width:100%;min-width:0;border-left:0!important;box-shadow:inset 0 2px 0 #c9a24a;border-top:1px solid rgba(201,162,74,.35)!important}
+  #potw .pw-k{letter-spacing:.08em}
+}
+@media (min-width:900px){
+  .nxrail .nxtr{min-width:0;flex:1 1 0}
+  .nxrail .nxtr b{letter-spacing:.05em;font-size:.55rem}
+  #potw.potw{flex:1 1 200px;min-width:0;overflow:hidden;gap:6px}
+  #potw .pw-k{letter-spacing:.06em}
+  #potw.potw b{font-size:.8rem}
+  #potw.potw a{flex:none;min-width:0}
+}
+
+/* VIP Remove: visually small text, 44px hit area */
+.vl-x{
+  all:unset;box-sizing:border-box;cursor:pointer;flex:none;
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:44px;min-height:44px;padding:0 8px;border-radius:8px;
+  font-size:.68rem;font-weight:600;letter-spacing:.02em;text-transform:none;
+  color:#c4b48a;background:transparent!important;line-height:1
+}
+.vl-x:hover{color:#ffe9b0;text-decoration:underline}
+.vl-x:focus-visible{outline:2px solid #ffc94d;outline-offset:2px}
+
+/* cart pill: dock lower-right on mobile so it doesn't sit on the shop heading */
+@media (max-width:899px){
+  button.nx-pill{
+    left:auto!important;right:12px!important;transform:none!important;
+    bottom:calc(var(--nx-bn,64px) + 10px);
+    padding:0 12px;min-height:40px;gap:8px;font-size:.78rem
+  }
+  button.nx-pill.bump{animation:nxpill-r .45s ease}
+  @keyframes nxpill-r{0%{transform:scale(1)}35%{transform:scale(1.08)}100%{transform:scale(1)}}
+}
+@media (prefers-reduced-motion:reduce){
+  button.nx-pill.bump{animation:none}
+}
+
+#potw.potw a{display:none}
+#potw.potw b{min-width:0;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:700px){
+  .nxstat{overflow:hidden;min-width:0}
+  .nxstat span{font-size:.62rem;letter-spacing:0;white-space:normal;max-width:100%}
+}
+/* card category + stamp: tracking that actually fits */
+.nxc-cat{letter-spacing:.06em!important;max-width:100%}
+.nxsh-stamp{letter-spacing:.03em;font-size:.62rem;line-height:1.15}
+
+/* chip / jump rows may scroll, but the row must stay on the page */
+#nx-rf, #info nav.nxchips, nav.nxjump, #nxlatest .sh, .nxsh-row{max-width:100%;min-width:0}
+#nx-rf, #info nav.nxchips, nav.nxjump{
+  display:flex;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin
+}
+#nxlatest .sh, .nxsh-row{flex-wrap:wrap}
+
+/* remove the green purity badge from the hero emblem; leave the emblem clean */
+#nx-f1, .nx-f1{display:none!important}
+</style>
+<script>
+(function(){
+  const set = () => {
+    const s = document.getElementById("sale");
+    const on = s && !s.hidden && getComputedStyle(s).display !== "none";
+    document.documentElement.style.setProperty("--sale-h", (on ? s.offsetHeight : 0) + "px");
+  };
+  const start = () => {
+    set();
+    const s = document.getElementById("sale");
+    if (s && typeof ResizeObserver === "function") new ResizeObserver(set).observe(s);
+    addEventListener("resize", set);
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
+  else start();
+})();
+</script>
 <script id="nx-layer">
 /* Novrix redesign layer. Reads the data lines and reuses the existing cart, checkout, COA, notify and tracking
    functions through window.__NX. It never writes order data itself beyond the same picks/QTY calls the menu uses. */
