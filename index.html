@@ -1205,7 +1205,7 @@ html.is-vip b.dealp{color:#ff9a5c}
       <div class="nxstat"><b id="nx-c-low">0</b><span><i class="nxdot nx-low"></i>Low stock</span></div>
       <div class="nxstat"><b id="nx-c-soon">0</b><span><i class="nxdot nx-soon"></i>Restocking</span></div>
     </div>
-    <div class="nxpur"><div><small>Average HPLC purity</small><b id="nx-avgp">–</b></div><small class="nxpur-n"><span><span id="nx-nrep">0</span> <span>tested sizes</span></span><span class="nxpur-w" id="nx-npend-wrap" hidden><span id="nx-npend">0</span> <span>tests waiting</span></span></small></div>
+    <div class="nxpur"><div><small>Average HPLC purity</small><b id="nx-avgp">–</b></div><small class="nxpur-n"><span><span id="nx-nrep">0</span> <span>tested sizes</span></span><span class="nxpur-w" id="nx-npend-wrap" hidden><span id="nx-npend">0</span> <span>results pending</span></span></small></div>
     <div class="nxbs"><span class="nxlbl">Back soon</span><div class="nxbs-row" id="nx-backsoon"></div></div>
   </div>
 </aside>
@@ -1454,8 +1454,8 @@ window.NX_ES = {t: {
 "Earn while you research": "Gana mientras investigas", "Store credit": "Crédito de tienda", "Comes off your next order automatically · never expires": "Se descuenta de tu próximo pedido automáticamente · nunca vence",
 "Good to know": "Bueno saberlo", "How ordering works": "Cómo pedir", "Shipping & policies": "Envíos y políticas", "FAQ": "Preguntas", "About": "Acerca de", "Request a product": "Pedir un producto", "Research": "Investigación",
 "Choose a size": "Elige un tamaño", "Lab report": "Informe de laboratorio", "No lab report for this size yet.": "Aún no hay informe de laboratorio para este tamaño.",
-"Lab test in progress.": "Prueba de laboratorio en curso.", "Tests waiting": "Pruebas en espera", "tests waiting": "pruebas en espera", "Sent to lab — results pending": "Enviado al laboratorio — resultados pendientes", "Explore in 3D": "Explorar en 3D", "All reports for this product": "Todos los informes de este producto",
-"Add to cart": "Agregar al carrito", "Update cart": "Actualizar carrito", "Remove": "Quitar", "Notify me": "Avísame", "Alert requested": "Aviso solicitado",
+"Lab test in progress.": "Prueba de laboratorio en curso.", "Tests waiting": "Pruebas en espera", "tests waiting": "pruebas en espera", "Results pending": "Resultados pendientes", "results pending": "resultados pendientes", "Sent to lab — results pending": "Enviado al laboratorio — resultados pendientes", "Explore in 3D": "Explorar en 3D", "All reports for this product": "Todos los informes de este producto",
+"Add to cart": "Agregar al carrito", "Update cart": "Actualizar carrito", "Remove": "Quitar", "Notify me": "Avísame", "Alert requested": "Aviso solicitado", "Alert set": "Aviso listo",
 "Added to your cart": "Agregado a tu carrito", "Cart updated": "Carrito actualizado", "Removed from your cart": "Quitado de tu carrito",
 "limit 2 per order": "máximo 2 por pedido", "From": "Desde", "Sold out": "Agotado", "Best seller": "Más vendido", "Blend": "Mezcla",
 "For research use only. Not for human or animal consumption.": "Solo para uso en investigación. No apto para consumo humano o animal.",
@@ -3720,6 +3720,17 @@ const NOPROMO = /^hcg$/i;
 const okDose = (it, d) => !BLOCK.test(it.name + " " + d.dose + " " + (d.ids || []).join(" ")) && (!/\biu\b/i.test(d.dose) || NOPROMO.test(it.name));
 const SL = {in: "In stock", low: "Low stock", soon: "Restocking", out: "Out of stock"};
 const dz = (d) => String(d.dose).replace(/\s*vial$/i, "");
+const sizeSpan = (rec) => {
+  const zs = rec.doses.map(dz);
+  if (zs.length <= 1) return zs[0] || "";
+  const parsed = zs.map((s) => { const m = String(s).match(/^([\d.]+)\s*(.*)$/); return m ? {n: +m[1], u: (m[2] || "").trim()} : null; });
+  if (parsed.every((x) => x && x.u === parsed[0].u)) {
+    const lo = Math.min(...parsed.map((x) => x.n)), hi = Math.max(...parsed.map((x) => x.n));
+    const fmt = (n) => (Number.isInteger(n) ? String(n) : String(n));
+    return fmt(lo) + "\u2013" + fmt(hi) + parsed[0].u;
+  }
+  return zs.join(" \u00b7 ");
+};
 const keyOf = (it, d) => it.name + " " + d.dose;
 const ITEMS = [], BY = new Map();
 for (const g of N.DATA) for (const it of g.items) {
@@ -3780,14 +3791,14 @@ function card(rec, i) {
   const hit = mk("button", "nxc-hit"); hit.type = "button"; hit.setAttribute("aria-label", "View " + rec.it.name + " details");
   const pl = mk("div", "nxc-plate"); pl.innerHTML = vial(rec, from.d);
   const st = mk("span", "nxpill"); st.append(mk("i", "nxdot nx-" + rec.s), mk("span", null, SL[rec.s])); pl.append(st);
-  if (pur) { const c = mk("span", "nxcoa"); c.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg>'; c.append(pur.toFixed(2) + "%"); c.title = "Best HPLC purity on file"; pl.append(c); }
-  const b = mk("div", "nxc-b"); b.append(mk("span", "nxc-cat", N.SHORT[rec.cat] || rec.cat), mk("h3", rec.it.name.length > 16 ? "long" : null, rec.it.name), mk("span", "nxc-sz", rec.doses.map(dz).join(" · ")));
+  if (pur) { const c = mk("span", "nxcoa"); c.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg>'; c.append(pur.toFixed(2) + "%"); c.title = "HPLC purity"; pl.append(c); }
+  const b = mk("div", "nxc-b"); b.append(mk("span", "nxc-cat", N.SHORT[rec.cat] || rec.cat), mk("h3", rec.it.name.length > 16 ? "long" : null, rec.it.name), mk("span", "nxc-sz", sizeSpan(rec)));
   if (bs) b.append(mk("span", "nxbsel", "Best seller"));
   const waiting = rec.doses.filter((d) => d.pend && !N.coaList(d).length);
-  if (waiting.length) { const w = mk("p", "nxc-wait"); w.append(mk("span", "nxc-wait-k", "Tests waiting"), mk("span", "nxc-wait-s", waiting.map(dz).join(" · "))); w.setAttribute("title", "Sent to lab — results pending"); w.setAttribute("aria-label", "Tests waiting: " + waiting.map(dz).join(", ") + ". Sent to lab — results pending"); b.append(w); }
+  if (waiting.length) { const w = mk("p", "nxc-wait"); w.append(mk("span", "nxc-wait-k", "Results pending"), " · ", mk("span", "nxc-wait-s", waiting.map(dz).join(" · "))); w.setAttribute("title", "Results pending"); w.setAttribute("aria-label", "Results pending: " + waiting.map(dz).join(", ")); b.append(w); }
   const f = mk("div", "nxc-f nxc-addrow");
   const def = ok[0] || rec.doses[0];
-  const sel = mk("select", "nxc-sel"); sel.setAttribute("aria-label", "Size of " + rec.it.name);
+  const sel = mk("select", "nxc-sel"); sel.setAttribute("aria-label", "Size, " + rec.it.name);
   rec.doses.forEach((d, di) => {
     const on = N.avail(d.s), p = priceOf(rec.it, d);
     const opt = document.createElement("option"); opt.value = String(di);
@@ -3888,11 +3899,11 @@ function drawSheet() {
     const row = mk("div", "nxsz" + (x === d ? " on" : "") + (avail ? "" : " na")); row.setAttribute("role", "listitem");
     const info = mk("button", "nxsz-i"); info.type = "button";
     info.setAttribute("aria-pressed", String(x === d));
-    info.setAttribute("aria-label", dz(x) + ", " + SL[x.s] + (waiting ? ", tests waiting" : ""));
+    info.setAttribute("aria-label", dz(x) + ", " + SL[x.s] + (waiting ? ", results pending" : ""));
     const l = mk("span", "nxsz-l"); l.append(mk("i", "nxdot nx-" + x.s), mk("b", null, dz(x)), priceEl(it, x));
     const meta = mk("span", "nxsz-meta"); meta.append(SL[x.s]);
     if (x.s === "low") meta.append(" · Limit " + cap + " per order");
-    if (waiting) meta.append(" · Sent to lab — results pending");
+    if (waiting) meta.append(" · Results pending");
     info.append(l, meta);
     info.addEventListener("click", () => { cur.d = x; cur.q = q0 || 1; drawSheet(); });
     row.append(info);
@@ -3914,7 +3925,7 @@ function drawSheet() {
       });
       sp.append(mn, qn, pl); row.append(sp);
     } else {
-      const w = N.WAITED.has(xk), nb = mk("button", "nxsz-ntf", w ? "Alert requested" : "Notify me");
+      const w = N.WAITED.has(xk), nb = mk("button", "nxsz-ntf", w ? "Alert set" : "Notify me");
       nb.type = "button"; nb.disabled = !!w;
       nb.addEventListener("click", () => N.openNotify(xk, x.label || dz(x)));
       row.append(nb);
