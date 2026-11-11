@@ -990,6 +990,7 @@ html.rvon .card.in{opacity:1;transform:none}
   .sec.cz:not(.open)>:not(.sh){display:none!important}
   .sec.cz{margin-top:14px}
   .sec.cz>.sh h2{font-size:1.05rem}
+  .sec.cz>.sh h2::after{display:none}
   .sec.cz .bk-t .ey,.sec.cz .bk-t h2{display:none}
 }
 
@@ -1100,9 +1101,9 @@ html[lang="es"] #list:not(.flat) .gh span::after{content:" \00b7  desliza \2192"
 }
 .wd2{margin:10px 0 0;font-size:.82rem;line-height:1.5;color:#a9a7c2}
 article.card>.desc{order:1}article.card>.doses{order:2}article.card>.tpn{order:3}article.card>.wd2{order:4;margin-top:6px}
-/* cards size to their content (no empty box space) */
-.grid{align-items:start!important}
-@media (max-width:560px){#list:not(.flat) .grid{align-items:start!important}}
+/* Even-height rows in the catalog grid (and in the mobile swipe row). */
+.grid{align-items:stretch}
+@media (max-width:560px){#list:not(.flat) .grid{align-items:stretch}}
 article.card .wd2{display:none!important}
 b.dealp{color:#ff9a5c;font-weight:700}
 html.is-vip b.dealp{color:#ff9a5c}
@@ -2592,13 +2593,15 @@ window.__railJump = (c, smooth) => { const L = document.getElementById("list"); 
 :root{--in:#6fcf9f;--low:#e2b462;--soon:#86a8ff;--panel:#0e0e15;--sunk:#15151e;--line:#23232f;--accent-ink:#cdbdff}
 body{background:radial-gradient(1100px 560px at 50% -260px,rgba(110,80,255,.12),transparent 70%),var(--bg)}
 .wrap{max-width:1120px}
-.sec{margin-top:104px}
+@media (min-width:701px){.sec{margin-top:104px}}
+@media (max-width:700px){.sec{margin-top:68px}.sec.cz{margin-top:14px}}
 .sh{margin-bottom:26px}
 .sh h2{letter-spacing:.14em}
 .ey{color:var(--muted);letter-spacing:.34em}
 .lede,.gintro,.bk-t p,.po p,.wd p,.fr p,.gt span{color:#b9b7cc}
-/* quiet the hero */
-.hero{padding-block:64px 40px}
+/* quiet the hero — keep the larger padding on desktop only; mobile keeps the tighter hero padding */
+@media (min-width:701px){.hero{padding-block:64px 40px}}
+@media (max-width:700px){.hero{padding-block:22px 6px;gap:4px}}
 .hero img{animation:none!important;filter:none;opacity:.95}
 .hl{animation:none!important}
 .hl .lbl{box-shadow:0 30px 70px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.08)}
@@ -2651,7 +2654,7 @@ body{background:radial-gradient(1100px 560px at 50% -260px,rgba(110,80,255,.12),
 html.rvon .card{opacity:1!important;transform:none!important;transition:none!important}
 .card.in .tc::after{display:none}
 @media (min-width:701px){.nl a{display:inline-block!important}}
-#list .card>svg{display:none!important}
+/* Catalog vial/3D SVGs stay visible so cards without a label banner are not an empty header */
 #list .card::before{opacity:.45}
 #sale #sale-n{color:#e9cf8f!important;-webkit-text-fill-color:#e9cf8f!important;background:none!important}
 .pstat{box-shadow:none!important;background:transparent!important;border:1px solid var(--line)!important}
