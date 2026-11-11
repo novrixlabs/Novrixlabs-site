@@ -1205,7 +1205,7 @@ html.is-vip b.dealp{color:#ff9a5c}
       <div class="nxstat"><b id="nx-c-low">0</b><span><i class="nxdot nx-low"></i>Low stock</span></div>
       <div class="nxstat"><b id="nx-c-soon">0</b><span><i class="nxdot nx-soon"></i>Restocking</span></div>
     </div>
-    <div class="nxpur"><div><small>Average HPLC purity</small><b id="nx-avgp">–</b></div><small class="nxpur-n"><span id="nx-nrep">0</span> <span>tested sizes</span></small></div>
+    <div class="nxpur"><div><small>Average HPLC purity</small><b id="nx-avgp">–</b></div><small class="nxpur-n"><span><span id="nx-nrep">0</span> <span>tested sizes</span></span><span class="nxpur-w" id="nx-npend-wrap" hidden><span id="nx-npend">0</span> <span>tests waiting</span></span></small></div>
     <div class="nxbs"><span class="nxlbl">Back soon</span><div class="nxbs-row" id="nx-backsoon"></div></div>
   </div>
 </aside>
@@ -1449,7 +1449,7 @@ window.NX_ES = {t: {
 "Earn while you research": "Gana mientras investigas", "Store credit": "Crédito de tienda", "Comes off your next order automatically · never expires": "Se descuenta de tu próximo pedido automáticamente · nunca vence",
 "Good to know": "Bueno saberlo", "How ordering works": "Cómo pedir", "Shipping & policies": "Envíos y políticas", "FAQ": "Preguntas", "About": "Acerca de", "Request a product": "Pedir un producto", "Research": "Investigación",
 "Choose a size": "Elige un tamaño", "Lab report": "Informe de laboratorio", "No lab report for this size yet.": "Aún no hay informe de laboratorio para este tamaño.",
-"Lab test in progress.": "Prueba de laboratorio en curso.", "Explore in 3D": "Explorar en 3D", "All reports for this product": "Todos los informes de este producto",
+"Lab test in progress.": "Prueba de laboratorio en curso.", "Tests waiting": "Pruebas en espera", "tests waiting": "pruebas en espera", "Sent to lab — results pending": "Enviado al laboratorio — resultados pendientes", "Explore in 3D": "Explorar en 3D", "All reports for this product": "Todos los informes de este producto",
 "Add to cart": "Agregar al carrito", "Update cart": "Actualizar carrito", "Remove": "Quitar", "Notify me": "Avísame", "Alert requested": "Aviso solicitado",
 "Added to your cart": "Agregado a tu carrito", "Cart updated": "Carrito actualizado", "Removed from your cart": "Quitado de tu carrito",
 "limit 2 per order": "máximo 2 por pedido", "From": "Desde", "Sold out": "Agotado", "Best seller": "Más vendido", "Blend": "Mezcla",
@@ -2998,7 +2998,16 @@ body::after{content:none!important}
 .nxpur{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border-radius:14px;background:linear-gradient(90deg,rgba(61,220,151,.1),rgba(61,220,151,.02));border:1px solid rgba(61,220,151,.28)}
 .nxpur small{display:block;color:#a7d9c2;font-size:.74rem}
 .nxpur b{display:block;font:800 1.7rem/1 var(--nx-head);color:#7ff0bd;margin-top:4px}
-.nxpur-n{text-align:right}
+.nxpur small.nxpur-n{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:2px;color:#a7d9c2}
+.nxpur-w{display:block;color:#e6c48a}
+.nxc-wait{margin:8px 0 0;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;font-size:.74rem;line-height:1.35;color:var(--nx-mut,#a7a3b8)}
+.nxc-wait-k{font-weight:700;color:#e6c48a;letter-spacing:.02em}
+.nxc-wait-s{color:var(--nx-mut,#a7a3b8)}
+.nxwait{margin-top:14px}
+.nxwait .nxlbl{display:block;margin-bottom:6px}
+.nxwait-l{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.nxwait-l li{margin:0;padding:8px 10px;border-radius:10px;border:1px solid rgba(230,196,138,.28);background:rgba(230,196,138,.06);color:var(--nx-mut,#c9c6e4);font-size:.84rem;line-height:1.4}
+.nxwait-l b{color:#e6c48a;font-weight:700;margin-right:6px}
 .nxbs .nxlbl{margin:0 0 8px}
 .nxbs-row{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 24px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 24px),transparent)}
 .nxbs-row::-webkit-scrollbar{display:none}
@@ -3297,7 +3306,10 @@ function card(rec, i) {
     if (inCart) btn.append(mk("span", "nxc-szq", "×" + N.qty(k)));
     f.append(btn);
   });
-  b.append(f); a.append(hit, pl, b);
+  b.append(f);
+  const waiting = rec.doses.filter((d) => d.pend && !N.coaList(d).length);
+  if (waiting.length) { const w = mk("p", "nxc-wait"); w.append(mk("span", "nxc-wait-k", "Tests waiting"), mk("span", "nxc-wait-s", waiting.map(dz).join(" · "))); w.setAttribute("title", "Sent to lab — results pending"); w.setAttribute("aria-label", "Tests waiting: " + waiting.map(dz).join(", ") + ". Sent to lab — results pending"); b.append(w); }
+  a.append(hit, pl, b);
   if (io && i > 3) { a.classList.add("rv"); a.style.setProperty("--d", (i % 4) * 50 + "ms"); io.observe(a); }
   return a;
 }
@@ -3358,6 +3370,8 @@ function drawSheet() {
     const l = mk("span", "nxsize-l"); l.append(mk("i", "nxdot nx-" + x.s), mk("b", null, dz(x))); b.append(l, priceEl(it, x)); if (N.picks.has(keyOf(it, x))) b.append(mk("small", "nxsize-c", "×" + N.qty(keyOf(it, x))));
     b.addEventListener("click", () => { cur.d = x; cur.q = N.picks.has(keyOf(it, x)) ? N.qty(keyOf(it, x)) : 1; drawSheet(); }); ds.append(b); }
   c1.append(ds);
+  const waiting = it.doses.filter((x) => x.pend && !N.coaList(x).length);
+  if (waiting.length) { const wb = mk("div", "nxwait"); wb.append(mk("span", "nxlbl", "Tests waiting")); const ul = mk("ul", "nxwait-l"); for (const x of waiting) { const li = mk("li"); li.append(mk("b", null, dz(x)), " Sent to lab — results pending"); ul.append(li); } wb.append(ul); c1.append(wb); }
   /* lab report for the chosen size */
   const cl = N.coaList(d), box = mk("div", "nxcoabox" + (cl.length ? "" : " none")); c2.append(mk("span", "nxlbl", "Lab report"), box);
   if (cl.length) { const c = cl.find((x) => x.purity) || cl[0], lab = N.LABS[c.lab] || {};
@@ -3365,7 +3379,7 @@ function drawSheet() {
     const dl = mk("dl"), row = (a, b) => { if (b) dl.append(mk("dt", null, a), mk("dd", null, b)); }; row("Lab", lab.name || c.lab); row("Report", c.report || ""); row("Size", dz(d)); if (cl.length > 1) row("Tests", cl.length + " reports"); box.append(dl);
     const ac = mk("div", "nxcoa-a"), ob = mk("button", "nxbtn nxbtn-g nxbtn-s", "Open report"); ob.type = "button"; ob.addEventListener("click", () => N.openCoa(it.name.replace(/\s+blend$/i, ""), cl.map((x) => ({...x, dz: dz(d)})), 0)); ac.append(ob);
     if (lab.url) { const va = mk("a", "nxbtn nxbtn-g nxbtn-s", "Verify at lab"); va.href = lab.url; va.target = "_blank"; va.rel = "noopener"; ac.append(va); } box.append(ac);
-  } else box.append(mk("p", null, d.pend ? "Lab test in progress." : "No lab report for this size yet."));
+  } else box.append(mk("p", null, d.pend ? "Sent to lab — results pending" : "No lab report for this size yet."));
   if (N.SEQ[it.name] && typeof N.openMol === "function") { const m = mk("button", "nxbtn nxbtn-g nxbtn-s nxsh-3d", "Explore in 3D"); m.type = "button"; m.addEventListener("click", () => N.openMol(it)); c2.append(m); }
   c2.append(mk("p", "nxsh-ruo", "For research use only. Not for human or animal consumption."));
   /* footer: stepper + action */
@@ -3390,7 +3404,9 @@ function drawSheet() {
   const c = {in: 0, low: 0, soon: 0}; let ps = 0, pn = 0;
   for (const r of ITEMS) for (const d of r.doses) { if (d.s in c) c[d.s]++; if (!r.nop) for (const x of N.coaList(d)) { const v = parseFloat(x.purity); if (v > 0) { ps += v; pn++; } } }
   $("#nx-c-in").textContent = c.in; $("#nx-c-low").textContent = c.low; $("#nx-c-soon").textContent = c.soon;
+  let waitN = 0; for (const r of ITEMS) for (const d of r.doses) if (d.pend && !(N.coaList(d) || []).length) waitN++;
   $("#nx-avgp").textContent = pn ? (ps / pn).toFixed(2) + "%" : "–"; $("#nx-nrep").textContent = pn;
+  { const pw = $("#nx-npend"), wrap = $("#nx-npend-wrap"); if (pw) pw.textContent = waitN; if (wrap) wrap.hidden = waitN === 0; }
   const au = $("#avail-updated"); if (au && /\d/.test(au.textContent)) $("#nx-synced").textContent = au.textContent;
   const bs = $("#nx-backsoon"); for (const r of ITEMS.filter((r) => r.s === "soon" && !r.nop).slice(0, 10)) { const b = mk("button", "nxbs-c"); b.type = "button"; b.append(mk("i", "nxdot nx-soon"), mk("span", null, r.it.name)); b.addEventListener("click", () => openSheet(r, b)); bs.append(b); }
   if (!bs.children.length) bs.parentElement.hidden = true;
