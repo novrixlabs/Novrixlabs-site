@@ -3088,11 +3088,33 @@ body::after{content:none!important}
 .nxc-szbtn.pop{animation:nxpop .45s ease}
 .nxc-szbtn:disabled,.nxc-szbtn.na{cursor:not-allowed;opacity:.6;color:var(--nx-mut);background:linear-gradient(180deg,#16161f,#12121a);box-shadow:none;border:1px solid var(--nx-l2)}
 .nxc-szq{position:absolute;top:3px;right:5px;font-size:.65rem;font-weight:800;color:#7ff0bd}
+.nxc-b{gap:2px;padding:10px 12px 12px}
+.nxc-cat{margin:0}
+.nxc h3{margin:0}
+.nxc-sz{margin:0;font-size:.72rem}
+.nxc-f.nxc-chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:auto;padding-top:8px;position:relative;z-index:2;width:100%}
+.nxc-chip{all:unset;box-sizing:border-box;cursor:pointer;position:relative;display:inline-flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:5px;min-height:44px;min-width:44px;padding:10px 12px;border-radius:999px;border:1px solid var(--nx-l2);background:linear-gradient(180deg,#1c1c26,#12121a);color:#eceaf8;font:650 .75rem/1 inherit;letter-spacing:.01em;box-shadow:inset 0 1px 0 rgba(255,255,255,.07);transition:border-color .15s,box-shadow .15s,transform .15s}
+.nxc-chip:hover:not(:disabled){border-color:rgba(155,77,255,.55);box-shadow:0 0 14px rgba(123,63,228,.28),inset 0 1px 0 rgba(255,255,255,.08)}
+.nxc-chip:focus-visible{outline:2px solid #b9a6ff;outline-offset:2px}
+.nxc-chip:active:not(:disabled){transform:scale(.97)}
+.nxc-chip-sz{font-weight:800;white-space:nowrap}
+.nxc-chip .nxpr{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.nxc-chip .nxpr s{opacity:.7;margin-right:3px;font-weight:600}
+.nxc-chip.on{border-color:rgba(61,220,151,.55);box-shadow:0 0 12px rgba(61,220,151,.2),inset 0 1px 0 rgba(255,255,255,.07)}
+.nxc-chip.pop{animation:nxpop .45s ease}
+.nxc-chip:disabled,.nxc-chip.na{cursor:not-allowed;opacity:.55;color:#9a97ac;background:linear-gradient(180deg,#16161f,#12121a);box-shadow:none}
+.nxc-chip.na .nxc-chip-sz,.nxc-chip.na .nxpr{text-decoration:line-through}
+.nxc-chip-st{font-size:.62rem;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:#c4b89a;text-decoration:none!important;white-space:nowrap}
+.nxc-chip.extra{display:none}
+.nxc-chips.open .nxc-chip.extra{display:inline-flex}
+.nxc-more{min-width:44px;font-weight:800;color:#c9b3ff;border-style:dashed;border-color:rgba(155,77,255,.4)}
+.nxc .nxc-wait{margin:6px 0 0}
+.nxc.rv,.nxc.rv.in{opacity:1;transform:none;transition:none}
 
 .rv{opacity:0;transform:translateY(16px)}
 .rv.in{opacity:1;transform:none;transition:opacity .5s ease,transform .5s cubic-bezier(.2,.9,.25,1);transition-delay:var(--d,0ms)}
 @media (min-width:640px){.nxcards{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media (min-width:900px){.nxcards{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}.nxc-plate{height:172px}.nxvial{height:140px}.nxc-b{padding:16px}}
+@media (min-width:900px){.nxcards{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}.nxc-plate{height:172px}.nxvial{height:140px}.nxc-b{padding:12px 14px 14px}}
 /* sections */
 .nxsec,.nxview-h{content-visibility:auto;contain-intrinsic-size:auto 480px}
 .nxview-h{margin-top:32px!important}
@@ -3238,6 +3260,23 @@ footer .ft-l a,footer .ft-l button{min-height:44px;display:inline-flex;align-ite
 @media (prefers-reduced-motion:reduce){.nx-r1,.nx-core,.nx-emblem,.nx-float,.nxlive i,.nxcc::after{animation:none!important}.rv{opacity:1;transform:none}.nxsheet,.nxscrim{transition:none}}
 
 .nxsep-d{color:var(--nx-dim)}
+
+button.nxc-chip{all:unset;box-sizing:border-box;cursor:pointer;position:relative;display:inline-flex;flex-direction:row;flex-wrap:nowrap;align-items:center;justify-content:center;gap:5px;min-height:44px;min-width:44px;padding:10px 12px;border-radius:999px;border:1px solid var(--nx-l2);background:linear-gradient(180deg,#1c1c26,#12121a);color:#eceaf8;font-family:inherit;font-size:.75rem;font-weight:650;line-height:1;letter-spacing:.01em;white-space:nowrap;box-shadow:inset 0 1px 0 rgba(255,255,255,.07);transition:border-color .15s,box-shadow .15s,transform .15s}
+button.nxc-chip:hover:not(:disabled){border-color:rgba(155,77,255,.55);box-shadow:0 0 14px rgba(123,63,228,.28),inset 0 1px 0 rgba(255,255,255,.08)}
+button.nxc-chip:focus-visible{outline:2px solid #b9a6ff;outline-offset:2px}
+button.nxc-chip:active:not(:disabled){transform:scale(.97)}
+button.nxc-chip .nxc-chip-sz{font-weight:800;white-space:nowrap}
+button.nxc-chip .nxpr{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+button.nxc-chip.on{border-color:rgba(61,220,151,.55);box-shadow:0 0 12px rgba(61,220,151,.2),inset 0 1px 0 rgba(255,255,255,.07)}
+button.nxc-chip:disabled,button.nxc-chip.na{cursor:not-allowed;opacity:.55;color:#9a97ac;background:linear-gradient(180deg,#16161f,#12121a);box-shadow:none}
+button.nxc-chip.na{flex-wrap:wrap;padding:6px 10px;gap:2px 6px;max-width:100%}
+button.nxc-chip.na .nxc-chip-sz,button.nxc-chip.na .nxpr{text-decoration:line-through}
+button.nxc-chip .nxc-chip-st{flex:1 0 100%;font-size:.62rem;font-weight:700;letter-spacing:.02em;text-transform:none;color:#c4b89a;text-decoration:none!important;white-space:nowrap;text-align:center}
+button.nxc-chip.extra{display:none}
+.nxc-chips.open button.nxc-chip.extra{display:inline-flex}
+button.nxc-chip.pop::after{content:"✓";position:absolute;top:2px;right:6px;font-size:.68rem;font-weight:800;color:#7ff0bd;pointer-events:none;animation:nxchk .45s ease}
+@keyframes nxchk{0%{opacity:0;transform:scale(.5)}35%{opacity:1;transform:scale(1.15)}100%{opacity:0}}
+button.nxc-more{min-width:44px;font-weight:800;color:#c9b3ff;border-style:dashed;border-color:rgba(155,77,255,.4)}
 </style>
 <script id="nx-layer">
 /* Novrix redesign layer. Reads the data lines and reuses the existing cart, checkout, COA, notify and tracking
@@ -3296,21 +3335,30 @@ function card(rec, i) {
   if (pur) { const c = mk("span", "nxcoa"); c.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg>'; c.append(pur.toFixed(2) + "%"); c.title = "Best HPLC purity on file"; pl.append(c); }
   const b = mk("div", "nxc-b"); b.append(mk("span", "nxc-cat", N.SHORT[rec.cat] || rec.cat), mk("h3", rec.it.name.length > 16 ? "long" : null, rec.it.name), mk("span", "nxc-sz", rec.doses.map(dz).join(" · ")));
   if (bs) b.append(mk("span", "nxbsel", "Best seller"));
-  const f = mk("div", "nxc-f nxc-sizes"); f.setAttribute("role", "group"); f.setAttribute("aria-label", "Add a size of " + rec.it.name + " to your cart");
+  const waiting = rec.doses.filter((d) => d.pend && !N.coaList(d).length);
+  if (waiting.length) { const w = mk("p", "nxc-wait"); w.append(mk("span", "nxc-wait-k", "Tests waiting"), mk("span", "nxc-wait-s", waiting.map(dz).join(" · "))); w.setAttribute("title", "Sent to lab — results pending"); w.setAttribute("aria-label", "Tests waiting: " + waiting.map(dz).join(", ") + ". Sent to lab — results pending"); b.append(w); }
+  const f = mk("div", "nxc-f nxc-chips"); f.setAttribute("role", "group"); f.setAttribute("aria-label", "Add a size of " + rec.it.name + " to your cart");
+  const CHIP_MAX = 3;
   rec.doses.forEach((d, di) => {
     const on = N.avail(d.s), k = keyOf(rec.it, d), p = priceOf(rec.it, d), inCart = N.picks.has(k);
-    const btn = mk("button", "nxc-szbtn" + (on ? "" : " na") + (inCart ? " on" : "")); btn.type = "button"; btn.dataset.di = String(di);
-    const lab = mk("span", "nxc-szbtn-l", "+ " + dz(d)); btn.append(lab, priceEl(rec.it, d));
+    const btn = mk("button", "nxc-chip" + (on ? "" : " na") + (inCart ? " on" : "")); btn.type = "button"; btn.dataset.di = String(di);
+    if (rec.doses.length > CHIP_MAX + 1 && di >= CHIP_MAX) btn.classList.add("extra");
+    btn.append(mk("span", "nxc-chip-sz", dz(d)), priceEl(rec.it, d));
+    if (!on) btn.append(mk("span", "nxc-chip-st", d.s === "soon" ? "Restocking" : "Sold out"));
     if (on) btn.setAttribute("aria-label", "Add " + k + " to your cart" + (p.now != null ? ", " + N.money(p.now) : ""));
-    else { btn.disabled = true; btn.setAttribute("aria-label", k + " is " + (SL[d.s] || "unavailable").toLowerCase()); }
+    else { btn.disabled = true; btn.setAttribute("aria-label", k + " is " + (d.s === "soon" ? "restocking" : "sold out")); }
     if (inCart) btn.append(mk("span", "nxc-szq", "×" + N.qty(k)));
     f.append(btn);
   });
+  if (rec.doses.length > CHIP_MAX + 1) {
+    const more = mk("button", "nxc-chip nxc-more"); more.type = "button";
+    more.append("+" + (rec.doses.length - CHIP_MAX));
+    more.setAttribute("aria-label", "Show " + (rec.doses.length - CHIP_MAX) + " more sizes of " + rec.it.name);
+    more.setAttribute("aria-expanded", "false");
+    f.append(more);
+  }
   b.append(f);
-  const waiting = rec.doses.filter((d) => d.pend && !N.coaList(d).length);
-  if (waiting.length) { const w = mk("p", "nxc-wait"); w.append(mk("span", "nxc-wait-k", "Tests waiting"), mk("span", "nxc-wait-s", waiting.map(dz).join(" · "))); w.setAttribute("title", "Sent to lab — results pending"); w.setAttribute("aria-label", "Tests waiting: " + waiting.map(dz).join(", ") + ". Sent to lab — results pending"); b.append(w); }
   a.append(hit, pl, b);
-  if (io && i > 3) { a.classList.add("rv"); a.style.setProperty("--d", (i % 4) * 50 + "ms"); io.observe(a); }
   return a;
 }
 const L = $("#list"), G = $("#nxgrid");
@@ -3330,8 +3378,10 @@ function render() {
 }
 new MutationObserver(() => render()).observe(L, {childList: true}); render();
 G.addEventListener("click", (e) => { const c = e.target.closest(".nxc"); if (!c) return; const rec = BY.get(c.dataset.slug); if (!rec) return;
-  const sz = e.target.closest(".nxc-szbtn");
-  if (sz) { if (sz.disabled) return; const d = rec.doses[+sz.dataset.di]; if (!d || !N.avail(d.s)) return; const k = keyOf(rec.it, d); if (N.picks.has(k) && N.qty(k) >= N.capQ(k)) { N.capMsg(k); return; } addKey(rec, d, N.picks.has(k) ? N.qty(k) + 1 : 1); bump(sz); let qel = sz.querySelector(".nxc-szq"); if (!qel) { qel = mk("span", "nxc-szq"); sz.append(qel); } qel.textContent = "×" + N.qty(k); sz.classList.add("on"); return; }
+  const more = e.target.closest(".nxc-more");
+  if (more) { const f = more.closest(".nxc-chips"); if (f) { f.classList.add("open"); more.remove(); } return; }
+  const sz = e.target.closest(".nxc-chip, .nxc-szbtn");
+  if (sz) { if (sz.disabled || sz.classList.contains("nxc-more")) return; const d = rec.doses[+sz.dataset.di]; if (!d || !N.avail(d.s)) return; const k = keyOf(rec.it, d); if (N.picks.has(k) && N.qty(k) >= N.capQ(k)) { N.capMsg(k); return; } addKey(rec, d, N.picks.has(k) ? N.qty(k) + 1 : 1); bump(sz); let qel = sz.querySelector(".nxc-szq"); if (!qel) { qel = mk("span", "nxc-szq"); sz.append(qel); } qel.textContent = "×" + N.qty(k); sz.classList.add("on"); return; }
   openSheet(rec, e.target.closest("button") || c); });
 function addKey(rec, d, q) { const k = keyOf(rec.it, d), isNew = !N.picks.has(k); if (!N.avail(d.s) && isNew) return;
   if (q > N.capQ(k)) { N.capMsg(k); q = N.capQ(k); }
