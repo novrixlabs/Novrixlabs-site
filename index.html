@@ -2101,7 +2101,7 @@ const saleDay = (x) => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(x || ""); re
 const saleEarly = () => !!(SALE && (SALE.vipStart || SALE.vipStartIso) && !saleOpenAt(SALE, Date.now(), false) && saleOpenAt(SALE, Date.now(), true));
 function calcSaleOn() { return !!(SALE && saleOpenAt(SALE, Date.now(), VIPON)); }
 let saleOn = calcSaleOn();
-function saleBanner() { const b = document.getElementById("sale"); const end = new Date(SALE.ends + "T12:00:00").toLocaleDateString("en-US", {month: "short", day: "numeric"}); const top = SALE.tiers.reduce((a, t) => Math.max(a, t[1]), 0); document.getElementById("sale-s").textContent = (saleEarly() ? "VIP early access · " : "") + (SALE.minSub ? (SALE.freeShip === 1 ? "Free shipping + " : "") + top + "% off $" + SALE.minSub + "+ · ends " : top ? "Up to " + top + "% off · ends " : "Ends ") + end; document.getElementById("sale-n").textContent = SALE.name; document.getElementById("sale-t").textContent = (SALE.blurb ? SALE.blurb : SALE.tiers.slice().reverse().map(([n, p]) => p + "% off " + (n > 1 ? n + "+ items" : "any order")).join(" · ") + (SALE.freeShip > 1 ? " · Free shipping $" + SALE.freeShip + "+" : "")) + " · Ends " + end; b.classList.remove("nov"); b.hidden = false; }
+function saleBanner() { const b = document.getElementById("sale"); const end = new Date(SALE.ends + "T12:00:00").toLocaleDateString("en-US", {month: "short", day: "numeric"}); const top = SALE.tiers.reduce((a, t) => Math.max(a, t[1]), 0); document.getElementById("sale-s").textContent = (saleEarly() ? "VIP early access · " : "") + (SALE.minSub ? (SALE.freeShip === 1 ? "Free shipping + " : "") + top + "% off $" + SALE.minSub + "+ · Ends " : top ? "Up to " + top + "% off · Ends " : "Ends ") + end; document.getElementById("sale-n").textContent = SALE.name; document.getElementById("sale-t").textContent = (SALE.blurb ? SALE.blurb : SALE.tiers.slice().reverse().map(([n, p]) => p + "% off " + (n > 1 ? n + "+ items" : "any order")).join(" · ") + (SALE.freeShip > 1 ? " · Free shipping $" + SALE.freeShip + "+" : "")) + " · Ends " + end; b.classList.remove("nov"); b.hidden = false; }
 function saleRefresh() { const was = saleOn; saleOn = calcSaleOn(); if (saleOn && !was) { const b = document.getElementById("sale"); if (b) { const c = b.cloneNode(true); c.removeAttribute("role"); c.removeAttribute("tabindex"); b.replaceWith(c); } saleBanner(); try { draw(); tray(); } catch (e) {} } }
 const TEASE = !saleOn ? SALES.find((x) => x.teaseFrom && x.card && etYmd() >= x.teaseFrom && etYmd() < x.start) || null : null;
 (() => { const S2 = saleOn && SALE && SALE.card ? SALE : TEASE; if (!S2) return; const live = S2 === SALE && saleOn; const c = S2.card, box = el("section", "fsale"); box.id = "fsale";
@@ -2179,7 +2179,9 @@ function tray() {
     const s0 = picks.get(k); if (s0 === "soon" || s0 === "out") nm.append(el("small", null, s0 === "soon" ? "Restocking" : "Out of stock"));
     const mk = (t, lab, fn) => { const b = el("button", "qb", t); b.type = "button"; b.setAttribute("aria-label", lab); b.addEventListener("click", fn); return b; };
     stp.append(mk("\u2212", "One less " + k, () => { if (q <= 1) { picks.delete(k); delete QTY[k]; savePicks(); draw(); } else { QTY[k] = q - 1; savePicks(); } tray(); }), el("span", "qn", String(q)), mk("+", "One more " + k, () => { if (q >= capQ(k)) { capMsg(k); return; } QTY[k] = q + 1; savePicks(); tray(); }));
-    line.append(nm, stp, el("span", "ct", PRICE[k] ? money(q * PRICE[k]) : "–")); cartEl.append(line);
+    const rm = el("button", "cl-x", "\u00d7"); rm.type = "button"; rm.setAttribute("aria-label", "Remove " + k);
+    rm.addEventListener("click", () => { picks.delete(k); delete QTY[k]; savePicks(); draw(); tray(); });
+    line.append(nm, stp, el("span", "ct", PRICE[k] ? money(q * PRICE[k]) : "–"), rm); cartEl.append(line);
   }
   const sm = el("div", "csum"), row = (a, b, c) => { const r = el("div", "cr" + (c ? " " + c : "")); r.append(el("span", null, a), el("span", null, b)); sm.append(r); };
   if (T.vip > 0) { row("Regular price", money(T.reg)); row("VIP pricing", "-" + money(T.vip), "save"); } else if (T.deal > 0) { row("Regular price", money(T.reg)); row("Deal of the Month", "-" + money(T.deal), "save"); } else row("Subtotal", money(T.sub));
@@ -3574,6 +3576,133 @@ button.nx-pill.bump{animation:nxpill .45s ease}
 @media (prefers-reduced-motion:reduce){
   button.nx-pill.bump,button.nx-pill.bump{animation:none}
 }
+
+/* --- sweep: card controls, sheet sizes, sale ticker, hero, cart --- */
+.nxcards{align-items:stretch}
+article.nxc{align-self:stretch;height:auto;container-type:inline-size;container-name:nxcard}
+.nxc-b{padding-bottom:12px}
+.nxc-f.nxc-addrow,.nxc-addrow{
+  display:flex;flex-wrap:wrap;align-items:stretch;gap:8px;
+  margin-top:auto;padding-top:8px;width:100%;
+}
+.nxc-sel{
+  display:block;box-sizing:border-box;width:100%;flex:1 0 100%;
+  height:44px;min-height:44px;max-height:44px;line-height:42px;
+  padding:0 32px 0 12px;margin:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+}
+.nxc-step{height:44px;min-height:44px;flex:0 0 auto;align-self:stretch}
+.nxc-step button{width:44px;height:44px}
+.nxc-step-n{min-width:24px}
+button.nxc-go{
+  flex:1 1 auto;height:44px;min-height:44px;max-height:44px;
+  padding:0 12px;white-space:nowrap;align-self:stretch;
+}
+/* When the card is wide enough, keep stepper + Add on one row under the select */
+@container nxcard (min-width: 220px){
+  .nxc-step{flex:0 0 auto}
+  button.nxc-go{flex:1 1 auto;min-width:0}
+}
+/* Narrow cards: stack all three at 44px, even 8px gaps, full width (no leftover wrap) */
+@container nxcard (max-width: 219px){
+  .nxc-sel,.nxc-step,button.nxc-go{flex:1 0 100%;width:100%}
+  .nxc-step{justify-content:space-between}
+  button.nxc-go{font-size:.78rem;letter-spacing:.01em}
+}
+@container nxcard (min-width: 220px) and (max-width: 260px){
+  button.nxc-go{font-size:.74rem;padding:0 8px;letter-spacing:0}
+  .nxc-step-n{min-width:22px}
+}
+
+/* compact product-sheet size rows */
+.nxsizes{display:flex;flex-direction:column;gap:6px}
+.nxsz{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px 10px;
+  min-height:44px;padding:4px 6px 4px 10px;
+  border-radius:12px;border:1px solid rgba(214,220,235,.14);
+  background:linear-gradient(180deg,#1c1c26,#12121a);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+}
+.nxsz.on{border-color:rgba(155,77,255,.55);box-shadow:0 0 14px rgba(123,63,228,.22),inset 0 1px 0 rgba(255,255,255,.1)}
+.nxsz.na{opacity:.78}
+button.nxsz-i{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;justify-content:center;gap:2px;min-width:0;min-height:44px;padding:2px 0}
+button.nxsz-i:focus-visible{outline:2px solid #b9a6ff;outline-offset:2px;border-radius:8px}
+.nxsz-l{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 10px}
+.nxsz-l b{font-size:.92rem;font-weight:800;color:#f2f0fa}
+.nxsz-l .nxpr{font-size:.86rem;font-weight:700}
+.nxsz-l .nxpr s{opacity:.7;margin-right:4px;font-weight:600}
+.nxsz-meta{font-size:.7rem;line-height:1.3;color:#9a97ac}
+.nxsz-step{display:inline-flex;align-items:center;height:44px;border-radius:12px;border:1px solid rgba(214,220,235,.16);
+  background:linear-gradient(180deg,#1d1d27,#12121a);box-shadow:inset 0 1px 0 rgba(255,255,255,.1);overflow:hidden;flex:none}
+.nxsz-step button{all:unset;box-sizing:border-box;cursor:pointer;width:44px;height:44px;display:grid;place-items:center;font-size:1.15rem;font-weight:700;color:#eceaf8}
+.nxsz-step button:hover:not(:disabled){color:#c9b3ff;background:rgba(155,77,255,.12)}
+.nxsz-step button:focus-visible{outline:2px solid #b9a6ff;outline-offset:-2px}
+.nxsz-step button:disabled{opacity:.35;cursor:default}
+.nxsz-n{min-width:24px;text-align:center;font-weight:800;font-variant-numeric:tabular-nums;color:#fff}
+button.nxsz-ntf{all:unset;box-sizing:border-box;cursor:pointer;min-height:44px;padding:0 12px;border-radius:12px;font:700 .72rem/1 inherit;color:#c9b3ff;border:1px solid rgba(185,166,255,.35);white-space:nowrap}
+button.nxsz-ntf:disabled{opacity:.6;cursor:default}
+button.nxsz-ntf:focus-visible{outline:2px solid #b9a6ff;outline-offset:2px}
+.nxsh-incart{margin:0;font-size:.8rem;color:#c9b3ff}
+.nxsheet-f:empty{display:none}
+.nxsheet-b,#nx-sh-b{flex:1 1 auto;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch}
+.nxsheet-f{flex:none}
+@media (max-width:899px){
+  #nx-sheet.nxsheet{bottom:var(--nx-bn,64px);max-height:calc(92dvh - var(--nx-bn,64px))}
+}
+@media (max-width:700px){
+  .nxsz{padding:4px 4px 4px 8px;gap:6px}
+}
+
+/* cart qty 44px + remove */
+#cart .qs{gap:2px}
+#cart .qb{width:44px;height:44px;border-radius:12px;flex:none}
+#cart .qn{min-width:22px}
+#cart .cl{align-items:center;gap:8px}
+#cart .cl-x{all:unset;box-sizing:border-box;cursor:pointer;width:44px;height:44px;display:grid;place-items:center;border-radius:12px;font-size:1.25rem;line-height:1;color:#eceaf8;flex:none}
+#cart .cl-x:hover{background:rgba(155,77,255,.16);color:#c9b3ff}
+#cart .cl-x:focus-visible{outline:2px solid #b9a6ff;outline-offset:2px}
+
+/* Veterans Day / sale ticker: no clipping on narrow phones */
+@media (max-width:899px){
+  #sale.sale,#sale.sale.nov{
+    display:flex;align-items:center;justify-content:flex-start;gap:10px;
+    overflow:hidden;white-space:nowrap;flex-wrap:nowrap;
+    padding:5px 12px;min-height:28px;
+  }
+  #sale #sale-n{flex:none}
+  #sale #sale-t{
+    display:inline-block!important;flex:none;
+    padding-left:0;animation:nxsale 16s linear infinite;
+  }
+  #sale #sale-s{display:none!important}
+}
+@media (max-width:560px){
+  #sale #sale-t{display:inline-block!important}
+  #sale #sale-s{display:none!important}
+}
+@keyframes nxsale{
+  0%{transform:translateX(0)}
+  15%{transform:translateX(0)}
+  100%{transform:translateX(calc(-100% - 24px))}
+}
+@media (prefers-reduced-motion:reduce){
+  #sale #sale-t{animation:none!important;white-space:normal;overflow:visible}
+  #sale.sale,#sale.sale.nov{white-space:normal;flex-wrap:wrap;height:auto}
+}
+
+/* tighter mobile/tablet hero — keep emblem, get the shop closer */
+@media (max-width:899px){
+  .nxhero{padding:6px 0 0!important;gap:8px!important}
+  .nx-h1k{margin:4px 0 8px!important}
+  .nx-h1m{font-size:clamp(2.1rem,11vw,3.4rem)!important}
+  .nx-uline{margin:8px 0 0!important}
+  .nx-lede{margin:10px 0 0!important;font-size:.92rem;line-height:1.4;max-width:none}
+  .nx-cut{margin:8px 0 0!important;padding:6px 10px}
+  .nx-ctas{margin-top:12px!important;gap:8px}
+  .nx-reactor{width:min(46vw,180px)!important;margin:0 auto 2px}
+  .nxboard{margin-top:8px!important;padding:8px 10px!important}
+  .nxboard-g{margin-top:6px!important;gap:6px!important}
+  #shop.sh{margin-top:12px!important;margin-bottom:16px!important}
+}
 </style>
 <script id="nx-layer">
 /* Novrix redesign layer. Reads the data lines and reuses the existing cart, checkout, COA, notify and tracking
@@ -3750,14 +3879,50 @@ function drawSheet() {
   tx.append(ey, h, sl); top.append(pl, tx); B.append(top);
   const cols = mk("div", "nxsh-cols"), c1 = mk("div"), c2 = mk("div"); cols.append(c1, c2); B.append(cols);
   if (rec.is) c1.append(mk("p", "nxsh-is", rec.is));
-  c1.append(mk("span", "nxlbl", "Choose a size"));
-  const ds = mk("div", "nxsizes"); ds.setAttribute("role", "radiogroup"); ds.setAttribute("aria-label", "Size");
-  for (const x of rec.doses) { const b = mk("button", "nxsize" + (N.avail(x.s) ? "" : " na")); b.type = "button"; b.setAttribute("role", "radio"); b.setAttribute("aria-checked", String(x === d));
-    const l = mk("span", "nxsize-l"); l.append(mk("i", "nxdot nx-" + x.s), mk("b", null, dz(x))); b.append(l, priceEl(it, x)); if (N.picks.has(keyOf(it, x))) b.append(mk("small", "nxsize-c", "×" + N.qty(keyOf(it, x))));
-    b.addEventListener("click", () => { cur.d = x; cur.q = N.picks.has(keyOf(it, x)) ? N.qty(keyOf(it, x)) : 1; drawSheet(); }); ds.append(b); }
+  c1.append(mk("span", "nxlbl", "Sizes"));
+  const ds = mk("div", "nxsizes"); ds.setAttribute("role", "list"); ds.setAttribute("aria-label", "Sizes");
+  const focusBtn = document.activeElement && SH.contains(document.activeElement) ? document.activeElement.getAttribute("data-sz-btn") : null;
+  for (const x of rec.doses) {
+    const xk = keyOf(it, x), avail = N.avail(x.s), have = N.picks.has(xk), q0 = have ? N.qty(xk) : 0, cap = N.capQ(xk);
+    const waiting = !!(x.pend && !N.coaList(x).length);
+    const row = mk("div", "nxsz" + (x === d ? " on" : "") + (avail ? "" : " na")); row.setAttribute("role", "listitem");
+    const info = mk("button", "nxsz-i"); info.type = "button";
+    info.setAttribute("aria-pressed", String(x === d));
+    info.setAttribute("aria-label", dz(x) + ", " + SL[x.s] + (waiting ? ", tests waiting" : ""));
+    const l = mk("span", "nxsz-l"); l.append(mk("i", "nxdot nx-" + x.s), mk("b", null, dz(x)), priceEl(it, x));
+    const meta = mk("span", "nxsz-meta"); meta.append(SL[x.s]);
+    if (x.s === "low") meta.append(" · Limit " + cap + " per order");
+    if (waiting) meta.append(" · Sent to lab — results pending");
+    info.append(l, meta);
+    info.addEventListener("click", () => { cur.d = x; cur.q = q0 || 1; drawSheet(); });
+    row.append(info);
+    if (avail) {
+      const sp = mk("div", "nxsz-step"), mn = mk("button", "nxsz-m", "\u2212"), qn = mk("span", "nxsz-n", String(q0)), pl = mk("button", "nxsz-p", "+");
+      mn.type = pl.type = "button";
+      mn.setAttribute("aria-label", "One less " + dz(x)); pl.setAttribute("aria-label", "One more " + dz(x));
+      mn.setAttribute("data-sz-btn", xk + "-m"); pl.setAttribute("data-sz-btn", xk + "-p");
+      qn.setAttribute("aria-live", "polite"); qn.setAttribute("aria-label", "Quantity of " + dz(x) + " in cart");
+      mn.disabled = q0 <= 0; pl.disabled = q0 >= cap;
+      mn.addEventListener("click", () => {
+        const now = N.picks.has(xk) ? N.qty(xk) : 0;
+        setSheetQty(rec, x, now - 1);
+      });
+      pl.addEventListener("click", () => {
+        const now = N.picks.has(xk) ? N.qty(xk) : 0;
+        if (now >= cap) { N.capMsg(xk); return; }
+        setSheetQty(rec, x, now + 1);
+      });
+      sp.append(mn, qn, pl); row.append(sp);
+    } else {
+      const w = N.WAITED.has(xk), nb = mk("button", "nxsz-ntf", w ? "Alert requested" : "Notify me");
+      nb.type = "button"; nb.disabled = !!w;
+      nb.addEventListener("click", () => N.openNotify(xk, x.label || dz(x)));
+      row.append(nb);
+    }
+    ds.append(row);
+  }
   c1.append(ds);
-  const waiting = it.doses.filter((x) => x.pend && !N.coaList(x).length);
-  if (waiting.length) { const wb = mk("div", "nxwait"); wb.append(mk("span", "nxlbl", "Tests waiting")); const ul = mk("ul", "nxwait-l"); for (const x of waiting) { const li = mk("li"); li.append(mk("b", null, dz(x)), " Sent to lab — results pending"); ul.append(li); } wb.append(ul); c1.append(wb); }
+  if (focusBtn) { const keep = ds.querySelector("[data-sz-btn=\"" + CSS.escape(focusBtn) + "\"]"); if (keep) setTimeout(() => keep.focus({preventScroll: true}), 0); }
   /* lab report for the chosen size */
   const cl = N.coaList(d), box = mk("div", "nxcoabox" + (cl.length ? "" : " none")); c2.append(mk("span", "nxlbl", "Lab report"), box);
   if (cl.length) { const c = cl.find((x) => x.purity) || cl[0], lab = N.LABS[c.lab] || {};
@@ -3768,22 +3933,21 @@ function drawSheet() {
   } else box.append(mk("p", null, d.pend ? "Sent to lab — results pending" : "No lab report for this size yet."));
   if (N.SEQ[it.name] && typeof N.openMol === "function") { const m = mk("button", "nxbtn nxbtn-g nxbtn-s nxsh-3d", "Explore in 3D"); m.type = "button"; m.addEventListener("click", () => N.openMol(it)); c2.append(m); }
   c2.append(mk("p", "nxsh-ruo", "For research use only. Not for human or animal consumption."));
-  /* footer: stepper + action */
-  if (N.avail(d.s) || has) {
-    const sp = mk("div", "nxstep"), mn = mk("button", null, "\u2212"), qn = mk("span", null, String(cur.q)), pl2 = mk("button", null, "+"); mn.type = pl2.type = "button";
-    mn.setAttribute("aria-label", "One less"); pl2.setAttribute("aria-label", "One more"); qn.setAttribute("aria-live", "polite");
-    const paint = () => { qn.textContent = String(cur.q); mn.disabled = cur.q <= 1; main.lastChild.textContent = N.money((priceOf(it, d).now || 0) * cur.q); };
-    mn.addEventListener("click", () => { if (cur.q > 1) { cur.q--; paint(); } }); pl2.addEventListener("click", () => { if (cur.q >= cap) { N.capMsg(k); return; } cur.q++; paint(); });
-    sp.append(mn, qn, pl2);
-    const main = mk("button", "nxbtn nxbtn-p nxsh-go"); main.type = "button"; main.append(mk("span", null, has ? "Update cart" : "Add to cart"), mk("span", "nxsh-amt", ""));
-    main.addEventListener("click", () => { addKey(rec, d, cur.q); bump(null); drawSheet(); render(); });
-    F.append(sp, main); paint();
-    if (has) { const rm = mk("button", "nxbtn nxbtn-g nxsh-rm", "Remove"); rm.type = "button"; rm.addEventListener("click", () => { N.picks.delete(k); delete N.QTY[k]; N.savePicks(); N.tray(); N.draw(); toast("Removed from your cart"); cur.q = 1; drawSheet(); }); F.append(rm); }
-  } else {
-    const w = N.WAITED.has(k), nb = mk("button", "nxbtn " + (w ? "nxbtn-g" : "nxbtn-p") + " nxsh-go", w ? "Alert requested" : "Notify me"); nb.type = "button";
-    nb.addEventListener("click", () => N.openNotify(k, d.label)); F.append(mk("span", "nxsh-na", d.s === "soon" ? "Restocking" : "Out of stock"), nb);
+  const inCart = rec.doses.filter((x) => N.picks.has(keyOf(it, x)));
+  if (inCart.length) {
+    const n = inCart.reduce((s, x) => s + N.qty(keyOf(it, x)), 0);
+    const note = mk("p", "nxsh-incart", n + " in cart"); F.append(note);
   }
 }
+function setSheetQty(rec, x, q) {
+  const xk = keyOf(rec.it, x);
+  if (q <= 0) {
+    if (N.picks.has(xk)) { N.picks.delete(xk); delete N.QTY[xk]; N.savePicks(); N.tray(); N.draw(); toast("Removed from your cart"); }
+  } else addKey(rec, x, q);
+  if (cur && cur.rec === rec) { cur.d = x; cur.q = Math.max(0, q); }
+}
+if (!SH.dataset.szHook) { SH.dataset.szHook = "1"; N.hookTray(() => { if (cur && !SH.hidden) drawSheet(); }); }
+
 
 /* ---------- live board, hero chips, trust tile ---------- */
 (() => {
