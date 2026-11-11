@@ -1175,6 +1175,7 @@ html.is-vip b.dealp{color:#ff9a5c}
   </div>
 </header>
 <div class="wrap" id="top">
+<main id="nx-main">
   <nav class="nav" aria-label="Main">
     <a class="brand" href="#top">NOVRIX<span>LABS</span></a>
     <div class="nl"><a href="#shop">Menu</a><a href="#reviews">Reviews</a><a href="#faq">FAQ</a><a href="https://novrixlabs.shop/research.html">Research</a><button class="nl-b st-open" type="button">Track order</button></div>
@@ -1269,7 +1270,7 @@ html.is-vip b.dealp{color:#ff9a5c}
     </div>
   <div class="legend"><span><i class="dot d-in"></i>In stock</span><span><i class="dot d-low"></i>Low stock, order soon</span><span><i class="dot d-soon"></i>Restocking, on the way</span><span><i class="dot d-out"></i>Out of stock</span></div>
   <p class="labkey"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v6c0 4.2-2.9 7.7-7 9-4.1-1.3-7-4.8-7-9V6z"/><path d="m9 12 2 2 4-4"/></svg><span><b>= lab tested</b> · tap it to see the report</span></p>
-  <main id="list"></main>
+  <div id="list"></div>
 <div class="nxmeta" id="nxmeta" data-nxs="shop"><span id="nx-count"></span><span>Prices before any sale</span></div>
 <div id="nxgrid" data-nxs="shop" aria-live="polite"></div>
 <section class="sec nxview-h" id="info" data-nxs="info">
@@ -1419,6 +1420,7 @@ html.is-vip b.dealp{color:#ff9a5c}
   </div>
 </div>
 <div class="tray" id="tray" hidden><div class="tray-in"><div class="cart" id="cart" hidden></div><div class="tray-row"><button class="tray-sum" id="tray-toggle" type="button" aria-expanded="false" aria-controls="cart"><b id="tray-n"></b><span id="tray-s"></span></button><button class="tbtn ghost" id="tray-clear" type="button">Clear</button><button class="tbtn" id="tray-share" type="button">Share cart</button><button class="tbtn" id="tray-copy" type="button">Copy list</button><button class="tbtn pri" id="tray-order" type="button">Checkout</button></div></div></div>
+  </main>
   <footer>
     <p><b>For research use only.</b> All materials are sold strictly for in-vitro laboratory research. They are not drugs, dietary supplements, foods or cosmetics, have not been evaluated by the FDA, and are not intended to diagnose, treat, cure or prevent any disease.</p>
     <p>Availability changes daily. Prices shown are regular prices before any sale; your final total is shown at checkout.</p>
@@ -3903,6 +3905,157 @@ html{scroll-padding-top:calc(var(--nx-hdr) + var(--sale-h,0px) + 16px)}
 
 /* remove the green purity badge from the hero emblem; leave the emblem clean */
 #nx-f1, .nx-f1{display:none!important}
+
+/* === leftover polish: ticker, chips, potw, rail, HPLC, pill, a11y, VIP === */
+
+/* (1) desktop 5.0-from-verified-buyers on one line; cell sizes to the label */
+@media (min-width:900px){
+  .nxrail .nxtr{flex:1 1 auto;min-width:0}
+  .nxrail .nxtr:has(#nx-rv-b){flex:1.3 1 auto}
+  .nxrail .nxtr:has(#nx-rv-b) b{white-space:nowrap;letter-spacing:.04em;font-size:.52rem;overflow:visible}
+  #potw.potw{flex:0 1 auto;min-width:0;overflow:visible;gap:8px}
+  #potw .pw-k{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}
+  #potw.potw b{flex:none}
+  #potw.potw a{flex:none;margin-left:8px}
+}
+@media (min-width:900px) and (max-width:1099px){
+  .nxrail .nxtr{padding:8px 8px}
+  .nxrail .nxtr:has(#nx-rv-b) b{letter-spacing:.03em;font-size:.5rem}
+  #potw.potw{gap:6px}
+  #potw .pw-k{letter-spacing:.02em;font-size:.46rem}
+  #potw.potw a{margin-left:4px;letter-spacing:.02em;font-size:.66rem}
+}
+@media (min-width:900px) and (max-width:1023px){
+  .nxrail{flex-wrap:wrap}
+  #potw.potw{
+    flex:1 1 100%;width:100%;min-width:100%;
+    border-left:0!important;box-shadow:inset 0 2px 0 #c9a24a;
+    border-top:1px solid rgba(201,162,74,.35)!important;
+    padding:10px 12px
+  }
+}
+
+/* (2) mobile ticker: opaque label, full blurb wraps below, never overlaps, no second copy */
+@media (max-width:860px){
+  #sale.sale, #sale.sale.nov{
+    display:flex;flex-direction:column;flex-wrap:nowrap;align-items:stretch;
+    white-space:normal;overflow:visible;height:auto;max-height:none;
+    gap:2px;padding:7px 12px;
+    background:#121018!important;background-image:none!important;
+    isolation:isolate;text-align:center;line-height:1.35;
+  }
+  #sale-n, #sale.sale b, #sale.sale.nov b{
+    position:relative;z-index:2;display:block;flex:none;
+    background:#121018;color:#e9cf8f;padding:0;margin:0;
+    letter-spacing:.08em;font-size:.58rem;line-height:1.3;
+  }
+  #sale-t{
+    display:block!important;white-space:normal!important;
+    overflow:visible!important;text-overflow:clip!important;
+    max-width:100%;line-height:1.35;text-align:center;
+    overflow-wrap:break-word;word-break:break-word;
+  }
+  #sale-s{display:none!important}
+}
+
+/* (3) chip fades only when content is off-screen; no left fade at scroll 0 */
+.nxchiprow{
+  mask-image:none!important;
+  -webkit-mask-image:none!important;
+}
+.nxchiprow.fade-r{
+  mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent)!important;
+  -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent)!important;
+}
+.nxchiprow.fade-l{
+  mask-image:linear-gradient(90deg,transparent,#000 28px,#000 100%)!important;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 28px,#000 100%)!important;
+}
+.nxchiprow.fade-l.fade-r{
+  mask-image:linear-gradient(90deg,transparent,#000 28px,#000 calc(100% - 28px),transparent)!important;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 28px,#000 calc(100% - 28px),transparent)!important;
+}
+
+/* (4) Peptide of the week: restore See it, one baseline row */
+#potw.potw{
+  display:flex!important;flex-direction:row;align-items:center;gap:10px;
+  min-width:0;overflow:hidden;
+}
+#potw.potw[hidden]{display:none!important}
+#potw .pw-k{flex:none;grid-column:auto;line-height:1;align-self:center}
+#potw.potw b{flex:0 1 auto;min-width:0;line-height:1.1;align-self:center}
+#potw.potw a{
+  display:inline-flex!important;align-items:center;align-self:center;
+  flex:none;margin:0 0 0 auto;padding:0;line-height:1;
+  background:none!important;border:0;box-shadow:none;transform:none;
+  color:#c9b3ff;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;font-weight:700;
+  white-space:nowrap;position:static;justify-self:auto;grid-column:auto;
+}
+@media (max-width:899px){
+  #potw.potw{width:100%;padding:10px 12px!important}
+}
+
+/* (5) HPLC panel: solid-enough fill, fluid number, stack/wrap on narrow, padding holds all text */
+.nxpur{
+  box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;
+  justify-content:space-between;gap:8px 14px;
+  padding:10px 12px!important;min-width:0;overflow:hidden;
+  background:rgba(61,220,151,.14)!important;
+  background-image:linear-gradient(90deg,rgba(61,220,151,.18),rgba(61,220,151,.12))!important;
+  border:1px solid rgba(61,220,151,.38)!important;
+}
+.nxpur > div{min-width:0;flex:1 1 auto}
+.nxpur small{max-width:100%;overflow-wrap:break-word;white-space:normal}
+.nxpur b{
+  display:block;margin-top:2px;line-height:1.1;max-width:100%;
+  font-size:clamp(1.15rem,5vw,1.7rem)!important;
+  font-weight:800;color:#7ff0bd;overflow-wrap:anywhere;
+}
+.nxpur small.nxpur-n{
+  flex:1 1 7.5rem;min-width:0;max-width:100%;
+  white-space:normal;overflow-wrap:break-word;text-align:right;
+  align-items:flex-end;
+}
+.nxpur-n span{white-space:normal;overflow-wrap:break-word;max-width:100%}
+@media (max-width:420px){
+  .nxpur{flex-direction:column;align-items:flex-start}
+  .nxpur small.nxpur-n{align-items:flex-start;text-align:left;width:100%;flex:1 1 auto}
+}
+
+/* (6) VIP Remove stays inside the lounge bar */
+#vtop.lounge, #vtop.lounge .vl, .vl-row{
+  max-width:100%;min-width:0;box-sizing:border-box;
+}
+#vtop.lounge .vl{overflow:hidden}
+.vl-row{overflow:hidden}
+.vl-tog{min-width:0;overflow:hidden}
+.vl-t, .vl-k{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vl-x{flex:none;max-width:100%}
+
+/* (7) cart pill: offset to the left, or hide, when it would cover a control */
+@media (max-width:899px){
+  button.nx-pill.nx-pill-alt{
+    left:12px!important;right:auto!important;transform:none!important;
+  }
+  button.nx-pill.nx-pill-away{
+    opacity:0;visibility:hidden;pointer-events:none;
+  }
+}
+
+/* (8) card hit area is the plate only, so Add/stepper keep a 44px target */
+.nxc-hit{
+  inset:auto!important;top:0;left:0;right:0;bottom:auto;
+  width:100%;height:136px;z-index:1;
+}
+.nxc-f, .nxc-addrow{position:relative;z-index:3}
+/* keep card controls clear of the sticky ticker/header/chips and bottom nav when scrolled into view */
+article.nxc, .nxc-hit, .nxc-go, .nxc-step-p, .nxc-step-m, .nxc-sel{
+  scroll-margin-top:calc(var(--sale-h,0px) + var(--nx-hdr,56px) + 64px);
+  scroll-margin-bottom:calc(var(--nx-bn,64px) + 16px);
+}
+/* content-visibility placeholder was shorter than real groups, so adjacent sections overlapped */
+.nxgrp{content-visibility:visible;contain-intrinsic-size:none}
+
 </style>
 <script>
 (function(){
@@ -3911,11 +4064,58 @@ html{scroll-padding-top:calc(var(--nx-hdr) + var(--sale-h,0px) + 16px)}
     const on = s && !s.hidden && getComputedStyle(s).display !== "none";
     document.documentElement.style.setProperty("--sale-h", (on ? s.offsetHeight : 0) + "px");
   };
+  const chipFade = () => {
+    document.querySelectorAll(".nxchiprow").forEach((row) => {
+      const sl = row.scrollLeft;
+      const max = Math.max(0, row.scrollWidth - row.clientWidth);
+      row.classList.toggle("fade-l", sl > 2);
+      row.classList.toggle("fade-r", max - sl > 2);
+    });
+  };
+  const watchRows = () => {
+    document.querySelectorAll(".nxchiprow").forEach((row) => {
+      if (row.dataset.fadeBound) return;
+      row.dataset.fadeBound = "1";
+      row.addEventListener("scroll", chipFade, {passive: true});
+      if (typeof ResizeObserver === "function") new ResizeObserver(chipFade).observe(row);
+    });
+  };
+  const hitTest = (pill) => {
+    const pr = pill.getBoundingClientRect();
+    if (pr.width < 2 || pr.height < 2) return [];
+    return [...document.querySelectorAll("a,button,input,select,textarea,[role=button]")].filter((el) => {
+      if (el === pill || pill.contains(el) || el.closest("#nxbn, #nxh, #sale, #cart, #tray, #gate, .vault, button.nx-pill")) return false;
+      const r = el.getBoundingClientRect();
+      if (r.width < 2 || r.height < 2) return false;
+      if (r.bottom < 0 || r.top > innerHeight || r.right < 0 || r.left > innerWidth) return false;
+      const iw = Math.max(0, Math.min(r.right, pr.right) - Math.max(r.left, pr.left));
+      const ih = Math.max(0, Math.min(r.bottom, pr.bottom) - Math.max(r.top, pr.top));
+      return iw > 3 && ih > 3;
+    });
+  };
+  const pillPlace = () => {
+    const pill = document.querySelector("button.nx-pill");
+    if (!pill || pill.hidden) return;
+    pill.classList.remove("nx-pill-away", "nx-pill-alt");
+    if (!hitTest(pill).length) return;
+    pill.classList.add("nx-pill-alt");
+    if (hitTest(pill).length) pill.classList.add("nx-pill-away");
+  };
+  let raf = 0;
+  const tick = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => { set(); watchRows(); chipFade(); pillPlace(); }); };
   const start = () => {
-    set();
+    set(); chipFade(); pillPlace();
     const s = document.getElementById("sale");
     if (s && typeof ResizeObserver === "function") new ResizeObserver(set).observe(s);
-    addEventListener("resize", set);
+    watchRows();
+    addEventListener("resize", tick);
+    addEventListener("scroll", pillPlace, {passive: true});
+    document.addEventListener("scroll", (e) => {
+      if (e.target && e.target.classList && e.target.classList.contains("nxchiprow")) chipFade();
+    }, {passive: true, capture: true});
+    if (typeof MutationObserver === "function") {
+      new MutationObserver(tick).observe(document.body, {childList: true, subtree: true, attributes: true, attributeFilter: ["hidden", "class"]});
+    }
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
   else start();
@@ -4006,7 +4206,7 @@ function syncCardAdd(a) {
   const gl = go.querySelector(".nxc-go-l");
   if (gl && !on) gl.textContent = (d.s === "soon") ? "Restocking" : "Sold out";
   else if (gl) gl.textContent = "Add";
-  go.setAttribute("aria-label", on ? ("Add " + q + " of " + k + " to your cart" + (p.now != null ? ", " + N.money(p.now * q) : "")) : (k + " is " + (d.s === "soon" ? "restocking" : "sold out")));
+  go.setAttribute("aria-label", on ? ("Add " + (p.now != null ? N.money(p.now * q) + " — " : "") + q + " of " + k + " to your cart") : (k + " is " + (d.s === "soon" ? "restocking" : "sold out")));
   go.classList.toggle("on", have > 0);
 }
 function card(rec, i) {
@@ -4020,7 +4220,7 @@ function card(rec, i) {
   const b = mk("div", "nxc-b"); b.append(mk("span", "nxc-cat", N.SHORT[rec.cat] || rec.cat), mk("h3", rec.it.name.length > 16 ? "long" : null, rec.it.name), mk("span", "nxc-sz", sizeSpan(rec)));
   if (bs) b.append(mk("span", "nxbsel", "Best seller"));
   const waiting = rec.doses.filter((d) => d.pend && !N.coaList(d).length);
-  if (waiting.length) { const w = mk("p", "nxc-wait"); w.append(mk("span", "nxc-wait-k", "Results pending"), " · ", mk("span", "nxc-wait-s", waiting.map(dz).join(" · "))); w.setAttribute("title", "Results pending"); w.setAttribute("aria-label", "Results pending: " + waiting.map(dz).join(", ")); b.append(w); }
+  if (waiting.length) { const w = mk("p", "nxc-wait"); const nameSizes = rec.doses.length > 1 && waiting.length < rec.doses.length; w.append(mk("span", "nxc-wait-k", "Results pending")); if (nameSizes) w.append(" · ", mk("span", "nxc-wait-s", waiting.map(dz).join(" · "))); w.setAttribute("title", "Results pending"); w.setAttribute("aria-label", nameSizes ? "Results pending: " + waiting.map(dz).join(", ") : "Results pending"); b.append(w); }
   const f = mk("div", "nxc-f nxc-addrow");
   const def = ok[0] || rec.doses[0];
   const sel = mk("select", "nxc-sel"); sel.setAttribute("aria-label", "Size, " + rec.it.name);
