@@ -17,7 +17,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Novrix Labs","url":"https://novrixlabs.shop/","logo":"https://novrixlabs.shop/logo.png","description":"Research peptides with posted lab reports and live availability. Sold strictly for laboratory research use only.","email":"novrixlabs@gmail.com","sameAs":["https://discord.gg/XP9dz3jse"],"areaServed":"US"}</script>
 <meta name="twitter:image" content="https://novrixlabs.shop/og.png">
 <meta name="theme-color" content="#06060a">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://novrixlabs.shop; connect-src 'self' https://formsubmit.co; form-action https://formsubmit.co mailto:; base-uri 'self'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://novrixlabs.shop; connect-src 'self' https://formsubmit.co https://script.google.com https://script.googleusercontent.com; form-action https://formsubmit.co mailto:; base-uri 'self'; object-src 'none'">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="https://novrixlabs.shop/logo.png">
 <link rel="apple-touch-icon" href="https://novrixlabs.shop/logo.png">
@@ -1321,6 +1321,25 @@ html.is-vip b.dealp{color:#ff9a5c}
   <div class="sh nxsh-row"><div><span class="ey">Proof, not promises</span><h2>Latest lab reports</h2></div><a class="nxbtn nxbtn-g nxbtn-s" href="#lab-reports">All reports</a></div>
   <div class="nxrep-row" id="nx-latest"></div>
 </section>
+<section class="sec nxsec" id="nx-signup" data-nxs="shop">
+  <div class="nx-su">
+    <h2>Get in early for Black Friday.</h2>
+    <p class="nx-su-b">VIPs shop Black Friday Week starting Nov 20, three days before everyone else. You’ll also get first word on restocks and new lab reports. One or two emails a week, nothing else.</p>
+    <form class="nx-su-f" id="nx-su-form" novalidate>
+      <div class="nx-su-hp" aria-hidden="true">
+        <label>Company <input type="text" name="company" tabindex="-1" autocomplete="off"></label>
+      </div>
+      <label class="nx-su-em">Email
+        <input type="email" id="nx-su-email" name="email" autocomplete="email" inputmode="email" required>
+      </label>
+      <label class="nx-su-ck"><input type="checkbox" id="nx-su-age" name="age" required> <span>I’m 21 or older and agree to receive emails.</span></label>
+      <button class="cta nx-su-go" type="submit">Get VIP access</button>
+      <p class="nx-su-err" hidden></p>
+      <p class="nx-su-ok" hidden>You’re on the list.</p>
+      <p class="nx-su-fine">21+, US only. Research use only.</p>
+    </form>
+  </div>
+</section>
   <section class="sec" id="bulk" data-nxs="shop">
     <div class="bulk">
       <div class="bk-t"><span class="ey">Bulk orders</span><h2>Buy more, save more</h2><p>Stocking up, splitting a group order, or ordering for a research team? Bulk discounts come off automatically at checkout. Mix and match any products.</p></div>
@@ -1426,6 +1445,23 @@ html.is-vip b.dealp{color:#ff9a5c}
     <p>Availability changes daily. Prices shown are regular prices before any sale; your final total is shown at checkout.</p>
     <p>Lab reports are posted on tested products (tap the green badge). For anything else, email novrixlabs@gmail.com or ask in the Novrix Discord.</p>
     <address class="ft-addr"><b>NL Shipping</b>14611 Southern Blvd Unit #127<br>Loxahatchee FL 33470-6800</address>
+    <div class="nx-suf" id="nx-signup-ft">
+      <form class="nx-suf-f" id="nx-su-ft-form" novalidate>
+        <b class="nx-suf-h">Get in early for Black Friday.</b>
+        <p class="nx-suf-b">VIPs shop Black Friday Week starting Nov 20, three days before everyone else. You’ll also get first word on restocks and new lab reports. One or two emails a week, nothing else.</p>
+        <div class="nx-su-hp" aria-hidden="true">
+          <label>Company <input type="text" name="company" tabindex="-1" autocomplete="off"></label>
+        </div>
+        <label class="nx-su-em">Email
+          <input type="email" id="nx-su-ft-email" name="email" autocomplete="email" inputmode="email" required>
+        </label>
+        <label class="nx-su-ck"><input type="checkbox" id="nx-su-ft-age" name="age" required> <span>I’m 21 or older and agree to receive emails.</span></label>
+        <button class="cta nx-su-go" type="submit">Get VIP access</button>
+        <p class="nx-su-err" hidden></p>
+        <p class="nx-su-ok" hidden>You’re on the list.</p>
+        <p class="nx-su-fine">21+, US only. Research use only.</p>
+      </form>
+    </div>
     <p class="ft-l"><button class="flink st-open" type="button">Where’s my order?</button><a href="#reviews">Reviews</a><a href="#faq">FAQ</a><a href="https://novrixlabs.shop/research.html">Research</a><a href="https://novrixlabs.shop/products/">All products</a><a href="https://discord.gg/XP9dz3jse" target="_blank" rel="noopener">Discord</a><a href="https://novrixlabs.shop/terms.html">Terms of Sale</a><a href="https://novrixlabs.shop/privacy.html">Privacy</a></p>
   </footer>
 </div>
@@ -1448,6 +1484,15 @@ window.NX_ES = {t: {
 "Verified buyers": "Compradores verificados", "Real reviews from customers": "Reseñas reales de clientes", "five-star reviews": "reseñas de cinco estrellas",
 "Prices before any sale": "Precios antes de cualquier oferta", "products": "productos", "product": "producto",
 "Proof, not promises": "Pruebas, no promesas", "Latest lab reports": "Informes de laboratorio recientes", "All reports": "Todos los informes",
+"Get in early for Black Friday.": "Anticípate al Black Friday.",
+"VIPs shop Black Friday Week starting Nov 20, three days before everyone else. You’ll also get first word on restocks and new lab reports. One or two emails a week, nothing else.": "Los VIP compran en Black Friday Week desde el 20 de nov, tres días antes que los demás. También te avisamos primero de los reabastecimientos y de los informes de laboratorio nuevos. Uno o dos correos a la semana, nada más.",
+"Get VIP access": "Obtener acceso VIP",
+"21+, US only. Research use only.": "21+, solo EE. UU. Solo para uso en investigación.",
+"I’m 21 or older and agree to receive emails.": "Tengo 21 años o más y acepto recibir correos.",
+"You’re on the list.": "Ya estás en la lista.",
+"Please enter a valid email.": "Escribe un correo válido.",
+"Please confirm you are 21 or older.": "Confirma que tienes 21 años o más.",
+"Signup isn’t available yet.": "El registro aún no está disponible.",
 "Independent testing": "Pruebas independientes",
 "Every report comes from an independent lab and can be checked on that lab’s own site with the report code. Reports cover the batch that was tested.": "Cada informe viene de un laboratorio independiente y se puede verificar en el sitio de ese laboratorio con el código del informe. Los informes cubren el lote que se probó.",
 "All": "Todos", "HPLC purity": "Pureza HPLC", "Sterility and other": "Esterilidad y otros", "In testing": "En prueba",
@@ -4104,6 +4149,37 @@ html.is-vip .nxh-brand img{
 @media (prefers-reduced-motion:reduce){
   .nxh-brand img.nx-vip-shimmer,.nx-emblem.nx-vip-shimmer,.vipfx.vipfx-brief,.vipcard.vipcard-brief,.vipcard.vipcard-brief .vip-shine,.vipcard.vipcard-brief .vip-crown{animation:none!important}
 }
+#nx-signup{margin-top:28px}
+.nx-su{max-width:40rem;padding:22px 20px;border-radius:20px;border:1px solid rgba(155,77,255,.32);background:linear-gradient(180deg,rgba(155,77,255,.08),rgba(12,12,18,.92));box-shadow:0 0 40px rgba(123,63,228,.12)}
+.nx-su h2{margin:0 0 10px;font:800 1.65rem/1.15 var(--nx-head,inherit);letter-spacing:.01em}
+.nx-su-b,.nx-suf-b{margin:0 0 16px;color:var(--nx-mut,#c9c6e4);font-size:.95rem;line-height:1.5;max-width:62ch}
+.nx-su-f,.nx-suf-f{display:flex;flex-direction:column;align-items:stretch;gap:10px;min-width:0}
+.nx-su-em{display:block;min-width:0;font-size:.82rem;color:#d9d4f2}
+.nx-su-em input{display:block;width:100%;margin-top:6px;box-sizing:border-box;min-height:44px;padding:10px 12px;border-radius:12px;border:1px solid rgba(214,220,235,.2);background:var(--sunk,#0b0b12);color:inherit;font:inherit}
+.nx-su-em input:focus{outline:2px solid rgba(155,77,255,.7);outline-offset:2px}
+.nx-su-ck{display:flex;align-items:flex-start;gap:8px;margin:0;font-size:.86rem;line-height:1.4;color:#d9d4f2;cursor:pointer;max-width:100%}
+.nx-su-ck input{flex:none;margin-top:3px;width:18px;height:18px}
+.nx-su-ck span{min-width:0}
+.nx-su-go{margin-top:2px;align-self:flex-start;min-height:44px;border:0;cursor:pointer}
+.nx-su-err{margin:0;color:#ffb547;font-size:.84rem;line-height:1.4}
+.nx-su-ok{margin:0;color:#7ff0bd;font-size:1rem;font-weight:700;line-height:1.4}
+.nx-su-fine{margin:2px 0 0;font-size:.72rem;color:#9a97ac;line-height:1.4}
+.nx-su-f,.nx-suf-f{position:relative}
+.nx-su-hp{position:absolute;left:0;top:0;width:1px;height:1px;margin:0;padding:0;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);border:0;opacity:0;pointer-events:none}
+.nx-su-f.is-ok .nx-su-em,.nx-su-f.is-ok .nx-su-ck,.nx-su-f.is-ok .nx-su-go,
+.nx-suf-f.is-ok .nx-su-em,.nx-suf-f.is-ok .nx-su-ck,.nx-suf-f.is-ok .nx-su-go,.nx-suf-f.is-ok .nx-suf-row{display:none}
+#nx-signup-ft{margin:22px 0 0;padding:16px 0 0;border-top:1px solid rgba(214,220,235,.16);max-width:40rem}
+.nx-suf-h{display:block;margin:0 0 8px;font:800 1.05rem/1.25 var(--nx-head,inherit);letter-spacing:.01em;color:#eceaf8;text-transform:none}
+footer .nx-suf-h,footer .nx-suf b.nx-suf-h{font:800 1.05rem/1.25 var(--nx-head,inherit);letter-spacing:.01em;text-transform:none;color:#eceaf8;margin:0 0 8px}
+.nx-suf-b{font-size:.84rem;margin-bottom:12px}
+.nx-suf-row{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;min-width:0}
+.nx-suf-row .nx-su-em{flex:1 1 16rem;min-width:0}
+.nx-suf-row .nx-su-go{flex:none;margin-top:0}
+@media (max-width:560px){
+  .nx-su{padding:18px 16px}
+  .nx-su h2{font-size:1.35rem;overflow-wrap:anywhere}
+  .nx-suf-f .nx-su-go{align-self:stretch;text-align:center;justify-content:center}
+}
 </style>
 <script>
 (function(){
@@ -4627,4 +4703,75 @@ addEventListener("hashchange", route); route();
  /* phones: one sticky filter row */
  if(matchMedia('(max-width:700px)').matches && !document.querySelector('.nxchiprow')){const bar=document.querySelector('.bar'),j=document.getElementById('jtabs'),f=document.querySelector('.fchips');if(bar&&j&&f){const r=document.createElement('div');r.className='rowx';j.before(r);r.append(f,Object.assign(document.createElement('span'),{className:'rsep'}),j);}}
 })();</script>
+
+<script>
+(() => {
+  const SIGNUP_ENDPOINT = "";
+  const preview = () => {
+    const h = location.hostname;
+    return h === "localhost" || h === "127.0.0.1" || h === "::1" || /\.githack\.com$/.test(h) || /\.github\.io$/.test(h);
+  };
+  const emailOk = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v || "").trim());
+  const forms = () => [...document.querySelectorAll("#nx-su-form, #nx-su-ft-form")];
+  const showErr = (form, msg) => {
+    const err = form.querySelector(".nx-su-err"), ok = form.querySelector(".nx-su-ok");
+    if (ok) ok.hidden = true;
+    if (err) { err.hidden = !msg; err.textContent = msg || ""; }
+  };
+  const setSuccess = () => {
+    forms().forEach((form) => {
+      form.classList.add("is-ok");
+      showErr(form, "");
+      const ok = form.querySelector(".nx-su-ok");
+      if (ok) ok.hidden = false;
+      form.querySelectorAll("input, button[type=submit]").forEach((el) => {
+        if (!el.closest(".nx-su-hp")) el.disabled = true;
+      });
+    });
+  };
+  const handle = async (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const email = form.querySelector('input[type="email"]');
+    const age = form.querySelector('input[name="age"]');
+    const hp = form.querySelector(".nx-su-hp input");
+    showErr(form, "");
+    if (hp && String(hp.value || "").trim()) { setSuccess(); return; }
+    if (!emailOk(email && email.value)) { showErr(form, "Please enter a valid email."); email && email.focus(); return; }
+    if (!age || !age.checked) { showErr(form, "Please confirm you are 21 or older."); age && age.focus(); return; }
+    const payload = {
+      email: email.value.trim(),
+      age21: "true",
+      lang: document.documentElement.lang || "en",
+      source: form.id === "nx-su-ft-form" ? "footer" : "home",
+      page: location.pathname + location.search + location.hash,
+      ts: new Date().toISOString(),
+      company: hp ? String(hp.value || "") : ""
+    };
+    if (SIGNUP_ENDPOINT) {
+      try {
+        const data = new URLSearchParams(payload);
+        await fetch(SIGNUP_ENDPOINT, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: data.toString()
+        });
+        setSuccess();
+      } catch (err) {
+        showErr(form, "Please try again in a moment.");
+      }
+      return;
+    }
+    // SIGNUP_ENDPOINT is empty: nothing is sent.
+    if (preview()) {
+      try { console.log("[novrix-signup] " + JSON.stringify(payload)); } catch (e) {}
+      setSuccess();
+      return;
+    }
+    showErr(form, "Signup isn’t available yet.");
+  };
+  forms().forEach((form) => form.addEventListener("submit", handle));
+})();
+</script>
 </body></html>
