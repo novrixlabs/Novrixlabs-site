@@ -4419,8 +4419,8 @@ body.nx-co-on #nx-toast{opacity:0!important;pointer-events:none!important}
 }
 </style>
 <style id="results-bottom">
-/* Results pending as a small amber line under the Add button.
-   One line when it fits; wrap whole words if the card is narrow. Never clip mid-word. */
+/* Results pending under Add: Inter/body font, size list stays together.
+   Narrow-card: stock/purity pills don't collide; size — $price stays fully visible. */
 .nxc-b > .nxc-foot{
   flex:0 0 auto;
   width:100%;
@@ -4429,28 +4429,65 @@ body.nx-co-on #nx-toast{opacity:0!important;pointer-events:none!important}
   box-sizing:border-box;
 }
 .nxc-b > .nxc-foot .nxc-wait{
-  display:block;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  column-gap:0.3em;
+  row-gap:0;
   margin:0;
   padding:0;
   max-width:100%;
   box-sizing:border-box;
-  font:500 .62rem/1.35 ui-sans-serif,system-ui,-apple-system,sans-serif;
+  font-family:var(--f-body);
+  font-weight:400;
+  font-size:.62rem;
+  line-height:1.35;
   letter-spacing:.01em;
   color:#e6c48a;
   text-align:left;
-  white-space:normal;
   overflow:visible;
-  overflow-wrap:break-word;
-  word-break:normal;
-  text-overflow:clip;
 }
 .nxc-b > .nxc-foot .nxc-wait .nxc-wait-k,
 .nxc-b > .nxc-foot .nxc-wait .nxc-wait-s{
   font:inherit;
-  font-weight:500;
-  color:#e6c48a;
+  font-family:inherit;
+  font-weight:inherit;
+  color:inherit;
   letter-spacing:inherit;
-  white-space:normal;
+  white-space:nowrap;
+  max-width:100%;
+}
+.nxc .nxpill-c{display:none}
+@container nxcard (max-width: 200px){
+  .nxc .nxpill,.nxc .nxcoa{
+    height:18px;min-height:18px;padding:0 5px;gap:3px;
+    font-size:.58rem;left:auto;
+  }
+  .nxc .nxpill{left:6px}
+  .nxc .nxcoa{right:6px}
+  .nxc .nxcoa svg{width:9px;height:9px}
+  .nxc .nxpill .nxdot{width:5px;height:5px}
+  .nxc-addrow .nxc-sel,
+  .nxc .nxc-sel{
+    font-size:.68rem;
+    letter-spacing:0;
+    padding-left:8px;
+    padding-right:20px;
+    background-position:right 6px center;
+    background-size:10px 7px;
+  }
+}
+@container nxcard (max-width: 165px){
+  .nxc .nxpill-l{display:none}
+  .nxc .nxpill-c{display:inline}
+  .nxc .nxpill,.nxc .nxcoa{font-size:.56rem;padding:0 5px;height:18px}
+  .nxc-addrow .nxc-sel,
+  .nxc .nxc-sel{
+    font-size:.64rem;
+    padding-right:18px;
+    padding-left:7px;
+    background-position:right 5px center;
+  }
 }
 </style>
 
@@ -4627,7 +4664,7 @@ function card(rec, i) {
   const pur = bestPur(rec), bs = !rec.nop && rec.doses.some((d) => d.badge === "Best seller");
   const hit = mk("button", "nxc-hit"); hit.type = "button"; hit.setAttribute("aria-label", "View " + rec.it.name + " details");
   const pl = mk("div", "nxc-plate"); pl.innerHTML = vial(rec, from.d); fitVial(pl);
-  const st = mk("span", "nxpill"); st.append(mk("i", "nxdot nx-" + rec.s), mk("span", null, SL[rec.s])); pl.append(st);
+  const st = mk("span", "nxpill"); st.setAttribute("aria-label", SL[rec.s]); const shortL = {in:"Stock",low:"Low",soon:"Soon",out:"Out"}[rec.s] || SL[rec.s]; st.append(mk("i", "nxdot nx-" + rec.s), mk("span", "nxpill-l", SL[rec.s]), mk("span", "nxpill-c", shortL)); pl.append(st);
   if (pur) { const c = mk("span", "nxcoa"); c.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg>'; c.append(pur.toFixed(2) + "%"); c.title = "HPLC purity"; pl.append(c); }
   const b = mk("div", "nxc-b"); const _h3 = mk("h3", rec.it.name.length > 16 ? "long" : null, rec.it.name);
   b.append(mk("span", "nxc-cat", N.SHORT[rec.cat] || rec.cat), _h3, mk("span", "nxc-sz", sizeSpan(rec)));
@@ -4635,7 +4672,18 @@ function card(rec, i) {
   if (bs) b.append(mk("span", "nxbsel", "Best seller"));
   const waiting = rec.doses.filter((d) => d.pend && !N.coaList(d).length);
   let waitLine = null;
-  if (waiting.length) { waitLine = mk("p", "nxc-wait"); const nameSizes = rec.doses.length > 1 && waiting.length < rec.doses.length; const sizes = waiting.map(dz).join(" · "); waitLine.append(mk("span", "nxc-wait-k", nameSizes ? ("Results pending · " + sizes) : "Results pending")); waitLine.setAttribute("title", "Results pending"); waitLine.setAttribute("aria-label", nameSizes ? "Results pending: " + waiting.map(dz).join(", ") : "Results pending"); }
+  if (waiting.length) {
+    waitLine = mk("p", "nxc-wait");
+    const nameSizes = rec.doses.length > 1 && waiting.length < rec.doses.length;
+    const sizes = waiting.map(dz).join(" · ");
+    const k = mk("span", "nxc-wait-k");
+    k.append(document.createTextNode("Results pending"));
+    if (nameSizes) k.append(document.createTextNode(" ·"));
+    waitLine.append(k);
+    if (nameSizes) waitLine.append(mk("span", "nxc-wait-s", sizes));
+    waitLine.setAttribute("title", "Results pending");
+    waitLine.setAttribute("aria-label", nameSizes ? "Results pending: " + waiting.map(dz).join(", ") : "Results pending");
+  }
   const f = mk("div", "nxc-f nxc-addrow");
   const def = ok[0] || rec.doses[0];
   const sel = mk("select", "nxc-sel"); sel.setAttribute("aria-label", "Size, " + rec.it.name);
