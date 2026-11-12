@@ -4418,6 +4418,42 @@ body.nx-co-on #nx-toast{opacity:0!important;pointer-events:none!important}
   .nx-alias{height:18px;min-height:18px;padding:0 8px;font-size:9px}
 }
 </style>
+<style id="results-bottom">
+/* Results pending as a small amber line under the Add button.
+   One line when it fits; wrap whole words if the card is narrow. Never clip mid-word. */
+.nxc-b > .nxc-foot{
+  flex:0 0 auto;
+  width:100%;
+  min-height:28px;
+  margin-top:8px;
+  box-sizing:border-box;
+}
+.nxc-b > .nxc-foot .nxc-wait{
+  display:block;
+  margin:0;
+  padding:0;
+  max-width:100%;
+  box-sizing:border-box;
+  font:500 .62rem/1.35 ui-sans-serif,system-ui,-apple-system,sans-serif;
+  letter-spacing:.01em;
+  color:#e6c48a;
+  text-align:left;
+  white-space:normal;
+  overflow:visible;
+  overflow-wrap:break-word;
+  word-break:normal;
+  text-overflow:clip;
+}
+.nxc-b > .nxc-foot .nxc-wait .nxc-wait-k,
+.nxc-b > .nxc-foot .nxc-wait .nxc-wait-s{
+  font:inherit;
+  font-weight:500;
+  color:#e6c48a;
+  letter-spacing:inherit;
+  white-space:normal;
+}
+</style>
+
 
 
 <script>
@@ -4598,7 +4634,8 @@ function card(rec, i) {
   { const tag = aliasTag(rec); if (tag) _h3.after(tag); }
   if (bs) b.append(mk("span", "nxbsel", "Best seller"));
   const waiting = rec.doses.filter((d) => d.pend && !N.coaList(d).length);
-  if (waiting.length) { const w = mk("p", "nxc-wait"); const nameSizes = rec.doses.length > 1 && waiting.length < rec.doses.length; const sizes = waiting.map(dz).join(" · "); if (nameSizes && waiting.length > 1) { w.classList.add("nxc-wait-stack"); w.append(mk("span", "nxc-wait-k", "Results pending"), mk("span", "nxc-wait-s", sizes)); } else { w.append(mk("span", "nxc-wait-k", nameSizes ? ("Results pending · " + sizes) : "Results pending")); } w.setAttribute("title", "Results pending"); w.setAttribute("aria-label", nameSizes ? "Results pending: " + waiting.map(dz).join(", ") : "Results pending"); b.append(w); }
+  let waitLine = null;
+  if (waiting.length) { waitLine = mk("p", "nxc-wait"); const nameSizes = rec.doses.length > 1 && waiting.length < rec.doses.length; const sizes = waiting.map(dz).join(" · "); waitLine.append(mk("span", "nxc-wait-k", nameSizes ? ("Results pending · " + sizes) : "Results pending")); waitLine.setAttribute("title", "Results pending"); waitLine.setAttribute("aria-label", nameSizes ? "Results pending: " + waiting.map(dz).join(", ") : "Results pending"); }
   const f = mk("div", "nxc-f nxc-addrow");
   const def = ok[0] || rec.doses[0];
   const sel = mk("select", "nxc-sel"); sel.setAttribute("aria-label", "Size, " + rec.it.name);
@@ -4618,7 +4655,7 @@ function card(rec, i) {
   step.append(mn, qn, pl2);
   const go = mk("button", "nxc-go"); go.type = "button"; go.append(mk("span", "nxc-go-l", "Add"), mk("span", "nxc-go-p"));
   f.append(sel, pr, step, go);
-  b.append(f);
+  b.append(f); const foot = mk("div", "nxc-foot"); if (waitLine) foot.append(waitLine); b.append(foot);
   a.append(hit, pl, b);
   syncCardAdd(a);
   return a;
