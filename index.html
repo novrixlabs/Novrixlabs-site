@@ -4397,6 +4397,28 @@ body.nx-co-on #nx-toast{opacity:0!important;pointer-events:none!important}
   }
 }
 </style>
+<style id="alias-tags">
+/* Display-only alias pills (RETA / TIRZ). Same family as Batch verified. */
+.nx-alias{
+  display:inline-flex;align-items:center;justify-content:center;
+  align-self:flex-start;flex:none;
+  height:16px;min-height:16px;max-width:100%;
+  margin:1px 0 0;padding:0 7px;box-sizing:border-box;
+  border-radius:999px;
+  background:rgba(12,12,18,.92);
+  border:1px solid rgba(155,77,255,.55);
+  box-shadow:0 0 8px rgba(123,63,228,.28),inset 0 0 0 1px rgba(255,255,255,.06);
+  color:#eceaf8;
+  font:700 8.5px/1 ui-sans-serif,system-ui,-apple-system,sans-serif;
+  letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;
+  overflow:hidden;pointer-events:none;
+}
+.nxsh-top .nx-alias{margin:0 0 6px}
+@media (min-width:900px){
+  .nx-alias{height:18px;min-height:18px;padding:0 8px;font-size:9px}
+}
+</style>
+
 
 <script>
 (function(){
@@ -4550,6 +4572,19 @@ function syncCardAdd(a) {
   go.setAttribute("aria-label", on ? ("Add " + (p.now != null ? N.money(p.now * q) + " — " : "") + q + " of " + k + " to your cart") : (k + " is " + (d.s === "soon" ? "restocking" : "sold out")));
   go.classList.toggle("on", have > 0);
 }
+const NX_ALIAS = {"nvl-r3":"RETA","nvl-t2":"TIRZ"};
+function aliasOf(rec) {
+  const k = rec && rec.slug ? rec.slug : (typeof rec === "string" ? rec : "");
+  return (NX_ALIAS[k] || "");
+}
+function aliasTag(rec) {
+  const a = aliasOf(rec);
+  if (!a) return null;
+  const s = mk("span", "nx-alias", a);
+  s.setAttribute("data-noes", "");
+  s.setAttribute("data-alias", a);
+  return s;
+}
 function card(rec, i) {
   const a = mk("article", "nxc" + (rec.s === "out" || rec.s === "soon" ? " dim" : "")); a.id = rec.slug; a.dataset.slug = rec.slug;
   const ok = rec.doses.filter((d) => N.avail(d.s)), pool = ok.length ? ok : rec.doses, from = pool.reduce((m, d) => { const p = priceOf(rec.it, d).now; return p != null && p < m.p ? {p, d} : m; }, {p: Infinity, d: pool[0]});
@@ -4558,7 +4593,9 @@ function card(rec, i) {
   const pl = mk("div", "nxc-plate"); pl.innerHTML = vial(rec, from.d); fitVial(pl);
   const st = mk("span", "nxpill"); st.append(mk("i", "nxdot nx-" + rec.s), mk("span", null, SL[rec.s])); pl.append(st);
   if (pur) { const c = mk("span", "nxcoa"); c.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg>'; c.append(pur.toFixed(2) + "%"); c.title = "HPLC purity"; pl.append(c); }
-  const b = mk("div", "nxc-b"); b.append(mk("span", "nxc-cat", N.SHORT[rec.cat] || rec.cat), mk("h3", rec.it.name.length > 16 ? "long" : null, rec.it.name), mk("span", "nxc-sz", sizeSpan(rec)));
+  const b = mk("div", "nxc-b"); const _h3 = mk("h3", rec.it.name.length > 16 ? "long" : null, rec.it.name);
+  b.append(mk("span", "nxc-cat", N.SHORT[rec.cat] || rec.cat), _h3, mk("span", "nxc-sz", sizeSpan(rec)));
+  { const tag = aliasTag(rec); if (tag) _h3.after(tag); }
   if (bs) b.append(mk("span", "nxbsel", "Best seller"));
   const waiting = rec.doses.filter((d) => d.pend && !N.coaList(d).length);
   if (waiting.length) { const w = mk("p", "nxc-wait"); const nameSizes = rec.doses.length > 1 && waiting.length < rec.doses.length; const sizes = waiting.map(dz).join(" · "); if (nameSizes && waiting.length > 1) { w.classList.add("nxc-wait-stack"); w.append(mk("span", "nxc-wait-k", "Results pending"), mk("span", "nxc-wait-s", sizes)); } else { w.append(mk("span", "nxc-wait-k", nameSizes ? ("Results pending · " + sizes) : "Results pending")); } w.setAttribute("title", "Results pending"); w.setAttribute("aria-label", nameSizes ? "Results pending: " + waiting.map(dz).join(", ") : "Results pending"); b.append(w); }
@@ -4720,7 +4757,7 @@ function drawSheet() {
   const tx = mk("div"), ey = mk("span", "nxey"); ey.append(N.SHORT[rec.cat] || rec.cat); if (/blend$/i.test(it.name) || rec.group === "Blends") ey.append(" · ", mk("span", null, "Blend"));
   const h = mk("h2", it.name.length > 14 ? "long" : null, it.name); h.id = "nx-sh-name";
   const sl = mk("p", "nxsh-st"); sl.append(mk("i", "nxdot nx-" + d.s), mk("span", null, SL[d.s]), mk("span", "nxsep-d", "·"), mk("span", null, dz(d))); if (d.s === "low") sl.append(mk("span", "nxsep-d", "·"), mk("span", null, "Limit " + cap + " per order"));
-  tx.append(ey, h, sl); top.append(pl, tx); B.append(top);
+  tx.append(ey, h, sl); { const tag = aliasTag(rec); if (tag) h.after(tag); } top.append(pl, tx); B.append(top);
   const cols = mk("div", "nxsh-cols"), c1 = mk("div"), c2 = mk("div"); cols.append(c1, c2); B.append(cols);
   if (rec.is) c1.append(mk("p", "nxsh-is", rec.is));
   c1.append(mk("span", "nxlbl", "Sizes"));
