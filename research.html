@@ -200,6 +200,33 @@ nav.toc,#az{display:flex;flex-wrap:wrap;gap:8px;overflow-x:auto;-webkit-overflow
 #flips{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
 #facts{overflow-x:auto;max-width:100%}
 </style>
+
+<style id="type-spacing">
+@font-face{font-family:"Barlow Condensed";font-style:normal;font-weight:800;font-display:swap;src:url(assets/fonts/barlow-cond-800.woff2) format("woff2")}
+:root{
+  --f-display:"Barlow Condensed","Arial Narrow",Impact,sans-serif;
+  --ts-12:.75rem;--ts-13:.8125rem;--ts-14:.875rem;--ts-16:1rem;
+  --ts-18:1.125rem;--ts-22:1.375rem;--ts-28:1.75rem;--ts-40:2.5rem;
+  --lh-body:1.55;--lh-head:1.05;--lh-label:1.3;
+  --track-ey:.16em;--track-head:.04em;
+  --sp-1:8px;--sp-2:16px;--sp-3:24px;--sp-4:32px;--sp-6:48px;--sp-8:64px;
+}
+body{font-family:var(--f-body,"Inter",system-ui,sans-serif)!important;font-size:var(--ts-16)!important;line-height:var(--lh-body)!important}
+.brand{font-family:var(--f-brand,"Michroma","Helvetica Neue",Arial,sans-serif)!important;font-size:var(--ts-14)!important;letter-spacing:.18em!important;line-height:1!important}
+.brand span,.brand small{font-size:var(--ts-12)!important;letter-spacing:.16em!important}
+.ey{font-family:var(--f-brand,"Michroma",Arial,sans-serif)!important;font-size:var(--ts-12)!important;letter-spacing:var(--track-ey)!important;line-height:var(--lh-label)!important;font-weight:400!important}
+h1,h2,h3{font-family:var(--f-display)!important;font-weight:800!important;letter-spacing:var(--track-head)!important;line-height:var(--lh-head)!important}
+h1{font-size:clamp(32px,6vw,48px)!important;margin:16px 0 0!important;text-transform:none;background:none;-webkit-text-fill-color:unset;color:var(--ink)!important;-webkit-background-clip:unset;background-clip:unset;line-height:1.05!important;letter-spacing:.04em!important;text-wrap:balance}
+h2{font-size:clamp(32px,6vw,48px)!important;margin:32px 0 16px!important;text-transform:none;background:none;-webkit-text-fill-color:unset;color:var(--ink)!important;-webkit-background-clip:unset;background-clip:unset;line-height:1.05!important;letter-spacing:.04em!important;text-wrap:balance}
+h3{font-size:var(--ts-16)!important;line-height:1.25!important}
+.lede,.eff,.note,p,li{font-size:var(--ts-16)!important;line-height:var(--lh-body)!important}
+.note{margin:16px 0;padding:16px}
+.top{margin-bottom:24px;gap:16px}
+footer,address,small,.legal,.eff{font-size:var(--ts-12)!important;line-height:var(--lh-label)!important}
+main{padding-top:24px}
+.card,.panel{padding:16px;border-radius:16px}
+</style>
+
 </head>
 <body>
 <div class="wrap">
