@@ -2107,7 +2107,7 @@ const saleDay = (x) => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(x || ""); re
 const saleEarly = () => !!(SALE && (SALE.vipStart || SALE.vipStartIso) && !saleOpenAt(SALE, Date.now(), false) && saleOpenAt(SALE, Date.now(), true));
 function calcSaleOn() { return !!(SALE && saleOpenAt(SALE, Date.now(), VIPON)); }
 let saleOn = calcSaleOn();
-function saleBanner() { const b = document.getElementById("sale"); const end = new Date(SALE.ends + "T12:00:00").toLocaleDateString("en-US", {month: "short", day: "numeric"}); const top = SALE.tiers.reduce((a, t) => Math.max(a, t[1]), 0); document.getElementById("sale-s").textContent = (saleEarly() ? "VIP early access · " : "") + (SALE.minSub ? (SALE.freeShip === 1 ? "Free shipping + " : "") + top + "% off $" + SALE.minSub + "+ · Ends " : top ? "Up to " + top + "% off · Ends " : "Ends ") + end; document.getElementById("sale-n").textContent = SALE.name; document.getElementById("sale-t").textContent = (SALE.blurb ? SALE.blurb : SALE.tiers.slice().reverse().map(([n, p]) => p + "% off " + (n > 1 ? n + "+ items" : "any order")).join(" · ") + (SALE.freeShip > 1 ? " · Free shipping $" + SALE.freeShip + "+" : "")) + " · Ends " + end; b.classList.remove("nov"); b.hidden = false; }
+function saleBanner() { const b = document.getElementById("sale"); const end = new Date(SALE.ends + "T12:00:00").toLocaleDateString("en-US", {month: "short", day: "numeric"}); const top = SALE.tiers.reduce((a, t) => Math.max(a, t[1]), 0); document.getElementById("sale-s").textContent = [SALE.name, saleEarly() ? "VIP early access" : "", SALE.freeShip === 1 ? "Free shipping" : "", (SALE.minSub && top) ? (top + "% off $" + SALE.minSub + "+") : (top ? ("Up to " + top + "% off") : ""), "Ends " + end].filter(Boolean).join(" · "); document.getElementById("sale-n").textContent = SALE.name; document.getElementById("sale-t").textContent = (SALE.blurb ? SALE.blurb : SALE.tiers.slice().reverse().map(([n, p]) => p + "% off " + (n > 1 ? n + "+ items" : "any order")).join(" · ") + (SALE.freeShip > 1 ? " · Free shipping $" + SALE.freeShip + "+" : "")) + " · Ends " + end; b.classList.remove("nov"); b.hidden = false; }
 function saleRefresh() { const was = saleOn; saleOn = calcSaleOn(); if (saleOn && !was) { const b = document.getElementById("sale"); if (b) { const c = b.cloneNode(true); c.removeAttribute("role"); c.removeAttribute("tabindex"); b.replaceWith(c); } saleBanner(); try { draw(); tray(); } catch (e) {} } }
 const TEASE = !saleOn ? SALES.find((x) => x.teaseFrom && x.card && etYmd() >= x.teaseFrom && etYmd() < x.start) || null : null;
 (() => { const S2 = saleOn && SALE && SALE.card ? SALE : TEASE; if (!S2) return; const live = S2 === SALE && saleOn; const c = S2.card, box = el("section", "fsale"); box.id = "fsale";
@@ -3935,27 +3935,23 @@ html{scroll-padding-top:calc(var(--nx-hdr) + var(--sale-h,0px) + 16px)}
   }
 }
 
-/* (2) mobile ticker: opaque label, full blurb wraps below, never overlaps, no second copy */
+/* (2) compact mobile ticker: short one-line copy, padded, never clips mid-word */
 @media (max-width:860px){
   #sale.sale, #sale.sale.nov{
-    display:flex;flex-direction:column;flex-wrap:nowrap;align-items:stretch;
-    white-space:normal;overflow:visible;height:auto;max-height:none;
-    gap:2px;padding:7px 12px;
+    display:flex;flex-direction:row;flex-wrap:nowrap;align-items:center;justify-content:center;
+    white-space:nowrap;overflow:hidden;height:auto;max-height:none;
+    gap:0;padding:7px 14px;box-sizing:border-box;width:100%;max-width:100%;
     background:#121018!important;background-image:none!important;
-    isolation:isolate;text-align:center;line-height:1.35;
+    isolation:isolate;text-align:center;line-height:1.3;
   }
-  #sale-n, #sale.sale b, #sale.sale.nov b{
-    position:relative;z-index:2;display:block;flex:none;
-    background:#121018;color:#e9cf8f;padding:0;margin:0;
-    letter-spacing:.08em;font-size:.58rem;line-height:1.3;
+  #sale #sale-n, #sale.sale b, #sale.sale.nov b, #sale #sale-t{display:none!important}
+  #sale #sale-s{
+    display:block!important;flex:0 1 auto;min-width:0;max-width:100%;
+    white-space:nowrap;overflow:hidden;text-overflow:clip;
+    font-size:clamp(.56rem, 2.9vw, .7rem);letter-spacing:0;line-height:1.3;
+    text-align:center;overflow-wrap:normal;word-break:normal;
+    color:#e6dfc8;
   }
-  #sale-t{
-    display:block!important;white-space:normal!important;
-    overflow:visible!important;text-overflow:clip!important;
-    max-width:100%;line-height:1.35;text-align:center;
-    overflow-wrap:break-word;word-break:break-word;
-  }
-  #sale-s{display:none!important}
 }
 
 /* (3) chip fades only when content is off-screen; no left fade at scroll 0 */
@@ -4056,6 +4052,19 @@ article.nxc, .nxc-hit, .nxc-go, .nxc-step-p, .nxc-step-m, .nxc-sel{
 /* content-visibility placeholder was shorter than real groups, so adjacent sections overlapped */
 .nxgrp{content-visibility:visible;contain-intrinsic-size:none}
 
+
+/* pending note: one nowrap line, or a clean stack (no dangling separator) */
+.nxc-wait, .nxc .nxc-wait{
+  display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  max-width:100%;font-size:.66rem;line-height:1.3;flex-wrap:nowrap;
+}
+.nxc-wait-k,.nxc-wait-s{white-space:nowrap}
+.nxc-wait.nxc-wait-stack{
+  display:flex;flex-direction:column;flex-wrap:nowrap;align-items:flex-start;gap:0;
+  white-space:normal;overflow:visible;text-overflow:clip;
+}
+.nxc-wait.nxc-wait-stack .nxc-wait-k,
+.nxc-wait.nxc-wait-stack .nxc-wait-s{display:block;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
 </style>
 <script>
 (function(){
@@ -4220,7 +4229,7 @@ function card(rec, i) {
   const b = mk("div", "nxc-b"); b.append(mk("span", "nxc-cat", N.SHORT[rec.cat] || rec.cat), mk("h3", rec.it.name.length > 16 ? "long" : null, rec.it.name), mk("span", "nxc-sz", sizeSpan(rec)));
   if (bs) b.append(mk("span", "nxbsel", "Best seller"));
   const waiting = rec.doses.filter((d) => d.pend && !N.coaList(d).length);
-  if (waiting.length) { const w = mk("p", "nxc-wait"); const nameSizes = rec.doses.length > 1 && waiting.length < rec.doses.length; w.append(mk("span", "nxc-wait-k", "Results pending")); if (nameSizes) w.append(" · ", mk("span", "nxc-wait-s", waiting.map(dz).join(" · "))); w.setAttribute("title", "Results pending"); w.setAttribute("aria-label", nameSizes ? "Results pending: " + waiting.map(dz).join(", ") : "Results pending"); b.append(w); }
+  if (waiting.length) { const w = mk("p", "nxc-wait"); const nameSizes = rec.doses.length > 1 && waiting.length < rec.doses.length; const sizes = waiting.map(dz).join(" · "); if (nameSizes && waiting.length > 1) { w.classList.add("nxc-wait-stack"); w.append(mk("span", "nxc-wait-k", "Results pending"), mk("span", "nxc-wait-s", sizes)); } else { w.append(mk("span", "nxc-wait-k", nameSizes ? ("Results pending · " + sizes) : "Results pending")); } w.setAttribute("title", "Results pending"); w.setAttribute("aria-label", nameSizes ? "Results pending: " + waiting.map(dz).join(", ") : "Results pending"); b.append(w); }
   const f = mk("div", "nxc-f nxc-addrow");
   const def = ok[0] || rec.doses[0];
   const sel = mk("select", "nxc-sel"); sel.setAttribute("aria-label", "Size, " + rec.it.name);
