@@ -5448,6 +5448,129 @@ footer small, .nxft small, .legal, address, .ruo-note, .disc, #tag{
 @media (max-width:360px){
   .nxgrp-h h2{letter-spacing:.08em!important}
 }
+
+/* P2: section H2s read louder than their eyebrows — 32px phones, 44–48px desktop */
+.sh h2,
+#shop.sh h2,
+.nxview-h h2,
+#lab-reports .sh h2,
+#reviews .sh h2,
+.trk-h b{
+  font-size:clamp(32px,6vw,48px)!important;
+  line-height:1.05!important;
+  letter-spacing:.04em!important;
+  text-wrap:balance;
+}
+.co-top h2{font-size:clamp(24px,4.2vw,32px)!important;line-height:1.05!important;letter-spacing:.04em!important}
+
+/* P2: live-board date stays one line at 390+. LIVE BOARD on its own row below 900. */
+@media (max-width:899px){
+  .nxboard-h{
+    flex-direction:column!important;
+    flex-wrap:nowrap!important;
+    align-items:flex-start!important;
+    gap:8px!important;
+  }
+  .nxboard-h .nxey{order:-1;flex:none;width:auto;white-space:nowrap!important}
+  .nxboard-h .nxlive,#nx-synced{
+    white-space:nowrap!important;
+    overflow:visible!important;
+    text-overflow:unset!important;
+    width:100%;
+    font-size:12px!important;
+    line-height:1.3!important;
+    letter-spacing:0!important;
+  }
+}
+@media (max-width:359px){
+  .nxboard-h .nxlive,#nx-synced{font-size:11px!important}
+}
+@media (min-width:900px){
+  .nxboard-h{flex-direction:row!important;flex-wrap:nowrap!important;align-items:center!important}
+  .nxboard-h .nxlive,#nx-synced{
+    white-space:nowrap!important;
+    overflow:visible!important;
+    text-overflow:unset!important;
+    font-size:13px!important;
+    line-height:1.3!important;
+  }
+}
+
+/* P2: trust rail — single-line items at ≥1024 (content-sized cells, smaller rail type). 768 2×2 stays 12px nowrap. */
+@media (min-width:768px) and (max-width:1023px){
+  .nxrail .nxtr b,
+  .nxrail .nxtr:has(#nx-rv-b) b,
+  #nx-rv-b{
+    font-family:var(--f-brand)!important;
+    font-size:12px!important;
+    letter-spacing:.04em!important;
+    line-height:1!important;
+    white-space:nowrap!important;
+    overflow:visible!important;
+    text-overflow:unset!important;
+  }
+}
+@media (min-width:1024px){
+  .nxrail{flex-wrap:wrap!important;align-items:center!important}
+  .nxrail .nxtr,
+  .nxrail .nxtrust .nxtr{
+    flex:1 0 auto!important;
+    width:auto!important;
+    min-width:min-content!important;
+    max-width:none!important;
+    align-items:center!important;
+    overflow:visible!important;
+  }
+  .nxrail .nxtr > div{min-width:min-content;width:auto;overflow:visible}
+  .nxrail .nxtr b,
+  .nxrail .nxtr:has(#nx-rv-b) b,
+  #nx-rv-b{
+    font-family:var(--f-brand)!important;
+    font-size:9px!important;
+    letter-spacing:.08em!important;
+    line-height:1.15!important;
+    white-space:nowrap!important;
+    overflow:visible!important;
+    text-overflow:unset!important;
+  }
+  #potw.potw{flex:1 1 0%!important;min-width:0!important;overflow:hidden!important}
+  #potw .pw-k{overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;min-width:0!important}
+}
+@media (min-width:1024px){
+  /* Keep the 4 labels on one full row; peptide-of-the-week sits on the row below so labels never clip */
+  .nxrail .nxtrust{flex:1 1 100%!important;width:100%!important;min-width:100%!important}
+  .nxrail .nxtr,
+  .nxrail .nxtrust .nxtr{flex:1 0 auto!important;min-width:min-content!important}
+  #potw.potw{flex:1 1 100%!important;width:100%!important;min-width:100%!important;overflow:visible!important}
+}
+
+/* P2: larger section titles need a taller off-screen size than the 480px intrinsic, or the last report card sits under Bulk */
+#nxlatest.nxsec{contain-intrinsic-size:auto 640px!important;height:auto!important}
+#nx-latest.nxrep-row{margin-bottom:24px!important}
+
+/* P2: checkout eta — 14px, dot vertically centered (drop the 5px nudge) */
+#co p.co-eta, p.co-eta{
+  font-size:14px!important;
+  line-height:1.3!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+}
+.co-eta::before{margin-top:0!important;width:8px!important;height:8px!important;flex:none}
+
+/* P2: stepper connectors even — buttons content-sized, rules share leftover space equally */
+.co-bar ol{display:flex!important;align-items:center!important;gap:0!important;width:100%}
+.co-bar li{display:contents}
+.co-bar li+li::before{
+  content:"";
+  flex:1 1 0%!important;
+  width:auto!important;
+  max-width:none!important;
+  height:1px!important;
+  margin:0 8px!important;
+  background:rgba(214,220,235,.22);
+  align-self:center;
+}
 </style>
 
 
