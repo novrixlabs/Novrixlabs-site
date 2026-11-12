@@ -55,7 +55,7 @@ body{font-family:var(--f-body);font-size:15px;line-height:1.5;-webkit-font-smoot
 .bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:rgba(6,6,10,.88);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);padding-block:10px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
 .search{position:relative}
 .search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:18px;height:18px;stroke:var(--muted);fill:none;stroke-width:1.8}
-.search input{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:99px;padding:10px 14px 10px 40px}
+.search input{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:99px;padding:10px 14px 10px 40px;-webkit-appearance:none;appearance:none}
 .search input:focus{outline:none;border-color:var(--violet)}
 .chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
@@ -443,7 +443,7 @@ body.co-open{overflow:hidden}
 .codeb{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:2px 0 4px}
 .codeb input{flex:1 1 9rem;min-width:0;font:inherit;font-size:16px;color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:8px 12px;text-transform:uppercase}
 .codeb input::placeholder{text-transform:none}
-@media (max-width:360px){.codeb input::placeholder{font-size:clamp(12.5px,3.95vw,16px)}}
+@media (max-width:360px){.codeb input::placeholder,.search input::placeholder{font-size:clamp(12.5px,3.95vw,16px)}}
 .codeb input:focus{outline:none;border-color:var(--violet)}
 .codem{flex-basis:100%;font-size:.76rem;color:var(--low)}
 .codem:empty{display:none}
@@ -1606,7 +1606,7 @@ window.NX_ES = {t: {
 ["^Veterans Day · Free shipping · (\\d+)% off \\$(\\d+)\\+ · Ends Nov (\\d+)$", "Día de los Veteranos · Envío gratis · $1% de descuento en $$$2+ · Termina el $3\u00a0de nov."], ["^Veterans Day · Free shipping · (\\d+)% off \\$(\\d+)\\+ · Ends (.+)$", "Día de los Veteranos · Envío gratis · $1% de descuento en $$$2+ · Termina $3"],
 ["^(.+) · Free shipping · (\\d+)% off \\$(\\d+)\\+ · Ends Nov (\\d+)$", "$1 · Envío gratis · $2% de descuento en $$$3+ · Termina el $4\u00a0de nov."], ["^(.+) · Free shipping · (\\d+)% off \\$(\\d+)\\+ · Ends (.+)$", "$1 · Envío gratis · $2% de descuento en $$$3+ · Termina $4"],
 ["^(.+) · VIP early access · Free shipping · (\\d+)% off \\$(\\d+)\\+ · Ends Nov (\\d+)$", "$1 · Acceso VIP anticipado · Envío gratis · $2% de descuento en $$$3+ · Termina el $4\u00a0de nov."], ["^(.+) · VIP early access · Free shipping · (\\d+)% off \\$(\\d+)\\+ · Ends (.+)$", "$1 · Acceso VIP anticipado · Envío gratis · $2% de descuento en $$$3+ · Termina $4"],
-["^(\\d+) products$", "$1 productos"], ["^View (.+) details$", "Ver detalles de $1"], ["^Add (.+) to your cart$", "Agregar $1 a tu carrito"], ["^(\\d+) sizes in stock$", "$1 tamaños disponibles"],
+["^(\\d+) products$", "$1 productos"], ["^View (.+) details$", "Ver detalles de $1"], ["^Add (.+) to your cart$", "Agregar $1 a tu carrito"],
 ["^(\\d+) of (\\d+) reviews are five stars$", "$1 de $2 reseñas son de cinco estrellas"], ["^(\\d+) sizes$", "$1 tamaños"], ["^Verify at (.+)$", "Verificar en $1"], ["^Restocking · (.+)$", "Reabasteciendo · $1"], ["^Limit (\\d+) per order$", "Máximo $1 por pedido"], ["^(\\d\\.\\d) from verified buyers$", "$1 de compradores verificados"], ["^Open cart, (\\d+) items?$", "Abrir carrito, $1 artículos"], ["^Choose a size of (.+)$", "Elige un tamaño de $1"], ["^Get an email when (.+) is back$", "Recibe un correo cuando $1 vuelva"], ["^(\\d+) reports$", "$1 informes"], ["^(\\d+) of (\\d+) sizes$", "$1 de $2 tamaños"], ["^(.+) in testing$", "$1 en prueba"], ["^(.+)% pure$", "$1% de pureza"], ["^(.+) · (\\d+\\.\\d+)%$", "$1 · $2%"]
 ]};
 </script>
@@ -5072,7 +5072,7 @@ if (!SH.dataset.szHook) { SH.dataset.szHook = "1"; N.hookTray(() => { if (cur &&
   if (!bs.children.length) bs.parentElement.hidden = true;
   const top = ITEMS.filter((r) => !r.nop && bestPur(r)).sort((a, b) => bestPur(b) - bestPur(a))[0];
   if (top) { const f1 = $("#nx-f1"); f1.append(mk("i", "nxdot nx-in"), top.it.name + " · " + bestPur(top).toFixed(2) + "%"); }
-  $("#nx-f2").textContent = (c.in + c.low) + " sizes in stock";
+  const catalogN = BY.size; $("#nx-f2").textContent = catalogN + (catalogN === 1 ? " product" : " products");
   const R = N.REVIEWS || []; if (R.length) { const avg = R.reduce((a, r) => a + (r.stars || 0), 0) / R.length, five = R.filter((r) => r.stars === 5).length; $("#nx-rv-b").textContent = avg.toFixed(1) + " from verified buyers"; $("#nx-rv-s").textContent = five + " of " + R.length + " reviews are five stars"; }
   const rx = $("#nx-reactor");
   const applyHero = () => {
