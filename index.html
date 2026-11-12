@@ -1189,8 +1189,8 @@ html.is-vip b.dealp{color:#ff9a5c}
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="nvB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe27a"/><stop offset=".55" stop-color="#ffb02e"/><stop offset="1" stop-color="#ff6a3d"/></linearGradient><radialGradient id="nvC" cx=".38" cy=".32" r=".75"><stop offset="0" stop-color="#fff6cf"/><stop offset=".45" stop-color="#ffd24d"/><stop offset="1" stop-color="#d98a0b"/></radialGradient><symbol id="nvcoin" viewBox="0 0 64 64"><g class="nvb"><polygon points="32.0,3.5 36.2,13.5 45.0,5.0 43.7,17.4 55.0,13.7 49.7,23.5 58.6,25.9 52.0,32.0 58.5,38.0 49.8,40.6 53.4,49.0 43.7,46.7 44.5,58.0 36.7,52.5 32.0,59.6 27.7,50.7 19.1,58.9 18.7,48.7 8.9,50.5 14.3,40.5 1.4,39.0 13.4,32.0 1.9,25.1 14.5,23.6 10.4,14.8 20.2,17.3 19.7,6.4 27.3,11.6" fill="url(#nvB)"/><circle cx="6" cy="9" r="2.2" fill="url(#nvB)"/><circle cx="58" cy="12" r="1.6" fill="url(#nvB)"/><circle cx="60" cy="50" r="2.4" fill="url(#nvB)"/><circle cx="9" cy="55" r="1.7" fill="url(#nvB)"/><circle cx="33" cy="2.5" r="1.3" fill="url(#nvB)"/><circle cx="2" cy="33" r="1.4" fill="url(#nvB)"/></g><circle cx="32" cy="32" r="15.5" fill="#7a4a06"/><circle cx="32" cy="31" r="15" fill="url(#nvC)"/><circle cx="32" cy="31" r="11.6" fill="none" stroke="#b8730a" stroke-width="1.3" stroke-dasharray="1.6 1.4"/><path d="M26.5 37.5V24.5L37.5 37.5V24.5" fill="none" stroke="#6b3d00" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 22a11 11 0 0 1 9-4" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="1.6" stroke-linecap="round"/></symbol></defs></svg>
 <section class="nxhero" id="nxhero" data-nxs="shop" aria-labelledby="nx-h1">
   <div class="nxhero-copy">
-    <span class="nxey">Research compounds · US only · 21+</span>
-    <h1 id="nx-h1"><span class="nx-h1k">Novrix Labs</span> <span class="nx-h1m">Lab-verified <em>research</em> peptides</span></h1>
+    <span class="nxey">Research · US only · 21+</span>
+    <h1 id="nx-h1"><span class="nx-h1k" aria-hidden="true">Novrix Labs</span> <span class="nx-h1m">Lab-verified <em>research</em> peptides</span></h1>
     <i class="nx-uline" aria-hidden="true"></i>
     <p class="nx-lede">Independent lab reports on tested batches. Live stock, synced through the day. Shipped fast, packed discreetly.</p>
     <p class="nx-cut" id="nx-cut"><i aria-hidden="true"></i><span id="nx-cut-t">Paid by 4 PM ET on a ship day? It goes out the same day.</span></p>
@@ -1460,7 +1460,7 @@ html.is-vip b.dealp{color:#ff9a5c}
 <script id="nx-es">
 window.NX_ES = {t: {
 "Shop": "Tienda", "Lab reports": "Informes de laboratorio", "Track order": "Rastrear", "Info": "Info", "Reports": "Informes", "Track": "Rastrear",
-"Research compounds · US only · 21+": "Compuestos de investigación · solo EE. UU. · 21+",
+"Research · US only · 21+": "Investigación · solo EE. UU. · 21+",
 "Novrix Labs": "Novrix Labs", "Lab-verified": "Péptidos de", "research": "investigación", "peptides": "verificados",
 "Independent lab reports on tested batches. Live stock, synced through the day. Shipped fast, packed discreetly.": "Informes de laboratorios independientes en los lotes probados. Inventario en vivo, sincronizado durante el día. Envío rápido y empaque discreto.",
 "Paid by 4 PM ET on a ship day? It goes out the same day.": "¿Pagas antes de las 4 PM ET en un día de envío? Sale el mismo día.",
@@ -5021,6 +5021,435 @@ html.is-vip .fsb b{background:var(--vip-foil)}
   .vip-emblem{width:32px;height:37px}
 }
 </style>
+<style id="type-spacing">
+/* Type + spacing scale. Display: Barlow Condensed. Eyebrows/labels/wordmark: Michroma. Body: Inter. */
+:root{
+  --f-display:var(--nx-head,"Barlow Condensed","Arial Narrow",Impact,sans-serif);
+  --ts-12:.75rem;--ts-13:.8125rem;--ts-14:.875rem;--ts-16:1rem;
+  --ts-18:1.125rem;--ts-22:1.375rem;--ts-28:1.75rem;--ts-40:2.5rem;
+  --lh-body:1.55;--lh-head:1.05;--lh-label:1.3;
+  --track-ey:.16em;--track-head:.04em;
+  --sp-1:8px;--sp-2:16px;--sp-3:24px;--sp-4:32px;--sp-5:40px;--sp-6:48px;--sp-8:64px;
+}
+
+/* Body */
+body{font-family:var(--f-body);font-size:var(--ts-16);line-height:var(--lh-body)}
+
+/* Wordmark + eyebrows + labels: Michroma, 12px floor, consistent tracking */
+.nxh-wm,
+.nxey,.ey,
+ .nxgrp-h h2,
+.pw-k,#nx-rv-b,.fs-tag,#tag,.pc,
+.nxboard-h .nxey{
+  font-family:var(--f-brand)!important;
+  font-weight:400!important;
+  letter-spacing:var(--track-ey)!important;
+  line-height:var(--lh-label)!important;
+  text-transform:uppercase;
+}
+.nxh-wm{font-size:var(--ts-14)!important;letter-spacing:.18em!important;line-height:1!important}
+.nxh-wm small{display:inline;font-size:var(--ts-12)!important;letter-spacing:.16em!important;margin-left:6px;line-height:1!important;color:#b9a6ff}
+@media (max-width:520px){.nxh-wm small{display:none!important}}
+
+.nxey,.ey,#shop.sh .ey,.sh .ey,
+.pc,.fs-tag,#tag,.pw-k{
+  font-size:var(--ts-12)!important;
+  letter-spacing:var(--track-ey)!important;
+  line-height:var(--lh-label)!important;
+}
+@media (max-width:390px){
+  .nxey,.ey,#shop.sh .ey,.sh .ey,.pw-k{letter-spacing:.12em!important}
+}
+
+/* Hero: one eyebrow, space above the H1, hide the second kicker */
+.nxhero-copy>.nxey{
+  display:block!important;
+  margin:0 0 var(--sp-2)!important;
+  max-width:100%;
+  overflow-wrap:anywhere;
+  color:#c9b3ff;
+}
+.nxhero .nx-h1k{display:none!important;margin:0!important;height:0!important;overflow:hidden}
+.nxhero{padding:var(--sp-2) 0 0!important;gap:var(--sp-2)!important}
+@media (min-width:768px){.nxhero{padding:var(--sp-4) 0 0!important;gap:var(--sp-5)!important}}
+@media (min-width:900px){.nxhero{padding:var(--sp-4) 0 0!important;gap:var(--sp-5)!important}}
+
+/* Display face: Barlow Condensed for H1 and section H2s */
+.nxhero h1{
+  margin:0!important;
+  font-family:var(--f-display)!important;
+  font-weight:800!important;
+  text-transform:uppercase;
+  line-height:var(--lh-head)!important;
+  letter-spacing:0!important;
+}
+.nx-h1m{
+  display:block;
+  font-size:clamp(2.5rem,11vw,4.5rem)!important;
+  line-height:var(--lh-head)!important;
+  font-family:var(--f-display)!important;
+  font-weight:800!important;
+}
+@media (max-width:390px){
+  .nx-h1m{font-size:clamp(2.5rem,10.5vw,3.25rem)!important}
+}
+.nx-uline{margin:var(--sp-2) 0 0!important}
+.nx-lede{
+  color:#c3c1d6;
+  margin:var(--sp-2) 0 0!important;
+  max-width:46ch;
+  font-family:var(--f-body)!important;
+  font-size:var(--ts-16)!important;
+  line-height:var(--lh-body)!important;
+}
+.nx-cut{margin:var(--sp-2) 0 0!important;padding:8px 12px}
+.nx-cut,.nx-cut span{font-size:var(--ts-13)!important;line-height:var(--lh-label)!important}
+
+/* Hero CTAs: equal height, consistent padding, equal width on phones */
+.nx-ctas{
+  display:grid!important;
+  grid-template-columns:1fr 1fr;
+  gap:var(--sp-1)!important;
+  margin-top:var(--sp-3)!important;
+  width:100%;
+  max-width:100%;
+  align-items:stretch;
+}
+.nx-ctas .nxbtn{
+  width:100%;
+  min-width:0;
+  box-sizing:border-box;
+  min-height:48px!important;
+  height:auto;
+  padding:8px 16px!important;
+  font:700 var(--ts-14)/1.2 var(--f-body)!important;
+  border-radius:14px;
+}
+@media (min-width:768px){
+  .nx-ctas{display:flex!important;flex-wrap:wrap;width:auto;max-width:none;gap:var(--sp-2)!important}
+  .nx-ctas .nxbtn{width:auto;min-width:200px;padding:0 24px!important;min-height:48px!important;height:48px}
+}
+
+/* Live board */
+.nxboard{margin-top:var(--sp-3)!important;padding:var(--sp-2)!important;border-radius:16px}
+.nxboard-h{min-height:0;margin:0 0 var(--sp-2)}
+.nxboard-g{margin-top:0!important;gap:var(--sp-2)!important}
+.nxstats{gap:var(--sp-1)!important}
+.nxstat{padding:var(--sp-2)!important;border-radius:12px!important;display:flex;flex-direction:column;min-width:0}
+.nxstat b{font:800 var(--ts-28)/1 var(--f-display)!important;font-variant-numeric:tabular-nums}
+.nxstat span{
+  display:flex;align-items:center;gap:8px;
+  margin-top:8px!important;
+  font-family:var(--f-body)!important;
+  font-size:var(--ts-12)!important;
+  line-height:var(--lh-label)!important;
+  letter-spacing:0!important;
+  color:var(--nx-mut);
+  white-space:normal;
+  overflow-wrap:anywhere;
+}
+@media (min-width:768px){
+  .nxstat b{font-size:var(--ts-28)!important}
+}
+@media (max-width:390px){
+  .nxboard{padding:var(--sp-2)!important}
+  .nxstat{padding:var(--sp-1)!important}
+  .nxstat b{font-size:var(--ts-22)!important}
+}
+
+/* Section rhythm: 8px scale, consistent per breakpoint */
+.sec,section.sec,.sec.cz{margin-top:var(--sp-6)!important}
+@media (min-width:768px){
+  .sec,section.sec,.sec.cz{margin-top:var(--sp-8)!important}
+}
+#shop.sh{margin-top:var(--sp-3)!important;margin-bottom:var(--sp-3)!important}
+#creds.sec{margin-top:var(--sp-3)!important}
+#request.sec,#how.sec,#shipping.sec,#about.sec,#faq.sec,#labfund.sec,#bulk.sec,#reviews.sec,#nxlatest.sec{
+  margin-top:var(--sp-6)!important
+}
+@media (min-width:768px){
+  #request.sec,#how.sec,#shipping.sec,#about.sec,#faq.sec,#labfund.sec,#bulk.sec,#reviews.sec,#nxlatest.sec{
+    margin-top:var(--sp-8)!important
+  }
+}
+
+/* Section heads: same display family as the hero H1 */
+.sh{display:flex;flex-direction:column;gap:var(--sp-1)!important;margin:0 0 var(--sp-3)!important}
+.sh .ey,#shop.sh .ey{display:block;margin:0!important}
+.sh h2,
+#shop.sh h2,
+.co-top h2,
+.nxview-h h2,
+.gate h2,
+.trk-h b,
+#lab-reports .sh h2,
+#reviews .sh h2{
+  font-family:var(--f-display)!important;
+  font-weight:800!important;
+  letter-spacing:var(--track-head)!important;
+  line-height:var(--lh-head)!important;
+  text-transform:uppercase;
+  margin:0;
+}
+.sh h2,.co-top h2,.nxview-h h2,#lab-reports .sh h2,#reviews .sh h2{
+  font-size:clamp(var(--ts-22),4.2vw,var(--ts-28))!important;
+  background:var(--nx-chrome,var(--chrome));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+#shop.sh h2{font-size:clamp(var(--ts-28),5vw,var(--ts-40))!important;letter-spacing:var(--track-head)!important;line-height:var(--lh-head)!important;max-width:100%;overflow-wrap:break-word}
+.nx-vlede,.lede,.gintro{margin:0 0 var(--sp-3);font-size:var(--ts-16)!important;line-height:var(--lh-body)!important;max-width:46rem}
+
+/* Group labels stay Michroma (small label role) */
+.nxgrp{margin-top:var(--sp-3)}
+.nxgrp-h{gap:var(--sp-2);margin:0 0 var(--sp-2)!important}
+.nxgrp-h h2{
+  font-family:var(--f-brand)!important;
+  font-weight:400!important;
+  font-size:var(--ts-12)!important;
+  line-height:var(--lh-label)!important;
+  letter-spacing:var(--track-ey)!important;
+  text-transform:uppercase;
+  color:#e2e0ef;
+  background:none;-webkit-background-clip:unset;background-clip:unset;
+}
+.nxgrp-h span{font-size:var(--ts-12)!important;line-height:var(--lh-label)!important;color:var(--nx-dim)}
+
+/* Product grid + cards */
+.nxcards,.grid,.gg,.pg,.pg2,.rvs,.wg,.fd-res,.crg,.steps{gap:var(--sp-2)!important}
+@media (max-width:360px){.nxcards{gap:var(--sp-1)!important}}
+.nxc h3,.nxc-b h3{font-family:var(--f-body)!important;font-weight:700;font-size:var(--ts-16)!important;line-height:1.25!important;letter-spacing:0}
+
+.nxc .nxc-sel, .nxc-sel{
+  font-size:var(--ts-12)!important;
+  letter-spacing:0;
+}
+button.nxc-go{font-size:var(--ts-14)!important;padding:0 12px!important}
+
+/* Code bar: never clip the placeholder */
+#vtop .codeb input, .codeb input{
+  font-size:16px;
+  min-height:44px;
+}
+#vtop .codeb{gap:var(--sp-1)!important}
+@media (max-width:1023px){
+  .nxfind{flex-direction:column!important;align-items:stretch!important;gap:var(--sp-1)!important}
+  #shop + .bar #vtop,.bar .vtop,#vtop.vtop{
+    flex:none!important;width:100%!important;max-width:none!important;min-width:0!important
+  }
+}
+@media (min-width:1024px){
+  .nxfind{flex-direction:row!important;align-items:center!important;gap:var(--sp-2)!important}
+  #shop + .bar #vtop,.bar .vtop,#vtop.vtop:not(.lounge){
+    flex:0 0 auto!important;
+    width:auto!important;
+    min-width:24rem!important;
+    max-width:28rem!important;
+  }
+  #vtop .codeb input{
+    flex:1 1 auto!important;
+    min-width:16rem!important;
+    width:auto!important;
+  }
+}
+
+/* Product sheet / checkout typography */
+.nxsheet-b, #nx-sh-b{padding:var(--sp-2)!important}
+@media (min-width:900px){
+  .nxsheet-b, #nx-sh-b{padding:var(--sp-3)!important}
+  .nxsheet-f{padding:var(--sp-2) var(--sp-3)!important}
+}
+.nxsh-ruo, .co-ruo, small.legal, .nxsep-d{font-size:var(--ts-12)!important;line-height:var(--lh-label)!important}
+.co-top h2{font-size:clamp(var(--ts-22),3vw,var(--ts-28))!important}
+.cof label, .co label, #co label, #tray label{font-size:var(--ts-14)!important;line-height:var(--lh-label)!important}
+#co p, #tray p, .nxsheet p{font-size:var(--ts-16)!important;line-height:var(--lh-body)!important}
+
+/* Gate */
+.gate h2{font-family:var(--f-display)!important;font-weight:800!important;font-size:var(--ts-22)!important;letter-spacing:var(--track-head)!important;line-height:var(--lh-head)!important;margin:16px 0 8px}
+.gate p, #gate p{font-size:var(--ts-16)!important;line-height:var(--lh-body)!important}
+
+/* VIP bar / unlock stay on the type scale */
+.vl, .vipcard, .vipt, .vipp{font-family:var(--f-body)}
+.vl-t, .vl-word, .vip-word{letter-spacing:var(--track-ey)}
+#vtop .vipt, #vtop .codem{font-size:var(--ts-13)!important;line-height:var(--lh-label)!important}
+
+/* Footer / info / legal-adjacent UI (not fine print) */
+footer, .nxft, #info{font-size:var(--ts-14);line-height:var(--lh-body)}
+footer small, .nxft small, .legal, address, .ruo-note, .disc, #tag{
+  font-size:var(--ts-12)!important;
+  line-height:var(--lh-label)!important;
+  letter-spacing:.04em;
+}
+
+/* Peptide-of-the-week + review rail: no sub-12px UI */
+.pw-k{font-size:var(--ts-12)!important;letter-spacing:.12em!important;white-space:nowrap}
+#nx-rv-b, .nxrail .nxtr:has(#nx-rv-b) b{
+  font-size:var(--ts-12)!important;
+  letter-spacing:.06em!important;
+  line-height:var(--lh-label)!important;
+}
+
+/* Sale ticker: 12px floor; segment drop still handles fit */
+#sale #sale-s, #sale .sale-seg, #sale.sale, #sale.sale.nov{
+  font-size:var(--ts-12)!important;
+  line-height:1.3!important;
+  letter-spacing:0!important;
+}
+@media (min-width:861px){
+  #sale .sale-seg-n{
+    font-family:var(--f-brand)!important;
+    font-size:var(--ts-12)!important;
+    letter-spacing:.14em!important;
+  }
+}
+
+/* Misc small UI that had slipped under 11px */
+.nxpr,.nxmeta,.nxcoa-ok{font-size:var(--ts-12)!important;line-height:var(--lh-label)!important}
+
+
+/* Hero CTAs: wrap long ES labels inside equal-width tiles */
+.nx-ctas .nxbtn{
+  white-space:normal!important;
+  overflow-wrap:anywhere;
+  text-wrap:balance;
+  height:auto!important;
+  min-height:48px!important;
+  line-height:1.25!important;
+}
+@media (max-width:767px){
+  .nx-ctas .nxbtn{padding:8px 12px!important;font-size:var(--ts-13)!important}
+}
+
+/* Hero eyebrow: one line when it can, balanced wrap otherwise */
+.nxhero-copy>.nxey{
+  text-wrap:balance;
+  letter-spacing:.16em!important;
+}
+@media (max-width:390px){
+  .nxhero-copy>.nxey{letter-spacing:.12em!important}
+}
+@media (max-width:320px){
+  .nxhero-copy>.nxey{letter-spacing:.08em!important}
+}
+
+/* Live-board header stays one line */
+.nxboard-h{flex-wrap:nowrap;align-items:center;gap:8px;margin:0 0 16px}
+.nxboard-h .nxlive,#nx-synced{
+  min-width:0;flex:1 1 auto;
+  font-family:var(--f-body)!important;
+  font-size:var(--ts-13)!important;
+  line-height:var(--lh-label)!important;
+  letter-spacing:0!important;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.nxboard-h .nxey{
+  flex:none;
+  white-space:nowrap!important;
+  letter-spacing:.12em!important;
+  font-size:var(--ts-12)!important;
+}
+
+/* Trust / peptide rail: 12px floor, tight tracking so the strip still fits */
+.nxrail .nxtr b,
+.nxrail .nxtr:has(#nx-rv-b) b,
+#nx-rv-b{
+  font-family:var(--f-brand)!important;
+  font-size:var(--ts-12)!important;
+  letter-spacing:.04em!important;
+  line-height:1.25!important;
+  white-space:normal!important;
+  overflow:visible!important;
+}
+#potw .pw-k{
+  font-size:var(--ts-12)!important;
+  letter-spacing:.08em!important;
+  line-height:1.3!important;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  min-width:0;
+  flex:0 1 auto!important;
+}
+#potw.potw a{
+  font-size:var(--ts-12)!important;
+  letter-spacing:.04em!important;
+  flex:none!important;
+  white-space:nowrap!important;
+  min-height:32px!important;
+  padding:0 8px!important;
+}
+#potw.potw{min-width:0;overflow:hidden}
+
+/* Other compact UI up to the 12px floor, tight tracking */
+
+
+.nxbn a,.nxbn a span{font-size:var(--ts-12)!important;line-height:1.2!important;letter-spacing:0}
+.rv-v,.tick a b,.tick span b{font-size:var(--ts-12)!important;letter-spacing:.04em!important}
+.ft-addr b, footer b{font-size:var(--ts-12)!important}
+
+/* Board date: wrap, don't ellipsis a date */
+.nxboard-h .nxlive,#nx-synced{
+  white-space:normal!important;
+  overflow:visible!important;
+  text-overflow:unset!important;
+}
+/* Peptide-of-the-week label should not mid-word ellipsis if we can help it */
+#potw .pw-k{letter-spacing:.04em!important}
+@media (min-width:1024px){
+  #potw.potw{flex:1 1 340px!important}
+}
+
+/* Desktop live-board tiles: wide enough for ES "Reponiendo" */
+@media (min-width:900px){
+  .nxstats{grid-template-columns:repeat(3,minmax(128px,1fr))!important}
+  .nxstat{padding:16px!important}
+}
+/* Peptide-of-the-week: size to its content so the label doesn't mid-word ellipsis */
+@media (min-width:1024px){
+  .nxrail .nxtr,.nxrail .nxtrust .nxtr{min-width:0!important;flex:1 1 0!important}
+  #potw.potw{flex:0 0 auto!important;overflow:visible!important;max-width:none!important}
+  #potw .pw-k{overflow:visible!important;text-overflow:unset!important;flex:none!important;letter-spacing:.04em!important}
+}
+
+/* Bottom nav at 320/360: condensed 11px so ES "Recompensas" fits */
+@media (max-width:360px){
+  .nxbn a,.nxbn a span{
+    font-family:var(--f-display)!important;
+    font-weight:800!important;
+    font-size:11px!important;
+    letter-spacing:0!important;
+    text-transform:uppercase;
+  }
+}
+
+/* Card body: 8px scale, equal sides. Do not retouch fitted badges/aliases/wait/cats. */
+.nxc-b{padding:8px!important;gap:8px!important}
+.nxc-cat{max-width:100%}
+
+/* Live-board tiles at tight widths */
+@media (max-width:360px){
+  .nxboard{padding:8px!important}
+  .nxstat{padding:8px!important}
+  .nxstat span{font-size:11px!important}
+}
+@media (min-width:900px) and (max-width:1199px){
+  .nxstats{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media (min-width:1200px){
+  .nxstats{grid-template-columns:repeat(3,minmax(128px,1fr))!important}
+}
+
+/* Group titles wrap instead of spilling the heading box */
+.nxgrp-h{min-width:0}
+.nxgrp-h h2{
+  min-width:0;
+  overflow-wrap:anywhere;
+  letter-spacing:.12em!important;
+}
+@media (max-width:360px){
+  .nxgrp-h h2{letter-spacing:.08em!important}
+}
+</style>
+
 
 
 <script>
