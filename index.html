@@ -5496,7 +5496,7 @@ footer small, .nxft small, .legal, address, .ruo-note, .disc, #tag{
   }
 }
 
-/* P2: trust rail — single-line items at ≥1024 (content-sized cells, smaller rail type). 768 2×2 stays 12px nowrap. */
+/* P2: trust rail — 768 2×2 stays 12px Michroma nowrap (already fits). */
 @media (min-width:768px) and (max-width:1023px){
   .nxrail .nxtr b,
   .nxrail .nxtr:has(#nx-rv-b) b,
@@ -5510,39 +5510,108 @@ footer small, .nxft small, .legal, address, .ruo-note, .disc, #tag{
     text-overflow:unset!important;
   }
 }
+/* P3: desktop rail is one row again. Inter 600 / 12px / 0.08em so labels stay at the 12px floor. */
 @media (min-width:1024px){
-  .nxrail{flex-wrap:wrap!important;align-items:center!important}
+  .nxrail{
+    flex-wrap:nowrap!important;
+    align-items:center!important;
+    border-radius:14px!important; /* same radius as the live board above */
+    min-height:48px;
+  }
+  .nxrail .nxtrust{
+    display:flex!important;
+    flex:0 0 auto!important; /* size to the four labels; leftover goes to potw */
+    width:auto!important;
+    min-width:0!important;
+    flex-wrap:nowrap!important;
+    align-items:center!important;
+    overflow:visible!important;
+  }
   .nxrail .nxtr,
   .nxrail .nxtrust .nxtr{
-    flex:1 0 auto!important;
+    flex:0 0 auto!important; /* never shrink the one-line items */
     width:auto!important;
     min-width:min-content!important;
     max-width:none!important;
     align-items:center!important;
     overflow:visible!important;
+    padding:8px 10px!important;
   }
-  .nxrail .nxtr > div{min-width:min-content;width:auto;overflow:visible}
+  .nxrail .nxtr > div{width:auto;min-width:min-content;overflow:visible}
   .nxrail .nxtr b,
   .nxrail .nxtr:has(#nx-rv-b) b,
   #nx-rv-b{
-    font-family:var(--f-brand)!important;
-    font-size:9px!important;
+    font-family:var(--f-body)!important;
+    font-weight:600!important;
+    font-size:12px!important;
     letter-spacing:.08em!important;
-    line-height:1.15!important;
+    line-height:1.2!important;
+    text-transform:uppercase!important;
     white-space:nowrap!important;
     overflow:visible!important;
     text-overflow:unset!important;
   }
-  #potw.potw{flex:1 1 0%!important;min-width:0!important;overflow:hidden!important}
-  #potw .pw-k{overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;min-width:0!important}
+  /* ES verified-buyers is the one string that may need a clean 2-line wrap; others stay one line and vertically centered */
+  .nxrail .nxtr:has(#nx-rv-b),
+  .nxrail .nxtrust .nxtr:has(#nx-rv-b){
+    flex:0 0 14.5rem!important; /* EN stays one line; ES wraps to a balanced two */
+    width:14.5rem!important;
+    min-width:14.5rem!important;
+    max-width:14.5rem!important;
+    align-items:center!important;
+  }
+  .nxrail .nxtr:has(#nx-rv-b) > div{min-width:0;max-width:100%;overflow:visible}
+  .nxrail .nxtr:has(#nx-rv-b) b,
+  #nx-rv-b{
+    white-space:normal!important;
+    text-wrap:balance;
+    overflow-wrap:normal;
+    word-break:normal;
+    hyphens:none;
+    line-height:1.25!important;
+    overflow:visible!important;
+    text-overflow:unset!important;
+  }
+  /* Peptide of the week stays at the end of the same row; week label may ellipsis before KLOW + CTA */
+  #potw.potw{
+    flex:1 1 auto!important;
+    width:auto!important;
+    min-width:10rem!important; /* KLOW + CTA remain; week label ellipsizes first at tight widths */
+    max-width:none!important;
+    overflow:hidden!important;
+    padding:8px!important;
+    gap:6px!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+    border-top:0!important;
+    border-left:1px solid rgba(201,162,74,.45)!important;
+    box-shadow:inset 3px 0 0 #c9a24a!important;
+  }
+  #potw .pw-k,
+  #potw.potw a{
+    font-family:var(--f-body)!important;
+    font-weight:600!important;
+    font-size:12px!important;
+    letter-spacing:.08em!important;
+    text-transform:uppercase!important;
+    line-height:1.2!important;
+  }
+  #potw .pw-k{
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    white-space:nowrap!important;
+    min-width:0!important;
+    flex:1 1 auto!important;
+  }
+  #potw.potw b,
+  #potw.potw a{flex:none!important;white-space:nowrap!important;overflow:visible!important;margin-left:8px!important}
+  #potw.potw p{display:none!important}
 }
-@media (min-width:1024px){
-  /* Keep the 4 labels on one full row; peptide-of-the-week sits on the row below so labels never clip */
-  .nxrail .nxtrust{flex:1 1 100%!important;width:100%!important;min-width:100%!important}
-  .nxrail .nxtr,
-  .nxrail .nxtrust .nxtr{flex:1 0 auto!important;min-width:min-content!important}
-  #potw.potw{flex:1 1 100%!important;width:100%!important;min-width:100%!important;overflow:visible!important}
+@media (min-width:1024px) and (max-width:1279px){
+  /* At 1024 the week label would ellipsis to "P.." — prefer KLOW + CTA only */
+  #potw .pw-k{display:none!important}
 }
+
 
 /* P2: larger section titles need a taller off-screen size than the 480px intrinsic, or the last report card sits under Bulk */
 #nxlatest.nxsec{contain-intrinsic-size:auto 640px!important;height:auto!important}
