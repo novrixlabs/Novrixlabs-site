@@ -4496,34 +4496,52 @@ body.nx-co-on #nx-toast{opacity:0!important;pointer-events:none!important}
 <style id="logo-clean">
 /* Clean chrome N: the DNA helix overlay is removed from the hero emblem. */
 .nx-helix{display:none!important}
-/* Mobile: goal chips and filter chips are each one compact scroll row.
-   Fade lives in a reserved gutter, never over chip text. */
-@media (max-width:600px){
-  .nxchiprow{
-    display:flex;
-    flex-direction:column;
-    flex-wrap:nowrap!important;
-    align-items:stretch;
-    gap:6px;
-    overflow:visible!important;
-    overflow-x:visible!important;
-    overflow-y:visible!important;
-    mask-image:none!important;
-    -webkit-mask-image:none!important;
-    padding:6px 0!important;
-    position:sticky;
-  }
-  .nxchiprow.fade-r,.nxchiprow.fade-l,.nxchiprow.fade-l.fade-r{
-    mask-image:none!important;
-    -webkit-mask-image:none!important;
-  }
-  .nxchiprow .nxsep{display:none}
-  .nxchiprow .fchips{margin-top:0!important}
+/* Two stacked chip rows at every width: goals, then filters.
+   Combined-row mask/display:contents is disabled so chips are not hidden. */
+.nxchiprow{
+  display:flex!important;
+  flex-direction:column;
+  flex-wrap:nowrap!important;
+  align-items:stretch;
+  gap:6px;
+  overflow:visible!important;
+  overflow-x:visible!important;
+  overflow-y:visible!important;
+  mask-image:none!important;
+  -webkit-mask-image:none!important;
+  padding:6px 0!important;
+}
+.nxchiprow.fade-r,.nxchiprow.fade-l,.nxchiprow.fade-l.fade-r{
+  mask-image:none!important;
+  -webkit-mask-image:none!important;
+}
+.nxchiprow .nxsep{display:none}
+.nxchiprow .fchips{margin-top:0!important}
+.nxchiprow .chips{
+  display:flex!important;
+  flex-wrap:nowrap!important;
+  align-items:center;
+  gap:8px;
+  width:100%;
+  margin:0;
+  box-sizing:border-box;
+  overflow-x:visible;
+  overflow-y:hidden;
+  padding:0;
+  mask-image:none!important;
+  -webkit-mask-image:none!important;
+}
+.nxchiprow .chip{
+  flex:none;
+  white-space:nowrap!important;
+  max-width:none;
+  overflow-wrap:normal;
+  word-break:normal;
+}
+/* 601-1023px (and mobile): if a row does not fit, scroll it like the mobile rows.
+   Fade lives in a reserved gutter, never over fully visible chip text. */
+@media (max-width:1023px){
   .nxchiprow .chips{
-    display:flex!important;
-    flex-wrap:nowrap!important;
-    align-items:center;
-    gap:8px;
     width:calc(100% - 36px);
     margin-left:18px;
     margin-right:18px;
@@ -4535,29 +4553,10 @@ body.nx-co-on #nx-toast{opacity:0!important;pointer-events:none!important}
     overscroll-behavior-x:contain;
     scroll-snap-type:x mandatory;
     scroll-padding-inline:0;
-    padding:0;
-    mask-image:none!important;
-    -webkit-mask-image:none!important;
   }
   .nxchiprow .chips::-webkit-scrollbar{display:none}
-  .nxchiprow .chip{
-    flex:none;
-    white-space:nowrap!important;
-    height:36px;
-    min-height:36px;
-    max-width:none;
-    padding:0 12px;
-    font-size:.76rem;
-    font-weight:600;
-    line-height:36px;
-    text-align:center;
-    overflow:visible;
-    overflow-wrap:normal;
-    word-break:normal;
-    scroll-snap-align:start;
-    box-sizing:border-box;
-  }
-  /* 18px gutters on the sticky bar; fades paint there, not over chips */
+  .nxchiprow .chip{scroll-snap-align:start}
+  .nxchiprow{position:relative}
   .nxchiprow::before,.nxchiprow::after{
     content:"";
     position:absolute;
@@ -4577,6 +4576,27 @@ body.nx-co-on #nx-toast{opacity:0!important;pointer-events:none!important}
   }
   .nxchiprow.gutter-fade-l::before{opacity:1}
   .nxchiprow.gutter-fade-r::after{opacity:1}
+}
+/* Keep the existing mobile/tablet sticky chip bar (do not let position:relative above win). */
+@media (max-width:700px){
+  .nxchiprow{position:sticky}
+}
+/* Mobile: compact 36px chips; sticky bar stays short. */
+@media (max-width:600px){
+  .nxchiprow{
+    position:sticky;
+  }
+  .nxchiprow .chip{
+    height:36px;
+    min-height:36px;
+    padding:0 12px;
+    font-size:.76rem;
+    font-weight:600;
+    line-height:36px;
+    text-align:center;
+    overflow:visible;
+    box-sizing:border-box;
+  }
   .nxgrp,.nxc{scroll-margin-top:calc(var(--nx-hdr) + 100px)}
 }
 </style>
