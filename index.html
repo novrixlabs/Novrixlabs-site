@@ -1324,7 +1324,7 @@ html.is-vip b.dealp{color:#ff9a5c}
 <section class="sec nxsec" id="nx-signup" data-nxs="shop">
   <div class="nx-su">
     <h2>Get in early for Black Friday.</h2>
-    <p class="nx-su-b">VIPs shop Black Friday Week starting Nov 20, three days before everyone else. You’ll also get first word on restocks and new lab reports. One or two emails a week, nothing else.</p>
+    <p class="nx-su-b">VIPs shop Black Friday Week starting Nov 20, three days before everyone else. You’ll also get first word on restocks and new lab reports. One or two emails a week, nothing else.</p>
     <form class="nx-su-f" id="nx-su-form" novalidate>
       <div class="nx-su-hp" aria-hidden="true">
         <label>Company <input type="text" name="company" tabindex="-1" autocomplete="off"></label>
@@ -1448,17 +1448,15 @@ html.is-vip b.dealp{color:#ff9a5c}
     <div class="nx-suf" id="nx-signup-ft">
       <form class="nx-suf-f" id="nx-su-ft-form" novalidate>
         <b class="nx-suf-h">Get in early for Black Friday.</b>
-        <p class="nx-suf-b">VIPs shop Black Friday Week starting Nov 20, three days before everyone else. You’ll also get first word on restocks and new lab reports. One or two emails a week, nothing else.</p>
+        <p class="nx-suf-b">VIPs shop Black Friday Week starting Nov 20, three days before everyone else. You’ll also get first word on restocks and new lab reports. One or two emails a week, nothing else.</p>
         <div class="nx-su-hp" aria-hidden="true">
           <label>Company <input type="text" name="company" tabindex="-1" autocomplete="off"></label>
         </div>
-        <div class="nx-suf-row">
-          <label class="nx-su-em">Email
-            <input type="email" id="nx-su-ft-email" name="email" autocomplete="email" inputmode="email" required>
-          </label>
-          <button class="cta nx-su-go" type="submit">Get VIP access</button>
-        </div>
+        <label class="nx-su-em">Email
+          <input type="email" id="nx-su-ft-email" name="email" autocomplete="email" inputmode="email" required>
+        </label>
         <label class="nx-su-ck"><input type="checkbox" id="nx-su-ft-age" name="age" required> <span>I’m 21 or older and agree to receive emails.</span></label>
+        <button class="cta nx-su-go" type="submit">Get VIP access</button>
         <p class="nx-su-err" hidden></p>
         <p class="nx-su-ok" hidden>You’re on the list.</p>
         <p class="nx-su-fine">21+, US only. Research use only.</p>
@@ -1487,7 +1485,7 @@ window.NX_ES = {t: {
 "Prices before any sale": "Precios antes de cualquier oferta", "products": "productos", "product": "producto",
 "Proof, not promises": "Pruebas, no promesas", "Latest lab reports": "Informes de laboratorio recientes", "All reports": "Todos los informes",
 "Get in early for Black Friday.": "Anticípate al Black Friday.",
-"VIPs shop Black Friday Week starting Nov 20, three days before everyone else. You’ll also get first word on restocks and new lab reports. One or two emails a week, nothing else.": "Los VIP compran en Black Friday Week desde el 20 de nov, tres días antes que los demás. También te avisamos primero de los reabastecimientos y de los informes de laboratorio nuevos. Uno o dos correos a la semana, nada más.",
+"VIPs shop Black Friday Week starting Nov 20, three days before everyone else. You’ll also get first word on restocks and new lab reports. One or two emails a week, nothing else.": "Los VIP compran en Black Friday Week desde el 20 de nov, tres días antes que los demás. También te avisamos primero de los reabastecimientos y de los informes de laboratorio nuevos. Uno o dos correos a la semana, nada más.",
 "Get VIP access": "Obtener acceso VIP",
 "21+, US only. Research use only.": "21+, solo EE. UU. Solo para uso en investigación.",
 "I’m 21 or older and agree to receive emails.": "Tengo 21 años o más y acepto recibir correos.",
@@ -4180,9 +4178,7 @@ footer .nx-suf-h,footer .nx-suf b.nx-suf-h{font:800 1.05rem/1.25 var(--nx-head,i
 @media (max-width:560px){
   .nx-su{padding:18px 16px}
   .nx-su h2{font-size:1.35rem;overflow-wrap:anywhere}
-  .nx-suf-row{flex-direction:column;align-items:stretch}
-  .nx-suf-row .nx-su-em{flex:none;width:100%}
-  .nx-suf-row .nx-su-go{align-self:stretch;text-align:center;justify-content:center}
+  .nx-suf-f .nx-su-go{align-self:stretch;text-align:center;justify-content:center}
 }
 </style>
 <script>
