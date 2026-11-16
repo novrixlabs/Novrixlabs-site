@@ -2397,7 +2397,7 @@ function tray() {
     stp.append(mk("\u2212", "One less " + k, () => { if (q <= 1) { picks.delete(k); delete QTY[k]; savePicks(); draw(); } else { QTY[k] = q - 1; savePicks(); } tray(); }), el("span", "qn", String(q)), mk("+", "One more " + k, () => { if (q >= capQ(k)) { capMsg(k); return; } QTY[k] = q + 1; savePicks(); tray(); }));
     const rm = el("button", "cl-x", "\u00d7"); rm.type = "button"; rm.setAttribute("aria-label", "Remove " + k);
     rm.addEventListener("click", () => { picks.delete(k); delete QTY[k]; savePicks(); draw(); tray(); });
-    line.append(nm, stp, el("span", "ct", PRICE[k] ? money(q * PRICE[k]) : "–"), rm); cartEl.append(line);
+    { const ct = el("span", "ct"); if (VIPON && PRICE[k] && PRICE[k] < NPRICE[k]) ct.append(el("s", null, money(q * NPRICE[k])), " ", el("b", "vipp", money(q * PRICE[k]))); else ct.textContent = PRICE[k] ? money(q * PRICE[k]) : "–"; line.append(nm, stp, ct, rm); cartEl.append(line); }
   }
   const sm = el("div", "csum"), row = (a, b, c) => { const r = el("div", "cr" + (c ? " " + c : "")); r.append(el("span", null, a), el("span", null, b)); sm.append(r); };
   if (T.vip > 0) { row("Regular price", money(T.reg)); row("VIP pricing", "-" + money(T.vip), "save"); } else if (T.deal > 0) { row("Regular price", money(T.reg)); row("Deal of the Month", "-" + money(T.deal), "save"); } else row("Subtotal", money(T.sub));
@@ -6441,6 +6441,78 @@ body[data-nxv]:not([data-nxv="shop"]) .nxchiprow{display:none!important}
     white-space:nowrap;
     max-width:100%;
   }
+}
+</style>
+
+<style id="vip-gold-price">
+/* VIP pricing: purple neon slash on the old price, gold (default) or foil on the new price.
+   Scoped to html.is-vip and only to struck prices that sit next to b.vipp.
+   Non-VIP deal/sale strikes are unchanged. Toggle alt with html.vip-price-foil or html.vip-price-chrome. */
+html.is-vip{
+  --vip-price:linear-gradient(180deg,#fff6d0 0%,#ffd56a 42%,#e8b84a 100%);
+  --vip-price-solid:#ffd56a;
+  --vip-price-glow:rgba(255,201,77,.35);
+  --vip-slash:#c9b3ff;
+  --vip-slash-glow:rgba(154,107,255,.9);
+}
+html.is-vip.vip-price-foil{
+  --vip-price:var(--vip-foil,linear-gradient(180deg,#ffffff 0%,#e8e6f4 28%,#c9b3ff 52%,#8d90a0 76%,#f7f6ff 100%));
+  --vip-price-solid:#e8e0ff;
+  --vip-price-glow:rgba(154,107,255,.4);
+}
+html.is-vip.vip-price-chrome{
+  --vip-price:linear-gradient(180deg,#ffffff 0%,#ffe9a3 38%,#ffc94d 62%,#c9b3ff 100%);
+  --vip-price-solid:#ffd56a;
+  --vip-price-glow:rgba(255,201,77,.28);
+}
+html.is-vip s:has(+ b.vipp){
+  color:var(--nx-dim,#7c7b90);
+  -webkit-text-fill-color:var(--nx-dim,#7c7b90);
+  text-decoration:none!important;
+  text-decoration-color:transparent;
+  position:relative;
+  display:inline-block;
+  isolation:isolate;
+}
+html.is-vip s:has(+ b.vipp)::after{
+  content:"";
+  position:absolute;
+  left:-4%;
+  right:-4%;
+  top:52%;
+  height:2px;
+  border-radius:2px;
+  background:linear-gradient(90deg,transparent 0%,var(--vip-slash) 10%,#e8e0ff 50%,var(--vip-slash) 90%,transparent 100%);
+  box-shadow:0 0 5px var(--vip-slash-glow),0 0 10px rgba(123,63,228,.45);
+  transform:translateY(-50%) rotate(-8deg);
+  pointer-events:none;
+  z-index:1;
+}
+html.is-vip b.vipp,
+html.is-vip .vipp,
+html.is-vip .nxpr b.vipp,
+html.is-vip .dose .pr b.vipp,
+html.is-vip .nxc-selpr b.vipp,
+html.is-vip #co-sum b.vipp,
+html.is-vip #cart .ct b.vipp{
+  background:none;
+  color:var(--vip-price-solid);
+  -webkit-text-fill-color:var(--vip-price-solid);
+  background-image:var(--vip-price);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  color:transparent;
+  filter:drop-shadow(0 0 5px var(--vip-price-glow));
+  font-weight:700;
+  padding-left:0;
+}
+html.is-vip .nxpr b.vipp::before{content:none;display:none}
+html.is-vip #cart .ct{overflow:visible}
+html.is-vip .nxpr:has(b.vipp),html.is-vip .dose .pr:has(b.vipp),html.is-vip .nxc-selpr:has(b.vipp){overflow:visible}
+@media (prefers-reduced-motion:reduce){
+  html.is-vip b.vipp,html.is-vip .vipp{filter:none}
+  html.is-vip s:has(+ b.vipp)::after{box-shadow:0 0 0 0 transparent}
 }
 </style>
 </body></html>
