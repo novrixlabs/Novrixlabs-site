@@ -4071,6 +4071,9 @@ button.nxsz-ntf:focus-visible{outline:2px solid #b9a6ff;outline-offset:2px}
 .nxh-brand img{mix-blend-mode:normal}
 html{scroll-padding-top:calc(var(--nx-hdr) + var(--sale-h,0px) + 16px)}
 #shop.sh{scroll-margin-top:calc(var(--nx-hdr) + var(--sale-h,0px) + 8px)}
+/* desktop sticky search (and any leftover .bar stickiness below 701px)
+   must sit below the sale ticker + header, same as .nxh and mobile .nxchiprow */
+.bar{top:calc(var(--nx-hdr) + var(--sale-h, 0px))!important}
 @media (max-width:700px){
   .nxchiprow{top:calc(var(--nx-hdr) + var(--sale-h,0px))!important}
 }
@@ -4166,8 +4169,8 @@ html{scroll-padding-top:calc(var(--nx-hdr) + var(--sale-h,0px) + 16px)}
 }
 #nxlatest .sh, .nxsh-row{flex-wrap:wrap}
 
-/* remove the green purity badge from the hero emblem; leave the emblem clean */
-#nx-f1, .nx-f1{display:none!important}
+/* remove the purity badge and the product-count badge from the hero emblem; leave the emblem clean */
+#nx-f1, .nx-f1, #nx-f2, .nx-f2{display:none!important}
 
 /* === leftover polish: ticker, chips, potw, rail, HPLC, pill, a11y, VIP === */
 
