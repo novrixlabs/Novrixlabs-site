@@ -16,9 +16,14 @@
   const ssNoteOn = (t) => etYmd(t) >= "2026-12-01";
   const reduce = () => !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
   const es = () => (document.documentElement.lang || "").toLowerCase().startsWith("es");
-  const money = (n) => (N && N.money) ? N.money(n) : ("$" + (Math.round(n * 100) / 100).toFixed(2).replace(/\.00$/, ""));
+  /* Display-only. Same cents rule as the cart (drop .00), plus a thousands separator so $1,044 sits next to $436.50. */
+  const money = (n) => {
+    const v = Math.round(Number(n) * 100) / 100;
+    const whole = Math.abs(v % 1) < 1e-9;
+    return "$" + v.toLocaleString("en-US", { minimumFractionDigits: whole ? 0 : 2, maximumFractionDigits: 2 });
+  };
   const keyOf = (it, d) => it.name + " " + d.dose;
-  const buzz = (pat) => { try { if (navigator.vibrate) navigator.vibrate(pat); } catch (e) {} };
+  const buzz = (pat) => { try { if (!navigator.vibrate) return; const ua = navigator.userActivation; if (ua && !ua.isActive && !ua.hasBeenActive) return; navigator.vibrate(pat); } catch (e) {} };
   const MENU = "https://novrixlabs.shop/";
 
   let booted = false, target = 5, lastUnlock = 0, lastN = 0, rafOd, embers, search = "", cat = "All";
@@ -133,7 +138,12 @@
     const reached = SIZES.filter((s) => n >= s).pop();
     const head = sp ? (n + " de " + next) : (n + " of " + next);
     if (n === reached && SIZES.includes(n)) {
-      return n + (sp ? " de " : " of ") + n + " · " + NAMES[n] + (sp ? " desbloqueado" : " unlocked") + off(curPct);
+      const nxtP = pctAt(next, T.sub || 1);
+      const more = next - n;
+      const verb = sp
+        ? (more === 1 ? "agrega 1 más para " : ("agrega " + more + " más para "))
+        : (more === 1 ? "add 1 more for " : ("add " + more + " more for "));
+      return NAMES[n] + (sp ? " desbloqueado" : " unlocked") + off(curPct) + " · " + verb + name + off(nxtP);
     }
     return head + " · " + verb + (sp ? " para " : " for ") + name + off(p);
   }
@@ -143,7 +153,7 @@
       <div class="fg-hero" id="fg-hero">
         <canvas class="fg-embers" id="fg-embers" aria-hidden="true"></canvas>
         <div class="fg-hero-in">
-          <div class="fg-stamp"><img src="assets/emblem.webp" width="92" height="108" alt=""></div>
+          <div class="fg-stamp"><img src="assets/forge-n.webp" width="92" height="108" alt=""></div>
           <p class="fg-ey">Research · US only · 21+</p>
           <h2 class="fg-name" id="fg-h">THE FORGE</h2>
           <p class="fg-tag">Build a Kit</p>
@@ -377,16 +387,10 @@
     od.shownT = T.after; od.shownS = save;
     const n = kitN();
     const next = SIZES.find((s) => n < s) || 20;
-    const base = n >= 20 ? 20 : (SIZES.filter((s) => s <= n).pop() || 0);
-    const span = next - base || 5;
-    const into = n >= 20 ? 20 : (n - base);
-    const pct = n >= 20 ? 100 : Math.max(0, Math.min(100, (into / (next - base)) * 100));
+    const pct = Math.max(0, Math.min(100, (Math.min(n, 20) / 20) * 100));
     const bar = $("#fg-molten-i"), wrap = $("#fg-molten"), lab = $("#fg-prog");
-    if (bar) {
-      bar.style.width = (n >= 20 ? 100 : (n === 0 ? 0 : Math.max(6, pct))) + "%";
-      bar.classList.toggle("fg-flow", !reduce() && n > 0 && n < 20);
-    }
-    if (wrap) { wrap.setAttribute("aria-valuemax", String(next)); wrap.setAttribute("aria-valuenow", String(Math.min(n, 20))); wrap.setAttribute("aria-label", progressCopy(n)); }
+    if (bar) bar.style.width = pct + "%";
+    if (wrap) { wrap.setAttribute("aria-valuemax", "20"); wrap.setAttribute("aria-valuenow", String(Math.min(n, 20))); wrap.setAttribute("aria-label", progressCopy(n)); }
     if (lab) lab.textContent = progressCopy(n);
     const share = $("#fg-share"), go = $("#fg-checkout");
     if (share) share.disabled = N.picks.size === 0;
@@ -515,7 +519,10 @@
     $("#fg-tray-wrap").addEventListener("dragover", (e) => e.preventDefault());
     $("#fg-tray-wrap").addEventListener("drop", (e) => { e.preventDefault(); const k = e.dataTransfer.getData("text/plain"); if (k) addKey(k); });
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") { const s = $("#fg-slam"); if (s && !s.hidden) { s.classList.remove("on"); s.hidden = true; } }
+      if (e.key === "Escape") {
+        if (intro.state.playing) { skipIntro(); return; }
+        const s = $("#fg-slam"); if (s && !s.hidden) { s.classList.remove("on"); s.hidden = true; }
+      }
     });
     if (N.hookTray) N.hookTray(() => { if (document.body.dataset.nxv === "forge") paint({ skipGrid: true }); });
   }
@@ -523,6 +530,125 @@
   function vis(on) {
     if (on) { if (embers) embers.start(); }
     else { if (embers) embers.stop(); }
+  }
+
+
+  const INTRO_KEY = "novrix-forge-intro";
+  const intro = { state: { playing: false, done: true, timers: [], raf: 0, el: null } };
+  const introSeen = () => { try { return sessionStorage.getItem(INTRO_KEY) === "1"; } catch (e) { return false; } };
+  const markIntroSeen = () => { try { sessionStorage.setItem(INTRO_KEY, "1"); } catch (e) {} };
+  function clearIntroTimers() {
+    intro.state.timers.forEach((id) => clearTimeout(id));
+    intro.state.timers = [];
+    if (intro.state.raf) { cancelAnimationFrame(intro.state.raf); intro.state.raf = 0; }
+  }
+  function endIntro(instant) {
+    clearIntroTimers();
+    intro.state.playing = false;
+    intro.state.done = true;
+    markIntroSeen();
+    const el = intro.state.el;
+    const finish = () => {
+      if (el && el.parentNode) el.parentNode.removeChild(el);
+      intro.state.el = null;
+      root.classList.remove("fg-await-intro");
+      root.classList.add("fg-rise");
+      document.body.classList.remove("fg-intro-on");
+    };
+    if (!el) { finish(); return; }
+    if (instant || reduce()) { finish(); return; }
+    el.classList.add("is-out");
+    intro.state.timers.push(setTimeout(finish, 360));
+  }
+  function skipIntro() { if (intro.state.playing || (intro.state.el && !intro.state.done)) endIntro(true); }
+  function runSparks(canvas, ms) {
+    if (!canvas || reduce()) return;
+    const ctx = canvas.getContext("2d", { alpha: true });
+    const fit = () => {
+      const dpr = Math.min(1.25, window.devicePixelRatio || 1);
+      const r = canvas.getBoundingClientRect();
+      canvas.width = Math.max(1, Math.floor(r.width * dpr));
+      canvas.height = Math.max(1, Math.floor(r.height * dpr));
+      return dpr;
+    };
+    const dpr = fit();
+    const w = canvas.width, h = canvas.height, cy = h / 2;
+    const parts = [];
+    for (let i = 0; i < 64; i++) {
+      const up = Math.random() < 0.5 ? -1 : 1;
+      parts.push({
+        x: w * (0.08 + Math.random() * 0.84),
+        y: cy + (Math.random() - 0.5) * 6 * dpr,
+        vx: (Math.random() - 0.5) * 1.8 * dpr,
+        vy: up * (0.8 + Math.random() * 3.4) * dpr,
+        life: 18 + Math.random() * 22,
+        age: 0,
+        s: (0.6 + Math.random() * 1.8) * dpr,
+        c: Math.random() < 0.4 ? "255,180,90" : "200,160,255"
+      });
+    }
+    const t0 = performance.now();
+    const tick = (now) => {
+      if (!intro.state.playing) return;
+      ctx.clearRect(0, 0, w, h);
+      for (let i = parts.length - 1; i >= 0; i--) {
+        const p = parts[i]; p.age++; p.x += p.vx; p.y += p.vy; p.vy += 0.03 * dpr;
+        const a = Math.max(0, 1 - p.age / p.life);
+        if (a <= 0) { parts.splice(i, 1); continue; }
+        ctx.beginPath(); ctx.fillStyle = "rgba(" + p.c + "," + (a * 0.85) + ")";
+        ctx.arc(p.x, p.y, p.s, 0, Math.PI * 2); ctx.fill();
+      }
+      if (now - t0 < ms && parts.length) intro.state.raf = requestAnimationFrame(tick);
+    };
+    intro.state.raf = requestAnimationFrame(tick);
+  }
+  function playIntro() {
+    if (window.__FG_SKIP_INTRO) { root.classList.add("fg-rise"); intro.state.done = true; return; }
+    let hash = "";
+    try { hash = decodeURIComponent((location.hash || "").slice(1)); } catch (e) { hash = (location.hash || "").slice(1); }
+    const restore = hash.startsWith("forge=");
+    const short = introSeen() || restore;
+    const reduced = reduce();
+    const title = es() ? "LA FORJA" : "THE FORGE";
+    const tag = es() ? "ARMA TU KIT" : "BUILD A KIT";
+    const letters = [...title].map((ch) => "<span>" + (ch === " " ? "&nbsp;" : esc(ch)) + "</span>").join("");
+    const el = document.createElement("div");
+    el.id = "fg-intro";
+    el.className = "fg-intro";
+    el.setAttribute("role", "dialog");
+    el.setAttribute("aria-label", title);
+    el.innerHTML = '<div class="fg-in-glow"></div><div class="fg-in-doors"><div class="fg-in-door fg-in-door-t"></div><div class="fg-in-door fg-in-door-b"></div></div>' +
+      '<div class="fg-in-seam"></div><canvas class="fg-in-sparks" id="fg-in-sparks" aria-hidden="true"></canvas>' +
+      '<div class="fg-in-stage"><div class="fg-in-mark"><i class="fg-in-shock"></i><img src="assets/forge-n.webp" width="137" height="160" alt="">' +
+      '<i class="fg-in-sweep"></i></div><div class="fg-in-title">' + letters + '</div><p class="fg-in-tag">' + esc(tag) + '</p></div>' +
+      '<button type="button" class="fg-in-skip" id="fg-in-skip">' + (es() ? "Saltar" : "Skip") + '</button>';
+    document.body.append(el);
+    document.body.classList.add("fg-intro-on");
+    intro.state.el = el;
+    intro.state.playing = true;
+    intro.state.done = false;
+    const goEnd = (instant) => endIntro(instant);
+    const onSkip = (e) => { e.preventDefault(); goEnd(true); };
+    el.addEventListener("click", onSkip);
+    el.addEventListener("touchstart", onSkip, { passive: false });
+    $("#fg-in-skip", el).addEventListener("click", (e) => { e.stopPropagation(); goEnd(true); });
+    if (reduced) {
+      root.classList.remove("fg-await-intro");
+      root.classList.add("fg-rise");
+      el.classList.add("is-out");
+      intro.state.timers.push(setTimeout(() => goEnd(true), 380));
+      return;
+    }
+    root.classList.add("fg-await-intro");
+    requestAnimationFrame(() => {
+      el.classList.add("is-play");
+      if (short) el.classList.add("is-short");
+      const sparks = $("#fg-in-sparks", el);
+      runSparks(sparks, short ? 280 : 900);
+      if (!short) buzz([16, 40, 28, 60, 18]);
+      else buzz([12]);
+      intro.state.timers.push(setTimeout(() => goEnd(false), short ? 500 : 2120));
+    });
   }
 
   function boot() {
@@ -538,18 +664,22 @@
     startEmbers();
     vis(document.body.dataset.nxv === "forge");
     window.__FG.booted = true;
+    playIntro();
   }
 
   window.__FG = {
     booted: false,
     ready: () => { boot(); return true; },
     kitN, progressText: () => progressCopy(kitN()),
-    sizes: SIZES, names: NAMES,
+    sizes: SIZES, names: NAMES, money,
     pctAt, shareURL, addKey, remOne, clearKit, paint, boot,
     isExcluded: (k) => ssNoteOn() && SS(k),
     ssNoteOn, etYmd, countsForKit,
     targetOf: () => target,
-    setTarget: (s) => { if (SIZES.includes(s)) { target = s; paint(); } }
+    setTarget: (s) => { if (SIZES.includes(s)) { target = s; paint(); } },
+    introPlaying: () => intro.state.playing,
+    introDone: () => intro.state.done && !intro.state.el,
+    skipIntro
   };
 
   const mo = new MutationObserver(() => {

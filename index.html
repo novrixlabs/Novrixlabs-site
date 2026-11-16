@@ -1406,7 +1406,7 @@ html.is-vip b.dealp{color:#ff9a5c}
   <a href="#forge" data-nxv="forge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16h14v2H5z"/><path d="M8 16V10l4-4 4 4v6"/><path d="M12 6V3M9 20h6"/></svg><span>Forge</span></a>
   <a href="#lab-reports" data-nxv="reports"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v6c0 4.2-2.9 7.7-7 9-4.1-1.3-7-4.8-7-9V6z"/><path d="m9 12 2 2 4-4"/></svg><span>Reports</span></a>
   <a href="#track-order" data-nxv="track"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg><span>Track</span></a>
-  <a href="#rewards" data-nxv="rewards"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M9.5 10.5c0-1 1-1.6 2.5-1.6s2.5.7 2.5 1.6c0 2.2-5 1-5 3.2 0 .9 1 1.6 2.5 1.6s2.5-.6 2.5-1.6"/></svg><span>Rewards</span></a>
+  <a href="#rewards" data-nxv="rewards"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M9.5 10.5c0-1 1-1.6 2.5-1.6s2.5.7 2.5 1.6c0 2.2-5 1-5 3.2 0 .9 1 1.6 2.5 1.6s2.5-.6 2.5-1.6"/></svg><span data-noes data-fg-bn-rewards>Rewards</span></a>
   <a href="#info" data-nxv="info"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg><span>Info</span></a>
 </nav>
 <div class="co" id="co" hidden role="dialog" aria-modal="true" aria-labelledby="co-h">
@@ -1570,6 +1570,7 @@ window.NX_ES = {t: {
 "Search vials": "Buscar viales",
 "Share my kit": "Compartir mi kit",
 "Link copied": "Enlace copiado",
+"Skip": "Saltar",
 "Copy this kit link:": "Copia este enlace del kit:",
 "Applied at checkout": "Se aplica al pagar",
 "Clear kit": "Vaciar kit",
@@ -3009,7 +3010,7 @@ async function researcherCard(n, code, btn) {
 })();
 setTimeout(jump, 250); addEventListener("hashchange", jump);
 // nx redesign bridge: read-only handles for the redesign layer (no data or checkout logic changes)
-window.__NX = {DATA, GUIDE, INFO, GOALS, SHORT, CAPS, SEQ, LABS, STATUS, PRICE, NPRICE, DEALP, picks, QTY, LABFUND, MULTI, DCAP, REVIEWS, RANK, nxItems,
+window.__NX = {DATA, GUIDE, INFO, GOALS, SHORT, CAPS, SEQ, LABS, STATUS, PRICE, NPRICE, MAXQ, LOWCAP, DEALP, picks, QTY, LABFUND, MULTI, DCAP, REVIEWS, RANK, nxItems,
   get VIPON() { return VIPON; }, get saleOn() { return saleOn; }, get SALE() { return SALE; }, get goal() { return goal; }, get f() { return f; },
   qty, capQ, capMsg, savePicks, avail, coaList, openCoa, openNotify, openMol, slug, norm, money, fresh, getView, setGoal, totals, WAITED,
   tray: () => tray(), draw: () => draw(), status0: openStatus,
@@ -6575,10 +6576,7 @@ html.is-vip .nxpr:has(b.vipp),html.is-vip .dose .pr:has(b.vipp),html.is-vip .nxc
 }
 .nxbn{grid-template-columns:repeat(6,minmax(0,1fr))}
 .nxbn a{min-width:0}
-.nxbn a span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-@media (max-width:400px){
-  .nxbn a,.nxbn a span{font-size:10px!important;letter-spacing:0!important}
-}
+.nxbn a span{max-width:100%;overflow:visible;text-overflow:clip;white-space:nowrap}
 </style>
 <script>
 (() => {
@@ -6605,6 +6603,14 @@ html.is-vip .nxpr:has(b.vipp),html.is-vip .dose .pr:has(b.vipp),html.is-vip .nxc
   addEventListener("hashchange", maybe);
   maybe();
   window.__FG_LOAD = load;
+  const bnRew = () => {
+    const el = document.querySelector("[data-fg-bn-rewards]");
+    if (!el) return;
+    const es = (document.documentElement.lang || "").toLowerCase().startsWith("es");
+    el.textContent = es ? "Creds" : "Rewards";
+  };
+  bnRew();
+  new MutationObserver(bnRew).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
 })();
 </script>
 </body></html>
