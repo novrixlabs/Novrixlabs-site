@@ -1199,7 +1199,7 @@ html.is-vip b.dealp{color:#ff9a5c}
     <h1 id="nx-h1"><span class="nx-h1k" aria-hidden="true">Novrix Labs</span> <span class="nx-h1m">Lab-tested <em>research</em> peptides</span></h1>
     <i class="nx-uline" aria-hidden="true"></i>
     <p class="nx-lede">Select batches third-party verified. Live stock and discreet US shipping.</p>
-    <p class="nx-cut" id="nx-cut"><i aria-hidden="true"></i><span id="nx-cut-t">Paid by 4 PM ET on a ship day? It goes out the same day.</span></p>
+    <p class="nx-cut" id="nx-cut"><i aria-hidden="true"></i><span id="nx-cut-t">Paid by 4 PM ET ships today</span></p>
     <div class="nx-ctas"><a class="nxbtn nxbtn-p" href="#shop">Shop compounds</a><a class="nxbtn nxbtn-g" href="#lab-reports">View lab reports</a></div>
   </div>
   <div class="nx-reactor" id="nx-reactor" aria-hidden="true">
@@ -1473,7 +1473,7 @@ window.NX_ES = {t: {
 "How did you find Novrix?": "¿Cómo encontraste Novrix?", "Choose one": "Elige una opción", "Google search": "Búsqueda en Google", "Friend/referral": "Amigo o referido", "Other": "Otro",
 "Novrix Labs": "Novrix Labs", "research": "investigación", "peptides": "verificados",
 "Select batches third-party verified. Live stock and discreet US shipping.": "Lotes selectos verificados por terceros. Inventario en vivo y envío discreto en EE. UU.",
-"Paid by 4 PM ET on a ship day? It goes out the same day.": "¿Pagas antes de las 4 PM ET en un día de envío? Sale el mismo día.",
+"Paid by 4 PM ET ships today": "Pagado antes de las 4 PM ET, sale hoy",
 "Holiday break: orders placed after 4 PM ET Nov 25 ship Mon Nov 30.": "Pausa festiva: los pedidos hechos después de las 4 PM ET del 25 de nov. salen el lunes 30 de nov.",
 "Pay within": "Paga en", "and it ships today": "y sale hoy", "Next dispatch:": "Próximo envío:", "today": "hoy", "tomorrow": "mañana",
 "Monday": "lunes", "Tuesday": "martes", "Wednesday": "miércoles", "Thursday": "jueves", "Friday": "viernes",
@@ -6179,7 +6179,7 @@ if (!SH.dataset.szHook) { SH.dataset.szHook = "1"; N.hookTray(() => { if (cur &&
   const T = $("#nx-cut-t"); let last = "";
   const tick = () => { const n = etNow(); let parts;
     if (holiNote(n)) { if (last !== "holi") { last = "holi"; T.replaceChildren(mk("span", null, "Holiday break: orders placed after 4 PM ET Nov 25 ship Mon Nov 30.")); } return; }
-    if (shipDay(n.d) && n.h < CUT) { const m = Math.max(1, Math.round((CUT - n.h) * 60)); parts = ["Pay within", Math.floor(m / 60) + "h " + String(m % 60).padStart(2, "0") + "m", "and it ships today"]; }
+    if (shipDay(n.d) && n.h < CUT) { if (last !== "same") { last = "same"; T.replaceChildren(mk("span", null, "Paid by 4 PM ET ships today")); } return; }
     else { let d = n.d + DAY; while (!shipDay(d)) d += DAY; parts = ["Next dispatch:", d === n.d + DAY ? "tomorrow" : new Date(d).toLocaleDateString("en-US", {timeZone: "UTC", weekday: "long"}), ""]; }
     const s = parts.join("|"); if (s === last) return; last = s;
     T.replaceChildren(mk("span", null, parts[0]), " ", mk("b", null, parts[1])); if (parts[2]) T.append(" ", mk("span", null, parts[2])); };
