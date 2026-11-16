@@ -115,8 +115,11 @@ main{padding-top:24px}
       <span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="m4 7 8 6 8-6"/></svg></span>
       <span class="tx"><b>Email us</b><span>support@novrixlabs.shop</span></span><span class="ar">→</span></a>
   </nav>
-  <footer><b>For research use only.</b> Not for human consumption. Products are sold strictly for in-vitro laboratory research.<br><a href="https://novrixlabs.shop/">novrixlabs.shop</a></footer>
+  <footer><b>For research use only.</b> Not for human consumption. Products are sold strictly for in-vitro laboratory research.<br><span class="ft-ruo">Research use only. 21+, US.</span><br><a href="https://novrixlabs.shop/">novrixlabs.shop</a></footer>
 </main>
+<script>
+(() => { try { const u = new URLSearchParams(location.search), o = {}; for (const k of ["utm_source", "utm_medium", "utm_campaign", "ref"]) { const v = (u.get(k) || "").trim().replace(/[^A-Za-z0-9._-]/g, "").slice(0, 40); if (v) o[k] = v; } if (Object.keys(o).length) sessionStorage.setItem("novrix-src", JSON.stringify(o)); } catch (e) {} })(); // where the visitor came from (utm_* and ref), this tab only
+</script>
 <script>
 try { const d = new Date().toLocaleDateString("en-CA", {timeZone: "America/New_York"}); if (d >= "2026-11-01" && d < "2026-12-01") { document.getElementById("dbl").hidden = false; document.getElementById("rvsub").textContent = "Double Nov Creds all November"; } } catch (e) {}
 </script>
