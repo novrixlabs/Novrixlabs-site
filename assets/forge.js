@@ -34,7 +34,7 @@
   const lsGet = (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } };
   const lsSet = (k, v) => { try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) {} };
 
-  let booted = false, target = 5, lastN = 0, lastSealed = 0, rafOd, embers, search = "", cat = "All", flash = "";
+  let booted = false, target = 5, pinned = 0, lastN = 0, lastSealed = 0, rafOd, embers, search = "", cat = "All", flash = "";
   const od = { total: 0, save: 0, shownT: 0, shownS: 0 };
 
   /* ---------- catalog + draft ---------- */
@@ -102,6 +102,13 @@
   const isSealed = (n) => n >= STEP && n % STEP === 0;
   const stepOf = (n) => n + needOf(n);
   const nameOf = (n) => NAMES[n] || (n > 20 ? "Apex Kit" : "Core Kit");
+  /* Tier tap: `pinned` is the size the customer picked. While the kit is below it, the kit stays locked toward that size.
+     At or above it, the usual stepOf logic applies (vials are never dropped). */
+  const goalOf = (n) => { const st = stepOf(n) || STEP; return pinned > n ? Math.max(pinned, st) : st; };
+  const needTo = (n) => goalOf(n) - n;
+  const sealedUI = (n) => isSealed(n) && !(pinned > n);
+  const aimed = (n) => pinned > n;
+  const tierWord = (n) => n >= 20 ? "Apex" : ({ 5: "Core", 10: "Elite", 15: "Titan" }[n] || "Core");
   function ssInDraft() { let n = 0; for (const [k, q] of draft) if (SS(k)) n += q; return n; }
 
   /* Exact live math for a set of vials: swap them into the live cart for one synchronous totals() call, then restore. Nothing is saved or drawn. */
@@ -141,6 +148,11 @@
   }
   function progressCopy(n) {
     const sp = es();
+    if (aimed(n)) {
+      const need = needTo(n), t = tierWord(goalOf(n));
+      return sp ? ("Agrega " + (need === 1 ? "1 vial más" : need + " viales más") + " para sellar tu kit " + t)
+                : ("Add " + need + " more vial" + (need === 1 ? "" : "s") + " to seal your " + t + " kit");
+    }
     if (!n) return sp ? "Agrega 5 viales para sellar tu kit" : "Add 5 vials to seal your kit";
     const need = needOf(n);
     if (need) {
@@ -152,6 +164,10 @@
   /* "N more vials unlocks Y%": the next multiple of 5 whose live tier % beats the current one. */
   function unlockCopy(n) {
     const T = kitTotals(), sub = T.sub || 1, cur = Math.max(T.pct || 0, pctAt(n, sub));
+    if (aimed(n)) {
+      const g = goalOf(n), p = pctAt(g, sub), more = g - n;
+      if (p > cur) return es() ? ("Con " + (more === 1 ? "1 vial más" : more + " viales más") + ": " + p + "% de descuento") : (more === 1 ? "1 more vial unlocks " + p + "% off" : more + " more vials unlock " + p + "% off");
+    }
     for (let m = stepOf(n) === n ? n + STEP : stepOf(n); m <= Math.max(20, n + STEP); m += STEP) {
       const p = pctAt(m, sub);
       if (p > cur) { const more = m - n; return es() ? ("Con " + (more === 1 ? "1 vial más" : more + " viales más") + ": " + p + "% de descuento") : (more === 1 ? "1 more vial unlocks " + p + "% off" : more + " more vials unlock " + p + "% off"); }
@@ -182,7 +198,7 @@
     return left;
   }
   function completePlan() {
-    const n = kitN(), need = n ? needOf(n) : STEP;
+    const n = kitN(), need = needTo(n);
     if (!need) return { need: 0, adds: new Map(), ok: true };
     const adds = new Map();
     const mine = [...draft.keys()].filter(suggestable);
@@ -284,6 +300,7 @@
       <div class="fg-start" id="fg-start" hidden></div>
       <div class="fg-tray-wrap" id="fg-tray-wrap">
         <div class="fg-tray-h"><b id="fg-tray-name">Core Kit</b><span id="fg-tray-count">0 / 5</span></div>
+        <div class="fg-plate" id="fg-plate" hidden></div>
         <div class="fg-tray" id="fg-tray" role="list" aria-label="Kit tray"></div>
         <p class="fg-more-n" id="fg-more-n" hidden></p>
         <p class="fg-ss-note" id="fg-ss-note" hidden>SS-31 50mg doesn't count toward kit discounts.</p>
@@ -322,7 +339,7 @@
     for (const s of SIZES) {
       const b = document.createElement("button");
       b.type = "button"; b.className = "fg-tier" + (s === 20 ? " fg-tier-apex" : "");
-      b.setAttribute("aria-pressed", String(target === s));
+      b.setAttribute("aria-pressed", String(Math.min(20, goalOf(n)) === s));
       if (n >= s) b.classList.add("is-on");
       if (n === s) b.classList.add("is-here");
       if (n < s) b.classList.add("is-locked");
@@ -331,7 +348,7 @@
       const pct = p ? "<span class=\"fg-pct\">" + p + (es() ? "% desc." : "% off") + "</span>" : "";
       b.innerHTML = "<b>" + NAMES[s] + "</b><small>" + s + vial + "</small>" + pct;
       b.setAttribute("aria-label", NAMES[s] + ", " + s + vial + (p ? ", " + p + (es() ? "% de descuento" : "% off") : "") + (n >= s ? (es() ? ", alcanzado" : ", reached") : ""));
-      b.addEventListener("click", () => { target = s; paint({ skipGrid: true }); });
+      b.addEventListener("click", () => tapTier(s));
       box.append(b);
     }
   }
@@ -339,24 +356,32 @@
   function drawTray() {
     const box = $("#fg-tray"); if (!box) return;
     const keys = kitKeys(), n = keys.length;
-    const sealed = isSealed(n);
-    const size = Math.min(20, Math.max(target, stepOf(n) || STEP));
+    const sealed = sealedUI(n);
+    const size = Math.min(20, goalOf(n));
     target = size;
     $("#fg-tray-name").textContent = nameOf(size);
     $("#fg-tray-count").textContent = Math.min(n, size) + " / " + size;
     const wrap = $("#fg-tray-wrap");
     wrap.classList.toggle("is-sealed", sealed);
     wrap.classList.toggle("fg-apex", sealed && n >= 20);
+    wrap.classList.toggle("fg-apex-pre", !sealed && size >= 20);
     box.dataset.size = String(size);
+    const plate = $("#fg-plate");
+    if (plate) {
+      plate.hidden = !sealed;
+      if (sealed) { const word = tierWord(n); const txt = es() ? word + " SELLADO" : word.toUpperCase() + " SEALED"; plate.innerHTML = NIMG(16, 19, "fg-plate-n") + "<b>" + [...(es() ? word.toUpperCase() + " SELLADO" : txt)].map((ch, j) => "<span style=\"--j:" + j + "\">" + (ch === " " ? "&nbsp;" : esc(ch)) + "</span>").join("") + "</b>"; plate.setAttribute("aria-label", es() ? "Kit " + word + " sellado" : word + " kit sealed"); plate.setAttribute("role", "img"); }
+    }
     box.replaceChildren();
     for (let i = 0; i < size; i++) {
       const slot = document.createElement("div");
-      slot.className = "fg-slot" + (keys[i] ? " is-filled" : "") + (i % STEP === STEP - 1 ? " is-edge" : "");
+      slot.className = "fg-slot" + (keys[i] ? " is-filled" : "") + (i % STEP === STEP - 1 ? " is-edge" : "") + (sealed && keys[i] ? " is-locked-in" : "");
+      slot.style.setProperty("--r", String(Math.floor(i / STEP)));
       slot.setAttribute("role", "listitem");
       slot.dataset.i = String(i);
       slot.innerHTML = "<span class=\"fg-slot-n\">" + (i + 1) + "</span>" +
         (keys[i] ? miniVial(keys[i].replace(/\s+\S+$/, ""), keys[i].split(" ").pop()) + "<span class=\"fg-slot-lab\">" + esc(keys[i]) + "</span>" : "") +
         "<button type=\"button\" aria-label=\"" + esc(keys[i] ? (es() ? "Quitar " + keys[i] + " del kit" : "Remove " + keys[i] + " from kit") : (es() ? "Espacio vacío " + (i + 1) + " de " + size : "Empty slot " + (i + 1) + " of " + size)) + "\"></button>";
+      if (sealed && keys[i]) { const ok = document.createElement("i"); ok.className = "fg-slot-ok"; ok.setAttribute("aria-hidden", "true"); slot.append(ok); }
       const btn = slot.querySelector("button");
       if (keys[i]) btn.addEventListener("click", () => remOne(keys[i]));
       else btn.addEventListener("click", () => { const g = $("#fg-search"); if (g) g.scrollIntoView({ block: "start", behavior: reduce() ? "auto" : "smooth" }); });
@@ -510,7 +535,7 @@
   }
   function loadSet(m, dropped) {
     const c = clean([...m]);
-    draft = c.m; saveDraft(); lsSet(AKEY, null);
+    draft = c.m; saveDraft(); lsSet(AKEY, null); pinned = 0;
     const gone = [...new Set([...(dropped || []), ...c.dropped])];
     flash = gone.length ? T2("Changed with stock: ", "Cambió por el stock: ") + gone.join(", ") : "";
     paint({ fromN: 0 });
@@ -520,12 +545,12 @@
   function caseBtn(row, id, label, cls, fn) { const b = document.createElement("button"); b.type = "button"; b.id = id; if (cls) b.className = cls; b.textContent = label; b.addEventListener("click", fn); row.append(b); return b; }
   function drawCase(opts) {
     const box = $("#fg-case"); if (!box) return;
-    const n = kitN(), need = needOf(n), added = lsGet(AKEY);
+    const n = kitN(), need = needTo(n), added = lsGet(AKEY);
     box.className = "fg-case";
     box.replaceChildren();
-    if (!draft.size && !added) { box.hidden = true; return; }
+    if (!draft.size && !added && !pinned) { box.hidden = true; return; }
     box.hidden = false;
-    if (!draft.size && added) {
+    if (!draft.size && added && !pinned) {
       let a = null; try { a = JSON.parse(added); } catch (e) {}
       box.classList.add("is-added");
       const h = document.createElement("h3"); h.className = "fg-case-h"; h.textContent = T2(((a && a.tier) || "Your kit") + " is in your cart", ((a && a.tier) || "Tu kit") + " está en tu carrito");
@@ -538,28 +563,44 @@
     }
     if (need || !n) {
       box.classList.add("is-locked");
+      if (goalOf(n) >= 20) box.classList.add("fg-apex-pre");
       const top = document.createElement("div"); top.className = "fg-lock-t";
       top.innerHTML = '<svg class="fg-lock-i" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>';
       const h = document.createElement("h3"); h.className = "fg-case-h"; h.id = "fg-lock-h"; h.textContent = progressCopy(n); top.append(h);
       const pips = document.createElement("div"); pips.className = "fg-pips"; pips.setAttribute("aria-hidden", "true");
       const inStep = n % STEP;
+      if (aimed(n)) {
+        const groups = Math.min(20, goalOf(n)) / STEP;
+        pips.style.gridTemplateColumns = "repeat(" + groups + ",1fr)";
+        for (let i = 0; i < groups; i++) { const e = document.createElement("i"); const f = Math.max(0, Math.min(STEP, n - i * STEP)); if (f === STEP) e.className = "on"; else if (f > 0) { e.className = "part"; e.style.setProperty("--fg-part", (f / STEP * 100) + "%"); } pips.append(e); }
+      } else
       for (let i = 0; i < STEP; i++) { const e = document.createElement("i"); if (i < inStep) e.className = "on"; pips.append(e); }
       const p = document.createElement("p");
       p.id = "fg-lock-p";
-      p.textContent = n < STEP
+      const G = goalOf(n);
+      p.textContent = aimed(n) && isSealed(n)
+        ? T2("This kit has " + n + " vials. Keep going to " + G + " for a " + tierWord(G) + " kit, or seal it now as a " + tierWord(n) + " kit.", "Este kit tiene " + n + " viales. Sigue hasta " + G + " para un kit " + tierWord(G) + " o séllalo ahora como kit " + tierWord(n) + ".")
+        : aimed(n) && n >= STEP
+        ? T2("This kit has " + n + " vials. Seal it at " + G + ", or remove " + inStep + " to seal it at " + (n - inStep) + ".", "Este kit tiene " + n + " viales. Séllalo con " + G + " o quita " + inStep + " para sellarlo con " + (n - inStep) + ".")
+        : n < STEP
         ? T2("Kits seal at 5, 10, 15 or 20 vials. Until then the kit stays here and can't go to the cart.", "Los kits se sellan con 5, 10, 15 o 20 viales. Mientras tanto el kit se queda aquí y no pasa al carrito.")
         : T2("This kit has " + n + " vials. Seal it at " + stepOf(n) + ", or remove " + inStep + " to seal it at " + (n - inStep) + ".", "Este kit tiene " + n + " viales. Séllalo con " + stepOf(n) + " o quita " + inStep + " para sellarlo con " + (n - inStep) + ".");
       const row = document.createElement("div"); row.className = "fg-case-a";
-      if (n) {
+      const sealNow = () => { if (aimed(n) && isSealed(n)) caseBtn(row, "fg-seal-now", T2("Seal at " + n, "Sellar con " + n), "", () => { pinned = 0; paint({ skipGrid: true, fromN: -1 }); }); };
+      if (n || pinned) {
         const plan = completePlan();
         if (plan.ok) {
           const adds = [...plan.adds].map(([k, q]) => q + "× " + k).join(", ");
           const b = caseBtn(row, "fg-complete", T2("Complete my kit", "Completar mi kit"), "fg-go", () => applyComplete());
           b.title = adds;
-          const s = document.createElement("small"); s.className = "fg-plan"; s.id = "fg-plan"; s.textContent = T2("Adds ", "Agrega ") + adds; box.append(top, pips, p, row, s);
+          sealNow();
+          const s = document.createElement("small"); s.className = "fg-plan"; s.id = "fg-plan";
+          { const list = [...plan.adds].map(([k, q]) => q + "× " + k); const tot = [...plan.adds.values()].reduce((x, y) => x + y, 0);
+            s.textContent = list.length <= 4 ? T2("Adds ", "Agrega ") + adds : T2("Adds " + tot + " vials: ", "Agrega " + tot + " viales: ") + list.slice(0, 3).join(", ") + T2(" and " + (list.length - 3) + " more", " y " + (list.length - 3) + " más"); } box.append(top, pips, p, row, s);
         } else {
           const s = document.createElement("p"); s.className = "fg-plan is-short"; s.id = "fg-plan";
-          s.textContent = T2("Not enough stock to reach " + stepOf(n) + " vials right now.", "Ahora mismo no hay stock suficiente para llegar a " + stepOf(n) + " viales.") + (plan.back ? T2(" Remove " + plan.back + " to seal at " + plan.down + ".", " Quita " + plan.back + " para sellar con " + plan.down + ".") : "");
+          sealNow();
+          s.textContent = T2("Not enough stock to reach " + G + " vials right now.", "Ahora mismo no hay stock suficiente para llegar a " + G + " viales.") + (aimed(n) && isSealed(n) ? T2(" You can seal it at " + n + ".", " Puedes sellarlo con " + n + ".") : plan.back ? T2(" Remove " + plan.back + " to seal at " + plan.down + ".", " Quita " + plan.back + " para sellar con " + plan.down + ".") : "");
           box.append(top, pips, p, s, row);
         }
       } else box.append(top, pips, p, row);
@@ -614,31 +655,32 @@
     const pct = Math.max(0, Math.min(100, (Math.min(n, 20) / 20) * 100));
     const bar = $("#fg-molten-i"), wrap = $("#fg-molten"), lab = $("#fg-prog"), unl = $("#fg-unl");
     if (bar) bar.style.width = pct + "%";
-    if (wrap) { wrap.classList.toggle("is-sealed", isSealed(n)); wrap.classList.toggle("fg-apex", isSealed(n) && n >= 20); wrap.setAttribute("aria-valuenow", String(Math.min(n, 20))); wrap.setAttribute("aria-valuetext", n + T2(" vials. ", " viales. ") + progressCopy(n)); wrap.setAttribute("aria-label", T2("Kit progress", "Progreso del kit")); }
-    if (lab) lab.textContent = isSealed(n) || !n ? progressCopy(n) : (es() ? n + " de " + stepOf(n) + " viales · " + nameOf(Math.min(stepOf(n), 20)) : n + " of " + stepOf(n) + " vials · " + nameOf(Math.min(stepOf(n), 20)));
-    if (unl) unl.textContent = n ? unlockCopy(n) : (pctAt(5, T.sub || 1) ? T2("5 vials unlock " + pctAt(5, T.sub || 1) + "% off", "Con 5 viales: " + pctAt(5, T.sub || 1) + "% de descuento") : "");
-    const need = needOf(n), sealed = isSealed(n), added = !draft.size && !!lsGet(AKEY);
+    if (wrap) { wrap.classList.toggle("is-sealed", sealedUI(n)); wrap.classList.toggle("fg-apex", sealedUI(n) && n >= 20); wrap.setAttribute("aria-valuenow", String(Math.min(n, 20))); wrap.setAttribute("aria-valuetext", n + T2(" vials. ", " viales. ") + progressCopy(n)); wrap.setAttribute("aria-label", T2("Kit progress", "Progreso del kit")); }
+    if (lab) lab.textContent = aimed(n) || sealedUI(n) || !n ? progressCopy(n) : (es() ? n + " de " + stepOf(n) + " viales · " + nameOf(Math.min(stepOf(n), 20)) : n + " of " + stepOf(n) + " vials · " + nameOf(Math.min(stepOf(n), 20)));
+    if (unl) unl.textContent = n || pinned ? unlockCopy(n) : (pctAt(5, T.sub || 1) ? T2("5 vials unlock " + pctAt(5, T.sub || 1) + "% off", "Con 5 viales: " + pctAt(5, T.sub || 1) + "% de descuento") : "");
+    const need = needTo(n), sealed = sealedUI(n), added = !draft.size && !!lsGet(AKEY) && !pinned;
     const share = $("#fg-share"), add = $("#fg-add"), clr = $("#fg-clear");
     if (share) share.disabled = !draft.size;
     if (clr) clr.disabled = !draft.size;
     if (add) {
-      add.textContent = sealed ? T2("Add kit to cart", "Agregar kit al carrito") : (n ? T2("Add " + need + " more to seal", "Agrega " + need + " más para sellar") : T2("Add 5 vials to seal", "Agrega 5 viales para sellar"));
+      add.textContent = sealed ? T2("Add kit to cart", "Agregar kit al carrito") : (n || pinned ? T2("Add " + need + " more to seal", "Agrega " + need + " más para sellar") : T2("Add 5 vials to seal", "Agrega 5 viales para sellar"));
       add.classList.toggle("is-locked", !sealed);
       add.setAttribute("aria-disabled", String(!sealed));
     }
     /* sticky summary (phones) */
     const dock = $("#fg-dock");
     if (dock) {
-      const on = !!draft.size || added;
+      const on = !!draft.size || added || !!pinned;
       dock.hidden = !on;
       document.body.classList.toggle("fg-dock-on", on && document.body.dataset.nxv === "forge");
       if (on) {
-        const size = added ? 0 : stepOf(n) || STEP;
+        const size = added ? 0 : goalOf(n);
         $("#fg-dock-n").textContent = added ? T2("Kit in cart", "Kit en el carrito") : (n + " / " + size + " · " + nameOf(Math.min(size, 20)));
         $("#fg-dock-p").textContent = added ? "" : money(T.after) + (save ? T2(" · save ", " · ahorras ") + money(save) : "");
-        $("#fg-dock-i").style.transform = "scaleX(" + (added ? 1 : (sealed ? 1 : (n % STEP) / STEP)) + ")";
+        $("#fg-dock-i").style.transform = "scaleX(" + (added ? 1 : (sealed ? 1 : aimed(n) ? n / size : (n % STEP) / STEP)) + ")";
         dock.classList.toggle("is-sealed", sealed || added);
         dock.classList.toggle("fg-apex", sealed && n >= 20);
+        dock.classList.toggle("fg-apex-pre", !sealed && !added && size >= 20);
         const go = $("#fg-dock-go");
         go.textContent = added ? T2("Checkout", "Pagar") : sealed ? T2("Add kit to cart", "Agregar kit al carrito") : T2("Add " + need + " more", "Agrega " + need + " más");
         go.classList.toggle("is-locked", !sealed && !added);
@@ -646,19 +688,45 @@
     }
   }
 
+  /* Seal animation (user action only): molten seam + lid around the tray edge, sparks from the seam, slots flip neon green row by row,
+     the chrome N slams onto the tray centre (overshoot, shockwave, tray-only shake, shine), then the plate etches in. Apex: gold.
+     Transform/opacity only, absolute overlay inside the tray wrap, pointer-events none, removed after ~1.75 s. Reduced motion: static sealed state. */
+  let sealFx = null;
   function sealMoment(n) {
-    if (!reduce()) {
-      const w = $("#fg-tray-wrap"); if (w) { w.classList.remove("is-glow"); void w.offsetWidth; w.classList.add("is-glow"); setTimeout(() => w.classList.remove("is-glow"), 1100); }
-      if (embers && embers.burst) embers.burst();
+    const w = $("#fg-tray-wrap"), apex = n >= 20, LAND = 860;
+    if (sealFx) { sealFx.stop(); sealFx = null; }
+    if (!w) return;
+    const hdr = document.querySelector(".nxh"), hb = hdr ? Math.max(0, hdr.getBoundingClientRect().bottom) : 0;
+    const r = w.getBoundingClientRect(), vTop = Math.max(r.top, hb), vBot = Math.min(r.bottom, innerHeight - 70);
+    const inView = vBot - vTop >= Math.min(150, r.height * .6) && document.body.dataset.nxv !== "shop";
+    if (reduce()) { buzz(apex ? [16, 40, 28] : [16]); return; }
+    if (!inView) {
+      const d = $("#fg-dock");
+      if (d && !d.hidden) { d.classList.remove("is-flash"); void d.offsetWidth; d.classList.add("is-flash"); setTimeout(() => d.classList.remove("is-flash"), 1300); }
+      buzz(apex ? [16, 40, 28] : [16]);
+      return;
     }
-    buzz(n >= 20 ? [18, 40, 28] : [16]);
+    const fx = document.createElement("div");
+    fx.className = "fg-sealfx" + (apex ? " is-apex" : "");
+    fx.setAttribute("aria-hidden", "true");
+    fx.style.setProperty("--fy", Math.round(((vTop + vBot) / 2 - r.top) / r.height * 100) + "%");
+    fx.innerHTML = '<div class="fg-sfx-lid"></div><div class="fg-sfx-ring"><i class="fg-sfx-spin"></i></div><canvas class="fg-sfx-sparks"></canvas>' +
+      '<i class="fg-sfx-flash"></i><i class="fg-sfx-wave"></i><div class="fg-sfx-n"><img src="assets/forge-n.webp" width="137" height="160" alt="" decoding="async"><i class="fg-sfx-shine"></i></div>';
+    w.append(fx);
+    w.classList.remove("is-sealing"); void w.offsetWidth; w.classList.add("is-sealing");
+    const timers = [], st = { raf: 0, on: true };
+    timers.push(setTimeout(() => runSparks($(".fg-sfx-sparks", fx), 720, { state: st, alive: () => st.on, edge: true, gold: apex }), 140));
+    timers.push(setTimeout(() => buzz(apex ? [16, 40, 28] : [16]), LAND));
+    const stop = () => { st.on = false; if (st.raf) cancelAnimationFrame(st.raf); timers.forEach(clearTimeout); fx.remove(); w.classList.remove("is-sealing"); };
+    timers.push(setTimeout(() => { stop(); if (sealFx && sealFx.fx === fx) sealFx = null; }, 1750));
+    sealFx = { fx, stop };
   }
 
   function paint(opts) {
     CAT = null;
     if (!N || !booted) return;
     const n = kitN();
-    const sealedNow = isSealed(n) && n !== lastSealed && typeof opts?.fromN === "number" && opts.fromN !== n;
+    const sealedNow = sealedUI(n) && n !== lastSealed && typeof opts?.fromN === "number" && opts.fromN !== n;
     drawStatic();
     drawTiers();
     drawTray();
@@ -672,7 +740,7 @@
       if (slot && !reduce()) { slot.classList.add("is-ignite", "is-drop"); setTimeout(() => slot.classList.remove("is-ignite", "is-drop"), 600); }
     }
     if (sealedNow) sealMoment(n);
-    lastSealed = isSealed(n) ? n : 0;
+    lastSealed = sealedUI(n) ? n : 0;
     lastN = n;
     flash = opts && opts.keepFlash ? flash : "";
   }
@@ -693,7 +761,29 @@
     if (q <= 1) draft.delete(k); else draft.set(k, q - 1);
     saveDraft(); paint({ fromN: lastN });
   }
-  function clearKit() { draft.clear(); saveDraft(); lastSealed = 0; paint(); }
+  function clearKit() { draft.clear(); saveDraft(); lastSealed = 0; pinned = 0; paint(); }
+  /* Tier card tap: pick the size, show the (locked) kit toward it, bring the case into view, pulse, short buzz. */
+  function tapTier(s) {
+    if (!SIZES.includes(s)) return;
+    const n = kitN();
+    pinned = s;
+    if (n > s) flash = T2("This kit already has " + n + " vials, so it seals at " + stepOf(n) + ". Remove vials in the case to make it a " + tierWord(s) + " kit.", "Este kit ya tiene " + n + " viales, así que se sella con " + stepOf(n) + ". Quita viales del estuche para que sea un kit " + tierWord(s) + ".");
+    if (lsGet(AKEY) && !draft.size) lsSet(AKEY, null);
+    paint({ skipGrid: true, keepFlash: true, fromN: n === s ? -1 : n });
+    reveal();
+    buzz(s >= 20 ? [14, 30, 14] : [12]);
+  }
+  function reveal() {
+    const c = $("#fg-case"), w = $("#fg-tray-wrap");
+    const el = c && !c.hidden ? c : w; if (!el) return;
+    const hdr = document.querySelector(".nxh"); const hb = hdr ? Math.max(0, hdr.getBoundingClientRect().bottom) : 0;
+    const dock = $("#fg-dock"); const db = dock && !dock.hidden ? dock.getBoundingClientRect().height : 0;
+    const bn = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--nx-bn")) || 0;
+    const r = el.getBoundingClientRect();
+    const visible = r.top >= hb + 4 && r.top <= innerHeight * 0.45 && r.bottom <= innerHeight - db - bn;
+    if (!visible) { const top = Math.max(0, r.top + scrollY - hb - 12); try { window.scrollTo({ top, behavior: reduce() ? "instant" : "smooth" }); } catch (e) { window.scrollTo(0, top); } }
+    for (const x of [c && !c.hidden ? c : null, w]) { if (!x) continue; x.classList.remove("is-pulse"); void x.offsetWidth; x.classList.add("is-pulse"); setTimeout(() => x.classList.remove("is-pulse"), 900); }
+  }
   function applyComplete() {
     const plan = completePlan();
     if (!plan.ok || !plan.need) return false;
@@ -711,7 +801,7 @@
   function addKitToCart() {
     loadDraft();
     const n = kitN();
-    if (!isSealed(n)) { paint({ skipGrid: true }); pulseLock(); return false; }
+    if (!sealedUI(n)) { paint({ skipGrid: true }); pulseLock(); return false; }
     for (const [k, q] of draft) {
       if (!okStock(k)) { flash = T2(k + " is no longer in stock.", k + " ya no está en stock."); paint({ keepFlash: true }); return false; }
       const cur = N.picks.has(k) ? N.qty(k) : 0;
@@ -727,7 +817,7 @@
     lsSet("novrix-forge-cart", JSON.stringify({ items, at: new Date().toISOString().slice(0, 10) }));
     lsSet(LKEY, JSON.stringify({ items: [...draft], n }));
     lsSet(AKEY, JSON.stringify({ tier: nameOf(n), n }));
-    draft.clear(); saveDraft();
+    draft.clear(); saveDraft(); pinned = 0;
     N.savePicks(); if (N.draw) N.draw(); N.tray();
     lastSealed = 0; paint();
     const c = $("#fg-case"); if (c) { try { c.scrollIntoView({ block: "nearest" }); } catch (e) {} }
@@ -991,7 +1081,8 @@
     $("#fg-dock-go").addEventListener("click", () => {
       const n = kitN();
       if (!draft.size && lsGet(AKEY)) return checkout();
-      if (isSealed(n)) return addKitToCart();
+      if (sealedUI(n)) return addKitToCart();
+      if (aimed(n) || !n) { pulseLock(); return; }
       const g = $("#fg-search"); if (g) g.scrollIntoView({ block: "start", behavior: reduce() ? "auto" : "smooth" });
     });
     $("#fg-tray-wrap").addEventListener("dragover", (e) => e.preventDefault());
@@ -1039,8 +1130,9 @@
     intro.state.timers.push(setTimeout(finish, 360));
   }
   function skipIntro() { if (intro.state.playing || (intro.state.el && !intro.state.done)) endIntro(true); }
-  function runSparks(canvas, ms) {
+  function runSparks(canvas, ms, o) {
     if (!canvas || reduce()) return;
+    const S = (o && o.state) || intro.state, alive = (o && o.alive) || (() => intro.state.playing), edge = !!(o && o.edge), gold = !!(o && o.gold);
     const ctx = canvas.getContext("2d", { alpha: true });
     const fit = () => {
       const dpr = Math.min(1.25, window.devicePixelRatio || 1);
@@ -1054,20 +1146,21 @@
     const parts = [];
     for (let i = 0; i < 64; i++) {
       const up = Math.random() < 0.5 ? -1 : 1;
+      const top = Math.random() < 0.5;
       parts.push({
         x: w * (0.08 + Math.random() * 0.84),
-        y: cy + (Math.random() - 0.5) * 6 * dpr,
+        y: edge ? (top ? 2 * dpr : h - 2 * dpr) : cy + (Math.random() - 0.5) * 6 * dpr,
         vx: (Math.random() - 0.5) * 1.8 * dpr,
-        vy: up * (0.8 + Math.random() * 3.4) * dpr,
+        vy: (edge ? (top ? 1 : -1) : up) * (0.8 + Math.random() * 3.4) * dpr,
         life: 18 + Math.random() * 22,
         age: 0,
         s: (0.6 + Math.random() * 1.8) * dpr,
-        c: Math.random() < 0.4 ? "255,180,90" : "200,160,255"
+        c: gold ? (Math.random() < 0.5 ? "255,214,120" : "255,236,180") : (Math.random() < 0.4 ? "255,180,90" : "200,160,255")
       });
     }
     const t0 = performance.now();
     const tick = (now) => {
-      if (!intro.state.playing) return;
+      if (!alive()) return;
       ctx.clearRect(0, 0, w, h);
       for (let i = parts.length - 1; i >= 0; i--) {
         const p = parts[i]; p.age++; p.x += p.vx; p.y += p.vy; p.vy += 0.03 * dpr;
@@ -1076,9 +1169,9 @@
         ctx.beginPath(); ctx.fillStyle = "rgba(" + p.c + "," + (a * 0.85) + ")";
         ctx.arc(p.x, p.y, p.s, 0, Math.PI * 2); ctx.fill();
       }
-      if (now - t0 < ms && parts.length) intro.state.raf = requestAnimationFrame(tick);
+      if (now - t0 < ms && parts.length) S.raf = requestAnimationFrame(tick); else ctx.clearRect(0, 0, w, h);
     };
-    intro.state.raf = requestAnimationFrame(tick);
+    S.raf = requestAnimationFrame(tick);
   }
   function playIntro() {
     if (window.__FG_SKIP_INTRO) { root.classList.add("fg-rise"); intro.state.done = true; return; }
@@ -1125,7 +1218,7 @@
       runSparks(sparks, short ? 280 : 900);
       if (!short) buzz([16, 40, 28, 60, 18]);
       else buzz([12]);
-      intro.state.timers.push(setTimeout(() => goEnd(false), short ? 500 : 2120));
+      intro.state.timers.push(setTimeout(() => goEnd(false), short ? 500 : 1500));
     });
   }
 
@@ -1160,7 +1253,8 @@
     isExcluded: (k) => ssNoteOn() && SS(k),
     ssNoteOn, etYmd, countsForKit,
     targetOf: () => target,
-    setTarget: (s) => { if (SIZES.includes(s)) { target = s; paint(); } },
+    setTarget: (s) => { if (SIZES.includes(s)) { pinned = s; paint(); } },
+    tapTier, pinnedOf: () => pinned, goalOf: () => goalOf(kitN()),
     introPlaying: () => intro.state.playing,
     introDone: () => intro.state.done && !intro.state.el,
     skipIntro
