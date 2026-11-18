@@ -98,7 +98,7 @@ main{padding-top:24px}
       <span class="tx"><b>Shop the menu</b><span>Live availability and prices</span></span><span class="ar">→</span></a>
     <a class="l gold" href="https://novrixlabs.shop/#check-creds">
       <span class="ic coin"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#nvcoin"/></svg></span>
-      <span class="tx"><b>Check my Nov Creds<span class="pill" id="dbl" hidden>2×</span></b><span>Your balance and referral code by email</span></span><span class="ar">→</span></a>
+      <span class="tx"><b>Check my Nov Creds</b><span>Your balance and referral link · give $10, get $20</span></span><span class="ar">→</span></a>
     <a class="l" href="https://novrixlabs.shop/#track">
       <span class="ic"><svg viewBox="0 0 24 24"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.6"/><circle cx="17" cy="17.5" r="1.6"/></svg></span>
       <span class="tx"><b>Where’s my order?</b><span>Status and tracking</span></span><span class="ar">→</span></a>
@@ -121,7 +121,7 @@ main{padding-top:24px}
 (() => { try { const u = new URLSearchParams(location.search), o = {}; for (const k of ["utm_source", "utm_medium", "utm_campaign", "ref"]) { const v = (u.get(k) || "").trim().replace(/[^A-Za-z0-9._-]/g, "").slice(0, 40); if (v) o[k] = v; } if (Object.keys(o).length) sessionStorage.setItem("novrix-src", JSON.stringify(o)); } catch (e) {} })(); // where the visitor came from (utm_* and ref), this tab only
 </script>
 <script>
-try { const d = new Date().toLocaleDateString("en-CA", {timeZone: "America/New_York"}); if (d >= "2026-11-01" && d < "2026-12-01") { document.getElementById("dbl").hidden = false; document.getElementById("rvsub").textContent = "Double Nov Creds all November"; } } catch (e) {}
+try { const d = new Date().toLocaleDateString("en-CA", {timeZone: "America/New_York"}); if (d >= "2026-11-01" && d < "2026-12-01") { document.getElementById("rvsub").textContent = "Double Nov Creds all November"; } } catch (e) {}
 </script>
 </body>
 </html>
