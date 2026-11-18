@@ -2185,6 +2185,7 @@ const KNOWN = ["02ab8944", "09c770fa", "1b537051", "1f5885c7", "2101e5d0", "2958
 const SHIPMAP = ["FL", "GA", "MO", "MS", "ND", "OH", "VA"];
 const LABFUND = {"round": 1, "status": "voting", "target": "", "goal": 450, "raised": 0, "backers": 0, "votes": {"CJC-1295 (no DAC) & Ipamorelin": 1, "Wolverine blend": 1}, "options": ["TB-500", "GHK-Cu", "CJC-1295 (no DAC) & Ipamorelin", "Wolverine blend", "Thymosin Alpha-1", "KPV"]};
 const REFS = ["029e9ea8", "081395b5", "0e32eb59", "107f41dd", "12184202", "158e8c03", "15a4539d", "1660bf93", "16ffeffa", "19e393cf", "1a2385d1", "1c0d58ba", "1d6006f8", "1f30d117", "1ff23fe9", "2159ca1c", "224c453e", "244f9aa5", "2c3b5fd3", "2f135251", "2f85748e", "3307d389", "39eb80f7", "41e52df9", "476e318b", "4898eb07", "49b97293", "58573ba8", "5a5e57df", "5f353dc8", "5f52837e", "6596f581", "6b8f4fe9", "6c332aaa", "6e64180c", "73826cfc", "73e4c0a2", "76244d00", "78cd80c1", "7d32f47b", "7e7be4ea", "80da138e", "832d30f5", "841e0910", "84fa25a9", "87542b70", "8b5eacc9", "8b7606db", "8d6f9a8e", "8dc2eba7", "8e77d224", "94358340", "9f610ae9", "a0382169", "a2a3d9a8", "a41600f7", "ab94312a", "ab9edcd4", "ae9e2f5c", "af7080ad", "b0887609", "b11231ea", "b74ee218", "bceaf6de", "bd6261f9", "bda17c67", "bddb4f1f", "bfa73800", "c196c5da", "c2751bed", "cb7f1851", "cc7ca2a4", "cf96cc8c", "d5fe98f4", "dbefbda8", "dcd3d7ce", "de1c20cc", "df144bf7", "e61a54d0", "e81e0ca8", "ea7d4164", "ecbe3cee", "ed20c979", "ef88c6e5", "efb23433", "f00ac730", "f24b62c1", "fe690563", "fede2944", "ff5e6185"];
+const POPULAR = {"at": "", "kits": []};
 function refHash(code) { let h = 0x811c9dc5; for (const ch of new TextEncoder().encode("novrix:" + String(code || "").toUpperCase())) { h ^= ch; h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(16).padStart(8, "0"); }
 function refNorm(v) { return String(v || "").toUpperCase().replace(/[^A-Z0-9]/g, ""); }
 
@@ -2368,6 +2369,28 @@ function savePicks() { for (const k of Object.keys(QTY)) if (!picks.has(k)) dele
 const DCAP = 0.25; // most a single order can be discounted in total (VIP + deals + referral + standing order)
 const MULTI = {tiers: [[20, 20], [10, 15], [5, 10]], skip: /reconstitution/i};
 const multiN = () => [...picks.keys()].filter((k) => !MULTI.skip.test(k)).reduce((a, k) => a + qty(k), 0);
+/* THE FORGE kit guard. A Forge kit only reaches the cart sealed (a multiple of 5). novrix-forge-cart records the vials each kit put in the cart.
+   If a cart edit (or a stock change) leaves any kit vial short, checkout relocks until the kit is restored or removed. No pricing or order-text changes. Regular carts (no record) are untouched. */
+const FGK = (() => {
+  const KEY = "novrix-forge-cart", sp = () => (document.documentElement.lang || "").toLowerCase().startsWith("es");
+  const read = () => { let r = null; try { r = JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) {} if (!r || typeof r !== "object" || !r.items || typeof r.items !== "object" || Array.isArray(r.items)) return null; const items = {}; for (const [k, q] of Object.entries(r.items)) { const n = Math.floor(Number(q)); if (n > 0 && n <= 999) items[k] = n; } return Object.keys(items).length ? {items, name: typeof r.name === "string" ? r.name : ""} : null; };
+  const clear = () => { try { localStorage.removeItem(KEY); } catch (e) {} };
+  const state = () => { const r = read(); if (!r) return null; if (!picks.size) { clear(); return null; } let need = 0, have = 0; const miss = []; for (const [k, q] of Object.entries(r.items)) { const c = picks.has(k) ? qty(k) : 0; have += Math.min(c, q); if (c < q) { need += q - c; miss.push(k); } } if (!have) { clear(); return null; } return need ? {need, miss, r} : null; };
+  const canRestore = (s) => s.miss.every((k) => k in STATUS && avail(STATUS[k]) && capQ(k) >= s.r.items[k]);
+  const msg = (s) => { const n = s.need; return sp() ? ("A tu kit de LA FORJA le " + (n === 1 ? "falta 1 vial" : "faltan " + n + " viales") + ". Restáuralo o quita el kit para pagar.") : ("Your Forge kit is missing " + n + " vial" + (n === 1 ? "" : "s") + ". Restore it or remove the kit to check out."); };
+  const restore = () => { const s = state(); if (!s || !canRestore(s)) return false; for (const k of s.miss) { picks.set(k, STATUS[k]); QTY[k] = s.r.items[k]; } savePicks(); draw(); tray(); return true; };
+  const remove = () => { const r = read(); if (!r) return; for (const [k, q] of Object.entries(r.items)) { if (!picks.has(k)) continue; const left = qty(k) - Math.min(qty(k), q); if (left > 0) QTY[k] = left; else { picks.delete(k); delete QTY[k]; } } clear(); savePicks(); draw(); tray(); };
+  const paint = () => { const ce = document.getElementById("cart"), go = document.getElementById("tray-order"); const s = state(); let box = document.getElementById("fgk-lock");
+    if (go) { go.classList.toggle("fgk-off", !!s); if (s) go.setAttribute("aria-disabled", "true"); else go.removeAttribute("aria-disabled"); }
+    if (!s) { if (box) box.remove(); return; }
+    if (!ce) return; if (!box) { box = document.createElement("div"); box.id = "fgk-lock"; box.className = "fgk-lock"; box.setAttribute("role", "status"); }
+    box.replaceChildren(); const t = document.createElement("p"); t.textContent = msg(s); box.append(t);
+    const row = document.createElement("div"); row.className = "fgk-a"; const mk = (lab, fn) => { const b = document.createElement("button"); b.type = "button"; b.className = "tbtn"; b.textContent = lab; b.addEventListener("click", fn); row.append(b); return b; };
+    if (canRestore(s)) mk(sp() ? "Restaurar kit" : "Restore kit", restore); else { const n = document.createElement("small"); n.textContent = sp() ? "Un vial del kit ya no está disponible en esa cantidad." : "A kit vial is no longer available in that amount."; box.append(n); }
+    mk(sp() ? "Quitar kit" : "Remove kit", remove); box.append(row); if (ce.firstChild !== box) ce.prepend(box); };
+  const block = () => { const s = state(); if (!s) return false; const ce = document.getElementById("cart"), tg = document.getElementById("tray-toggle"), tr = document.getElementById("tray"); if (tr) tr.hidden = false; if (ce) ce.hidden = false; if (tg) tg.setAttribute("aria-expanded", "true"); paint(); const box = document.getElementById("fgk-lock"); if (box) { box.classList.remove("fgk-ping"); void box.offsetWidth; box.classList.add("fgk-ping"); try { box.scrollIntoView({block: "nearest"}); } catch (e) {} } return true; };
+  return {read, state, msg, restore, remove, paint, block, clear, KEY};
+})();
 let SOCODE = "", SODAYS = ""; try { const u = new URLSearchParams(location.search), c = u.get("so"), d = u.get("sd"); if (c && /^[A-HJ-NP-Z2-9]{4}$/i.test(c)) { SOCODE = c.toUpperCase(); SODAYS = /^(30|45|60)$/.test(d || "") ? d : "30"; sessionStorage.setItem("novrix-so", SOCODE + "|" + SODAYS); } else { const v = (sessionStorage.getItem("novrix-so") || "").split("|"); SOCODE = v[0] || ""; SODAYS = v[1] || ""; } } catch (e) {}
 function totals() { let n = 0, sub = 0, reg = 0; for (const k of picks.keys()) { const q = qty(k); n += q; sub += q * (PRICE[k] || 0); reg += q * (NPRICE[k] || PRICE[k] || 0); } const save0 = Math.max(0, Math.round((reg - sub) * 100) / 100), vip = VIPON ? save0 : 0, deal = VIPON ? 0 : save0; const t = saleOn && (!SALE.minSub || sub >= SALE.minSub) ? SALE.tiers.find(([m]) => n >= m) : null; let pct = t ? t[1] : 0, pname = t ? SALE.name : ""; { const mt = MULTI.tiers.find(([m]) => multiN() >= m); if (mt && mt[1] > pct) { pct = mt[1]; pname = mt[0] + "+ item deal"; } } let disc = Math.round(sub * pct) / 100, ref = REFCODE && !VIPON && firstOrderOrPending() && sub - disc >= REF_MIN ? REF_OFF : 0, so = SOCODE && pct < SO_PCT ? Math.round((sub - disc) * SO_PCT) / 100 : 0, capped = false;
   let refZ = false; { const room = Math.round(reg * DCAP * 100) / 100 - vip - deal; let over = Math.round((disc + ref + so - Math.max(0, room)) * 100) / 100; if (over > 0.009) { capped = true; if (saleOn && SALE && SALE.name === "Black Friday Week" && ref > 0) { const c = Math.min(ref, over); ref = Math.round((ref - c) * 100) / 100; over = Math.round((over - c) * 100) / 100; refZ = ref === 0; } if (over > 0.009 && disc > 0) { const nd = Math.max(0, disc - over); pct = Math.floor(nd / sub * 1000) / 10; disc = Math.round(sub * pct) / 100; over = Math.round((disc + ref + so - Math.max(0, room)) * 100) / 100; } if (over > 0.009 && so > 0) { const c = Math.min(so, over); so = Math.round((so - c) * 100) / 100; over -= c; } if (over > 0.009 && ref > 0) { const c = Math.min(ref, over); ref = Math.round((ref - c) * 100) / 100; } } }
@@ -2631,6 +2654,7 @@ draw(); tray();
   document.getElementById("co-submit").addEventListener("click", async () => {
     const sb = document.getElementById("co-submit"); if (sb.disabled) return;
     const err = document.getElementById("co-err"); err.textContent = "";
+    { const fk = FGK.state(); if (fk) { err.textContent = FGK.msg(fk); return; } }
     const shipping = ful.v !== "pickup", intl = shipping && document.getElementById("cf-ctry").value === "INTL", digits = fv("phone").replace(/\D/g, ""), em = fv("email");
     if (shipping && !intl && foreignAddr(fv("addr"))) { document.getElementById("cf-addr").setAttribute("aria-invalid", "true"); err.textContent = "This address looks like it\u2019s outside the US. Choose \u201COutside the US\u201D under Shipping to and send a request for approval."; document.getElementById("cf-ctry").focus(); return; }
     const chk = [["name", fv("name").split(/\s+/).filter(Boolean).length >= 2, "your first and last name"], ["phone", digits.length >= 10, "a phone number with area code"], ["email", /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em), "a valid email"], ["pday", shipping || !!puTxt(), "a pickup day and time"], ["addr", !shipping || (intl ? fv("addr").length >= 10 : usAddr(fv("addr"))), intl ? "your full address, including country" : "your full US shipping address with state and ZIP (shipping outside the US? choose Outside the US above)"], ["ruo", document.getElementById("cf-ruo").checked, "a check in the research-use box"]];
@@ -2667,7 +2691,7 @@ draw(); tray();
     b.disabled = true; b.textContent = "Sending\u2026"; const ok = await sendDirect(subj, body, fv("email")); b.disabled = false; b.textContent = "Confirm payment sent"; if (!ok) mailtoOpen(subj, body);
     document.getElementById("ps-f").hidden = true; document.getElementById("ps-ok").hidden = false; });
   document.getElementById("co-copy").addEventListener("click", (e) => { const b = e.currentTarget; try { navigator.clipboard.writeText(fullOrder()).then(() => { b.textContent = "Copied"; }); } catch (x) {} });
-  const open = () => { if (!picks.size) return; document.body.classList.remove("nx-tray-on"); { const tr = document.getElementById("tray"); if (tr) tr.hidden = true; const sc = document.getElementById("nx-tray-scrim"); if (sc) sc.hidden = true; const ca = document.getElementById("cart"); if (ca) ca.hidden = true; const tg = document.getElementById("tray-toggle"); if (tg) tg.setAttribute("aria-expanded", "false"); const to = document.getElementById("nx-toast"); if (to) to.classList.remove("on"); } if (!document.getElementById("co-ireq").hidden) { document.getElementById("co-ireq").hidden = true; document.getElementById("co-submit").hidden = false; } if (sent) { PCODE = mkCode(); sent = false; const _dn = document.getElementById("co-done"); _dn.hidden = true; _dn.classList.remove("is-ok"); document.getElementById("co-submit").hidden = false; document.getElementById("ps-open").hidden = false; document.getElementById("ps-f").hidden = true; document.getElementById("ps-ok").hidden = true; document.getElementById("ps-from").value = ""; } draw2(); co.hidden = false; document.body.classList.add("co-open", "nx-co-on"); document.getElementById("co-x").focus(); };
+  const open = () => { if (!picks.size) return; if (FGK.block()) return; document.body.classList.remove("nx-tray-on"); { const tr = document.getElementById("tray"); if (tr) tr.hidden = true; const sc = document.getElementById("nx-tray-scrim"); if (sc) sc.hidden = true; const ca = document.getElementById("cart"); if (ca) ca.hidden = true; const tg = document.getElementById("tray-toggle"); if (tg) tg.setAttribute("aria-expanded", "false"); const to = document.getElementById("nx-toast"); if (to) to.classList.remove("on"); } if (!document.getElementById("co-ireq").hidden) { document.getElementById("co-ireq").hidden = true; document.getElementById("co-submit").hidden = false; } if (sent) { PCODE = mkCode(); sent = false; const _dn = document.getElementById("co-done"); _dn.hidden = true; _dn.classList.remove("is-ok"); document.getElementById("co-submit").hidden = false; document.getElementById("ps-open").hidden = false; document.getElementById("ps-f").hidden = true; document.getElementById("ps-ok").hidden = true; document.getElementById("ps-from").value = ""; } draw2(); co.hidden = false; document.body.classList.add("co-open", "nx-co-on"); document.getElementById("co-x").focus(); };
   const close = () => { co.hidden = true; document.body.classList.remove("co-open", "nx-co-on"); };
   document.getElementById("tray-order").addEventListener("click", open);
   document.getElementById("co-x").addEventListener("click", close);
@@ -2743,17 +2767,18 @@ draw(); tray();
     const fail = () => { if (trayEl.querySelector(".tray-txt")) return; const box = el("div", "tray-txt", url); trayEl.querySelector(".tray-in").append(box); };
     try { navigator.clipboard.writeText(url).then(ok, fail); } catch (e) { fail(); }
   });
-  const h = decodeURIComponent((location.hash || "").replace(/^#/, ""));
+  let h = ""; try { h = decodeURIComponent((location.hash || "").replace(/^#/, "")); } catch (e) { h = (location.hash || "").replace(/^#/, ""); }
   if (h.startsWith("cart=")) {
     picks.clear();
     for (const part of (location.hash.slice(6)).split("|")) { const [k0, q0] = part.split("~"), k = decodeURIComponent(k0 || ""); if (k in STATUS && avail(STATUS[k])) { picks.set(k, STATUS[k]); QTY[k] = Math.max(1, Math.min(capQ(k), Number(q0) || 1)); } }
+    try { localStorage.removeItem("novrix-forge-cart"); } catch (e) {}
     savePicks(); draw(); cartEl.hidden = false; togEl.setAttribute("aria-expanded", "true"); tray();
     try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
   }
-  if (h.startsWith("forge=")) {
-    picks.clear();
-    for (const part of (location.hash.replace(/^#?forge=/, "")).split("|")) { const [k0, q0] = part.split("~"), k = decodeURIComponent(k0 || ""); if (k in STATUS && avail(STATUS[k])) { picks.set(k, STATUS[k]); QTY[k] = Math.max(1, Math.min(capQ(k), Number(q0) || 1)); } }
-    savePicks(); draw(); tray();
+  if (h.startsWith("forge=")) { // THE FORGE share link: opens as a Forge draft (locked until it is a multiple of 5); never goes straight into the cart
+    const kit = new Map();
+    for (const part of (location.hash.replace(/^#?forge=/, "")).split("|")) { const [k0, q0] = part.split("~"); let k = ""; try { k = decodeURIComponent(k0 || ""); } catch (e) { continue; } if (k in STATUS && avail(STATUS[k])) kit.set(k, Math.max(1, Math.min(capQ(k), (kit.get(k) || 0) + (Math.floor(Number(q0)) || 1)))); }
+    try { localStorage.setItem("novrix-forge-draft", JSON.stringify([...kit])); localStorage.removeItem("novrix-forge-added"); } catch (e) {}
     try { history.replaceState(null, "", location.pathname + location.search + "#forge"); } catch (e) {}
   }
   { // welcome back: one-tap reorder of the last order placed on this device
@@ -3018,11 +3043,12 @@ async function researcherCard(n, code, btn) {
 setTimeout(jump, 250); addEventListener("hashchange", jump);
 // nx redesign bridge: read-only handles for the redesign layer (no data or checkout logic changes)
 window.__NX = {DATA, GUIDE, INFO, GOALS, SHORT, CAPS, SEQ, LABS, STATUS, PRICE, NPRICE, MAXQ, LOWCAP, DEALP, picks, QTY, LABFUND, MULTI, DCAP, REVIEWS, RANK, nxItems,
-  get VIPON() { return VIPON; }, get saleOn() { return saleOn; }, get SALE() { return SALE; }, get goal() { return goal; }, get f() { return f; },
+  get VIPON() { return VIPON; }, get saleOn() { return saleOn; }, get SALE() { return SALE; }, get goal() { return goal; }, get f() { return f; }, POPULAR: typeof POPULAR !== "undefined" ? POPULAR : null, fgk: FGK,
   qty, capQ, capMsg, savePicks, avail, coaList, openCoa, openNotify, openMol, slug, norm, money, moneyUI, fresh, getView, setGoal, totals, WAITED,
   tray: () => tray(), draw: () => draw(), status0: openStatus,
   hookTray(fn) { const o = tray; tray = function () { o.apply(this, arguments); try { fn(); } catch (e) { console.error(e); } }; },
   setStatus(fn) { openStatus = fn; }};
+window.__NX.hookTray(FGK.paint); FGK.paint();
 })();
 
 (() => { const barEl = document.querySelector(".bar"), listEl = document.getElementById("list"); if (!barEl || !listEl) return;
@@ -6587,6 +6613,14 @@ html.is-vip .nxpr:has(b.vipp),html.is-vip .dose .pr:has(b.vipp),html.is-vip .nxc
 .nxbn{grid-template-columns:repeat(6,minmax(0,1fr))}
 .nxbn a{min-width:0}
 .nxbn a span{max-width:100%;overflow:visible;text-overflow:clip;white-space:nowrap}
+.fgk-lock{margin:0 0 10px;padding:12px;border-radius:12px;border:1px solid rgba(201,179,255,.45);background:rgba(155,77,255,.1)}
+.fgk-lock p{margin:0 0 8px;font-size:.86rem;line-height:1.4;color:#ecebf5}
+.fgk-lock small{display:block;margin:0 0 8px;font-size:.76rem;color:#c9c7da}
+.fgk-a{display:flex;flex-wrap:wrap;gap:8px}.fgk-a .tbtn{flex:1 1 120px;min-height:44px}
+.fgk-lock.fgk-ping{animation:fgkp .6s ease-out}
+@keyframes fgkp{0%{box-shadow:0 0 0 0 rgba(155,77,255,.7)}100%{box-shadow:0 0 0 12px rgba(155,77,255,0)}}
+#tray-order.fgk-off{opacity:.5}
+@media (prefers-reduced-motion:reduce){.fgk-lock.fgk-ping{animation:none}}
 </style>
 <script>
 (() => {
