@@ -194,12 +194,12 @@
   /* Starter kits: names, taglines and vials from the team's starter_kits.md review draft. Neutral names only.
      A starter shows only when every vial is in stock within capQ (otherwise it's skipped). */
   const STARTERS = [
-    { id: "bestsellers", name: "Bestsellers", tag: ["A one-tap Core kit of shop favorites.", "Un kit Core de un toque con los favoritos de la tienda."], v: ["BPC-157 10mg", "MOTS-c 40mg", "Semax 10mg", "KLOW 80mg", "Tri-Heal 30mg"] },
-    { id: "lab-staples", name: "Lab staples", tag: ["Everyday catalog stock, sealed as a Core kit.", "Stock habitual del catálogo, sellado como kit Core."], v: ["Wolverine 20mg", "Tri-Heal 30mg", "KLOW 80mg", "BPC-157 10mg", "MOTS-c 40mg"] },
-    { id: "catalog-five", name: "Catalog five", tag: ["A one-tap Core kit drawn from live stock.", "Un kit Core de un toque con stock en vivo."], v: ["Wolverine 20mg", "BPC-157 10mg", "MOTS-c 40mg", "Semax 10mg", "Tri-Heal 30mg"] },
-    { id: "bench-set", name: "Bench set", tag: ["Five frequently paired vials, ready to forge.", "Cinco viales que se piden juntos, listos para forjar."], v: ["Wolverine 20mg", "KLOW 80mg", "MOTS-c 40mg", "Semax 10mg", "Tri-Heal 30mg"] },
-    { id: "house-blends", name: "House blends", tag: ["Three house blends and two singles, all in stock.", "Tres mezclas de la casa y dos individuales, todo en stock."], v: ["Wolverine 20mg", "Tri-Heal 30mg", "KLOW 80mg", "BPC-157 10mg", "GHK-Cu 100mg"] },
-    { id: "shop-favorites", name: "Shop favorites", tag: ["A straightforward five-vial starter from the current shelf.", "Un kit sencillo de cinco viales con lo que hay ahora."], v: ["BPC-157 10mg", "Wolverine 20mg", "Semax 10mg", "KLOW 80mg", "MOTS-c 40mg"] }
+    { id: "bestsellers", name: "Bestsellers", tag: ["A one-tap Core kit of shop favorites.", "Un kit Core en un solo toque con los favoritos de la tienda."], v: ["BPC-157 10mg", "MOTS-c 40mg", "Semax 10mg", "KLOW 80mg", "Tri-Heal 30mg"] },
+    { id: "lab-staples", name: "Lab staples", tag: ["Everyday catalog stock, sealed as a Core kit.", "Básicos del catálogo, sellados como kit Core."], v: ["Wolverine 20mg", "Tri-Heal 30mg", "KLOW 80mg", "BPC-157 10mg", "MOTS-c 40mg"] },
+    { id: "catalog-five", name: "Catalog five", tag: ["A one-tap Core kit drawn from live stock.", "Un kit Core en un solo toque con inventario disponible ahora."], v: ["Wolverine 20mg", "BPC-157 10mg", "MOTS-c 40mg", "Semax 10mg", "Tri-Heal 30mg"] },
+    { id: "bench-set", name: "Bench set", tag: ["Five catalog vials, ready to forge.", "Cinco viales del catálogo, listos para forjar."], v: ["Wolverine 20mg", "KLOW 80mg", "MOTS-c 40mg", "Semax 10mg", "Tri-Heal 30mg"] },
+    { id: "house-blends", name: "House blends", tag: ["Three house blends and two singles, all in stock.", "Tres mezclas de la casa y dos péptidos individuales, todo disponible."], v: ["Wolverine 20mg", "Tri-Heal 30mg", "KLOW 80mg", "BPC-157 10mg", "GHK-Cu 100mg"] },
+    { id: "shop-favorites", name: "Shop favorites", tag: ["A straightforward five-vial starter from the current shelf.", "Un kit inicial sencillo de cinco viales del inventario actual."], v: ["BPC-157 10mg", "Wolverine 20mg", "Semax 10mg", "KLOW 80mg", "MOTS-c 40mg"] }
   ];
   const short = (k) => { const e = catalog().byKey.get(k); return e ? (e.it.name.replace(/\s+blend$/i, "") + " " + String(e.d.dose).replace(/\s*vial$/i, "")).toLowerCase() : ""; };
   function presets() {
