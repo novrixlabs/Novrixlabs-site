@@ -655,6 +655,7 @@
   }
 
   function paint(opts) {
+    CAT = null;
     if (!N || !booted) return;
     const n = kitN();
     const sealedNow = isSealed(n) && n !== lastSealed && typeof opts?.fromN === "number" && opts.fromN !== n;
